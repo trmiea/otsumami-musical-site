@@ -1,12 +1,340 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おつまみミュージカル</title>
+    <title>Otsumami Musical Official</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            letter-spacing: 0.15em;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        a {
+            color: #c29a5b;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            color: #c29a5b;
+            font-size: 1.1rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+            font-size: 0.8rem;
+        }
+
+        header {
+            padding: 140px 0 80px;
+            text-align: center;
+            background: #000;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 50px;
+            font-weight: 100;
+        }
+
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .section-intro {
+            background-color: #222;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            background: #1a1a1a;
+            padding: 40px 20px;
+            border-bottom: 4px solid #c29a5b;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.8rem;
+            color: #c29a5b;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .next-card {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            padding: 70px 40px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            text-align: center;
+            position: relative;
+        }
+
+        .next-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #c29a5b;
+        }
+
+        .next-date {
+            font-size: 2.2rem;
+            color: #c29a5b;
+            margin: 25px 0;
+            font-weight: 700;
+        }
+
+        .btn-gold {
+            display: inline-block;
+            background: #c29a5b;
+            color: #fff;
+            padding: 20px 60px;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 15px rgba(194, 154, 91, 0.4);
+        }
+
+        .yt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 500px) {
+            .yt-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .yt-item {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            transition: 0.3s;
+        }
+
+        .yt-item:hover {
+            border-color: #c29a5b;
+        }
+
+        footer {
+            padding: 80px 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            background: #000;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>おつまみミュージカル</h1>
-    <p>ここにサイトの内容を書いていく。</p>
+
+    <nav>
+        <div class="container">
+            <div class="logo">Otsumami Musical</div>
+            <ul>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#next">NEXT</a></li>
+                <li><a href="#youtube">YOUTUBE</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header id="top">
+        <div class="container">
+            <div class="hero-title" id="hero-title">--</div>
+            <div class="video-wrapper" id="hero-video-container"></div>
+        </div>
+    </header>
+
+    <section class="section-intro" id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <div class="intro-text" id="about-desc"
+                style="text-align: center; color: #ccc; max-width: 750px; margin: 0 auto;">--</div>
+            <div class="stats-grid" id="stats-container"></div>
+        </div>
+    </section>
+
+    <section id="next">
+        <div class="container">
+            <h2>Next Entry</h2>
+            <div class="next-card">
+                <h3 id="next-title">--</h3>
+                <div class="next-date" id="next-date">--</div>
+                <p>Venue: <span id="next-venue">--</span></p>
+                <p id="next-desc" style="color: #888; font-size: 0.95rem; margin: 25px 0;">--</p><a href="#"
+                    id="next-link" class="btn-gold" target="_blank">--</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-youtube" id="youtube">
+        <div class="container">
+            <h2>YouTube Archives</h2>
+            <p id="yt-desc" style="text-align: center; color: #888;">--</p>
+            <div class="yt-grid" id="yt-container"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Otsumami Musical | University of Tsukuba ESSA Alumni Network</p>
+    </footer>
+
+    <script>
+        fetch('./res/data/info.json')
+            .then(res => res.json())
+            .then(data => {
+                // SEO & GA
+                document.title = data.hero.title + " Official";
+                const favicon = document.createElement('link');
+                favicon.rel = 'icon'; favicon.type = 'image/png'; favicon.href = data.settings.favicon_path;
+                document.head.appendChild(favicon);
+
+                const gaScript = document.createElement('script');
+                gaScript.async = true; gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${data.settings.ga_id}`;
+                document.head.appendChild(gaScript);
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', data.settings.ga_id);
+
+                // Hero
+                document.getElementById('hero-title').textContent = data.hero.title;
+                document.getElementById('hero-video-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}" allowfullscreen></iframe>`;
+
+                // About
+                document.getElementById('about-desc').innerHTML = data.about.description;
+                document.getElementById('stats-container').innerHTML = data.about.stats.map(s => `
+                    <div class="stat-item"><span class="stat-number">${s.num}</span><span class="stat-label">${s.label}</span></div>
+                `).join('');
+
+                // Next Event
+                document.getElementById('next-title').textContent = data.next_event.title;
+                document.getElementById('next-date').textContent = data.next_event.date;
+                document.getElementById('next-venue').textContent = data.next_event.venue;
+                document.getElementById('next-desc').innerHTML = data.next_event.description;
+                const linkBtn = document.getElementById('next-link');
+                linkBtn.textContent = data.next_event.btn_text;
+                linkBtn.href = data.next_event.url;
+
+                // YouTube
+                document.getElementById('yt-desc').textContent = data.youtube.section_desc;
+                document.getElementById('yt-container').innerHTML = data.youtube.playlists.map(p => `
+                    <div class="yt-item">
+                        <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${p.embed_id}" allowfullscreen></iframe></div>
+                        <a href="${p.url}" class="yt-label" target="_blank" style="display:block; text-align:center; margin-top:20px; font-weight:700;">${p.label}</a>
+                    </div>
+                `).join('');
+            })
+            .catch(err => console.error("Data load failed:", err));
+    </script>
 </body>
+
 </html>

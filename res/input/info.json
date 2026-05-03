@@ -1,0 +1,65 @@
+{
+  "settings": {
+    "ga_id": "G-CGHPG04GL2",
+    "favicon_path": "./res/input/logo.png",
+    "ogp_image_url": "https://trmiea.github.io/otsumami-musical-site/res/input/logo.png"
+  },
+  "hero": {
+    "title": "Otsumami Musical",
+    "video_id": "mUwFiDtsmpE"
+  },
+  "about": {
+    "description": "おつまみミュージカルは、筑波大学ESSAのOB/OGを中心としたミュージカルコミュニティです。<br>「おつまみのように気軽に、でも味わい深く」をモットーに、日々表現を楽しんでいます。",
+    "stats": [
+      {
+        "num": "97",
+        "label": "TOTAL MEMBERS"
+      },
+      {
+        "num": "91",
+        "label": "TOTAL SONGS"
+      },
+      {
+        "num": "61",
+        "label": "EDITED MOVIES"
+      },
+      {
+        "num": "MONTHLY",
+        "label": "WS & TRAINING"
+      }
+    ]
+  },
+  "next_event": {
+    "title": "Otsumami Vol.8",
+    "date": "2026.10.24 (SAT)",
+    "venue": "幡ヶ谷Shackスタジオ",
+    "description": "おつまみへの入団・Vol.8へのエントリーは以下のフォームより受け付けています。<br>回答後、案内に従ってSlackへご参加ください。",
+    "btn_text": "入団・エントリーフォームへ",
+    "url": "https://docs.google.com/forms/d/1mGc3fVxqs4p0Ge_7W1OmVB70VtlRMFDaoY8o7AvETu0/edit?usp=drivesdk"
+  },
+  "youtube": {
+    "section_desc": "全61曲のパフォーマンス映像を公開中",
+    "playlists": [
+      {
+        "label": "おつまみ編集版 全曲集 ↗",
+        "embed_id": "videoseries?list=PLSGdTZX1FuTTLhJun70R1KCWgyMMu4JcX",
+        "url": "https://www.youtube.com/playlist?list=PLSGdTZX1FuTTLhJun70R1KCWgyMMu4JcX"
+      },
+      {
+        "label": "本番ライブ映像集 ↗",
+        "embed_id": "videoseries?list=PLSGdTZX1FuTS7vPiMjDSLXq-Ol39-H3-B",
+        "url": "https://www.youtube.com/playlist?list=PLSGdTZX1FuTS7vPiMjDSLXq-Ol39-H3-B"
+      },
+      {
+        "label": "Otsumami Karaoke ↗",
+        "embed_id": "videoseries?list=PLSGdTZX1FuTTVn8Nkie1BFObl2XbWcX_n",
+        "url": "https://www.youtube.com/playlist?list=PLSGdTZX1FuTTVn8Nkie1BFObl2XbWcX_n"
+      },
+      {
+        "label": "[限定公開] ボイトレ・WS ↗",
+        "embed_id": "videoseries?list=PLSGdTZX1FuTQOIghA20VHCVWXqDqSfbhK",
+        "url": "https://www.youtube.com/playlist?list=PLSGdTZX1FuTQOIghA20VHCVWXqDqSfbhK"
+      }
+    ]
+  }
+}
