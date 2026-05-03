@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Otsumami Musical Official</title>
+    
+    <meta property="og:title" content="Otsumami Musical Official">
+    <meta property="og:description" content="「おつまみのように気軽にミュージカルを楽しむ」をモットーとした、筑波大学ESSAのOB・OG中心のコミュニティ。">
+    <meta property="og:image" content="https://trmiea.github.io/otsumami-musical-site/res/input/logo.png">
+    <meta property="og:url" content="https://trmiea.github.io/otsumami-musical-site/">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,44 +91,58 @@
         }
 
         header {
-            padding: 140px 0 80px;
-            text-align: center;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: #000;
+            overflow: hidden;
+        }
+        
+        .hero-bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        .hero-bg-video iframe {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 aspect ratio */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 aspect ratio */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
         }
 
         .hero-title {
             font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            margin-bottom: 50px;
+            font-size: 5rem;
+            margin-bottom: 0;
             font-weight: 700;
             color: #c29a5b;
             letter-spacing: 0.1em;
-            text-shadow: 0 0 20px rgba(194, 154, 91, 0.4);
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 10px rgba(194, 154, 91, 0.5);
         }
 
         @media (max-width: 600px) {
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 3rem;
             }
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
         }
 
         section {
@@ -234,6 +254,47 @@
             color: #666;
             background: #000;
         }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(194, 154, 91, 0.8);
+            color: #000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #back-to-top:hover {
+            background: #c29a5b;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 
@@ -252,13 +313,13 @@
     </nav>
 
     <header id="top">
-        <div class="container">
-            <div class="hero-title" id="hero-title">--</div>
-            <div class="video-wrapper" id="hero-video-container"></div>
+        <div class="hero-bg-video" id="hero-bg-container"></div>
+        <div class="container hero-content">
+            <div class="hero-title fade-in" id="hero-title">--</div>
         </div>
     </header>
 
-    <section class="section-intro" id="about">
+    <section class="section-intro fade-in" id="about">
         <div class="container">
             <h2>About Us</h2>
             <div class="intro-text" id="about-desc"
@@ -267,7 +328,7 @@
         </div>
     </section>
 
-    <section id="next">
+    <section id="next" class="fade-in">
         <div class="container">
             <h2>Next Entry</h2>
             <div class="next-card">
@@ -280,7 +341,7 @@
         </div>
     </section>
 
-    <section class="section-youtube" id="youtube">
+    <section class="section-youtube fade-in" id="youtube">
         <div class="container">
             <h2>YouTube Archives</h2>
             <p id="yt-desc" style="text-align: center; color: #888;">--</p>
@@ -291,6 +352,8 @@
     <footer>
         <p>&copy; 2026 Otsumami Musical | University of Tsukuba ESSA Alumni Network</p>
     </footer>
+
+    <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
     <script>
         fetch('./res/input/info.json')
@@ -312,7 +375,7 @@
 
                 // Hero
                 document.getElementById('hero-title').textContent = data.hero.title;
-                document.getElementById('hero-video-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}" allowfullscreen></iframe>`;
+                document.getElementById('hero-bg-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
 
                 // About
                 document.getElementById('about-desc').innerHTML = data.about.description;
@@ -333,10 +396,25 @@
                 document.getElementById('yt-desc').textContent = data.youtube.section_desc;
                 document.getElementById('yt-container').innerHTML = data.youtube.playlists.map(p => `
                     <div class="yt-item">
-                        <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${p.embed_id}" allowfullscreen></iframe></div>
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;"><iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${p.embed_id}" allowfullscreen></iframe></div>
                         <a href="${p.url}" class="yt-label" target="_blank" style="display:block; text-align:center; margin-top:20px; font-weight:700;">${p.label}</a>
                     </div>
                 `).join('');
+                
+                // Init scroll animations
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+                
+                // Back to top logic
+                window.addEventListener('scroll', () => {
+                    const btn = document.getElementById('back-to-top');
+                    if (window.scrollY > 300) btn.classList.add('show');
+                    else btn.classList.remove('show');
+                });
             })
             .catch(err => console.error("Data load failed:", err));
     </script>
