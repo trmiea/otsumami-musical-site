@@ -131,16 +131,16 @@
                         </div>
                     </div>
                 `).join('');
-                
                 // Init scroll animations
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if(entry.isIntersecting) { entry.target.classList.add('visible'); }
                     });
-                }, { threshold: 0.1 });
+                }, { threshold: 0.05 }); // Lowered threshold just in case
                 document.querySelectorAll('.fade-in, .archive-card').forEach(el => {
                     el.classList.add('fade-in');
-                    observer.observe(el);
+                    // Add a tiny delay to ensure DOM is ready before observing
+                    setTimeout(() => observer.observe(el), 100);
                 });
                 
                 // Back to top logic
@@ -150,7 +150,10 @@
                     else btn.classList.remove('show');
                 });
             })
-            .catch(err => console.error("Data load failed:", err));
+            .catch(err => {
+                console.error("Data load failed:", err);
+                document.getElementById('archive-container').innerHTML = `<p style="color:red; text-align:center;">データの読み込みに失敗しました。ローカル環境の場合はローカルサーバー（Live Server等）経由で開いてください。<br>Error: ${err.message}</p>`;
+            });
     </script>
 </body>
 </html>
