@@ -15,7 +15,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; }
+        body { margin: 0; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
+        
+        ::selection { background: #c29a5b; color: #000; }
+        ::-moz-selection { background: #c29a5b; color: #000; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c29a5b; }
+
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
         h1, h2, h3 { letter-spacing: 0.15em; text-align: center; text-transform: uppercase; font-weight: 300; }
         a { color: #c29a5b; text-decoration: none; transition: 0.3s; }
@@ -31,8 +39,10 @@
         .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
         
         .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 50px; }
-        .archive-card { background: #1a1a1a; padding: 40px; border-radius: 12px; border: 1px solid #333; border-top: 4px solid #c29a5b; transition: 0.3s; }
-        .archive-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-color: #c29a5b; }
+        .archive-card { background: #1a1a1a; padding: 40px; border-radius: 12px; border: 1px solid #333; border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .archive-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(194,154,91,0.05), transparent 50%); opacity: 0; transition: 0.4s; pointer-events: none; }
+        .archive-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: #d4af37; }
+        .archive-card:hover::before { opacity: 1; }
         .archive-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
         .archive-title { font-family: 'Cinzel', serif; font-size: 2rem; margin: 0; color: #c29a5b; font-weight: 700; }
         .archive-date { font-size: 1rem; color: #888; }
@@ -48,8 +58,10 @@
         .song-work { font-size: 0.8rem; color: #888; }
         
         .links-area { background: #000; padding: 25px; border-radius: 8px; height: fit-content; text-align: center; }
-        .btn-gold-outline { display: inline-block; border: 1px solid #c29a5b; color: #c29a5b; padding: 12px 25px; border-radius: 50px; font-size: 0.9rem; letter-spacing: 0.1em; transition: 0.3s; margin-top: 15px; width: 100%; box-sizing: border-box; }
-        .btn-gold-outline:hover { background: #c29a5b; color: #000; }
+        .btn-gold-outline { display: inline-block; border: 1px solid #c29a5b; color: #c29a5b; padding: 12px 25px; border-radius: 50px; font-size: 0.9rem; letter-spacing: 0.1em; transition: 0.3s; margin-top: 15px; width: 100%; box-sizing: border-box; position: relative; overflow: hidden; }
+        .btn-gold-outline::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(194,154,91,0.3) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: 0.5s; }
+        .btn-gold-outline:hover { background: #c29a5b; color: #000; box-shadow: 0 4px 15px rgba(194,154,91,0.4); }
+        .btn-gold-outline:hover::after { left: 150%; }
         
         footer { padding: 80px 0; text-align: center; font-size: 0.75rem; color: #666; background: #000; margin-top: 80px; }
         
@@ -121,9 +133,7 @@
                                 </ul>
                             </div>
                             <div class="links-area">
-                                <h3 style="margin-top: 0; font-size: 1.1rem;">Gallery & Media</h3>
-                                <p style="font-size: 0.85rem; color: #888;">本番の写真や動画などをGoogle Driveで公開しています。</p>
-                                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <div style="display: flex; gap: 10px;">
                                     <a href="${vol.photo_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; text-align: center; flex: 1;">Photos ↗</a>
                                     <a href="${vol.video_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; text-align: center; flex: 1;">Videos ↗</a>
                                 </div>
@@ -131,10 +141,17 @@
                         </div>
                     </div>
                 `).join('');
-                // Init scroll animations
+                // Init scroll animations with stagger
                 const observer = new IntersectionObserver((entries) => {
+                    let delay = 0;
                     entries.forEach(entry => {
-                        if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+                        if(entry.isIntersecting) {
+                            setTimeout(() => {
+                                entry.target.classList.add('visible');
+                            }, delay);
+                            delay += 150; // stagger effect
+                            observer.unobserve(entry.target);
+                        }
                     });
                 }, { threshold: 0.05 }); // Lowered threshold just in case
                 document.querySelectorAll('.fade-in, .archive-card').forEach(el => {

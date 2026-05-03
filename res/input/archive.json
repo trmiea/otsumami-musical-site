@@ -6,36 +6,43 @@
     "songs": [
       {
         "title": "呪いの子",
-        "work": "ハリーポッターと呪いの子"
+        "work": "ハリーポッターと呪いの子",
+        "youtube_url": "https://youtu.be/ji6EsyBonUA?si=fRfENsIy_eqOkUh-"
       },
       {
         "title": "ハクナ･マタタ",
-        "work": "ライオンキング"
+        "work": "ライオンキング",
+        "youtube_url": "https://youtu.be/dUzduMQl0Wo?si=TnSbvgkbQkUz1Ws4"
       },
       {
         "title": "Brotherhood of Men",
-        "work": "How to Succeed in business"
+        "work": "How to Succeed in business",
+        "youtube_url": "https://youtu.be/P_bZiASYd8k?si=Lj2oWG-0FrnqoVdN"
       },
       {
         "title": "bitter days,sweet nights",
-        "work": "bitter days,sweet nights"
+        "work": "bitter days,sweet nights",
+        "youtube_url": "https://youtu.be/xxNJ5Ysq-zg?si=MCx7cHjPYhfgYx2_"
       },
       {
         "title": "Poison",
-        "work": "Hazbin Hotel"
+        "work": "Hazbin Hotel",
+        "youtube_url": "https://youtu.be/B-WesaysGl4?si=31IyzoGW8SD1Cd1d"
       },
       {
         "title": "言葉にすれば",
         "work": "合唱",
-        "youtube_url": "https://youtu.be/IiMH_YK97mc?si=MjkI1HZTfDqw1jeO"
+        "youtube_url": "https://youtu.be/VNJ5kFzoRys?si=ShT-LOVw4xLHGqY_"
       },
       {
         "title": "革命のdancing night",
-        "work": "Timelesz"
+        "work": "Timelesz",
+        "youtube_url": "https://youtu.be/twoXRRXJtNI?si=Jg_4Fbl5QLGhLKii"
       },
       {
         "title": "迷え",
-        "work": "モアナ2"
+        "work": "モアナ2",
+        "youtube_url": "https://youtu.be/CH01E0XZBMw?si=mvAHKAi4B3d6-tAu"
       },
       {
         "title": "偽善者と呼ばれても",
@@ -44,19 +51,18 @@
       },
       {
         "title": "ラストリゾート",
-        "work": "ロボットインザガーデン"
+        "work": "ロボットインザガーデン",
+        "youtube_url": "https://youtu.be/hxrVdfC86P0?si=mWbMYHIf9F0T4J7o"
       },
       {
         "title": "Six~MegaSIX",
-        "work": "SIX"
+        "work": "SIX",
+        "youtube_url": "https://youtu.be/bIqu9hQtzQE?si=PpGAqbKF-yGeeai5"
       },
       {
         "title": "残酷な夢",
-        "work": "デスノート"
-      },
-      {
-        "title": "The world will remember us",
-        "work": "Bonnie & Clyde"
+        "work": "デスノート",
+        "youtube_url": "https://youtu.be/aWh5Y4i34EY?si=nBqxdEzQN6dgxpIO"
       }
     ],
     "photo_url": "https://drive.google.com/drive/folders/1lWhvUeIrqhXo4D934uRY4AGHyI5yywR0",
@@ -75,12 +81,12 @@
       {
         "title": "フィナーレメドレー",
         "work": "アラジン, リトルマーメイド, Wicked",
-        "youtube_url": "https://youtu.be/VfOOnhm1lig?si=Uzxrf248HV7bSVFY"
+        "youtube_url": "https://youtu.be/7yqO_xi2WqI?si=7Rse35wZe_ZkslFw"
       },
       {
         "title": "NEW KAWAII",
         "work": "FRUITS ZIPPER",
-        "youtube_url": "https://youtu.be/BmL2FFZaa4g?si=5D9aEKnzMBFWg2wD"
+        "youtube_url": "https://youtu.be/hvHGsXIapX0?si=eMBZO60XfIQAMMdg"
       },
       {
         "title": "Ready For This",
@@ -100,7 +106,7 @@
       {
         "title": "ロボット・イン・ザ・ガーデン(リプライズ)",
         "work": "ロボット・イン・ザ・ガーデン",
-        "youtube_url": "https://youtu.be/uEiaRkDKlAg?si=19hJVk9xiBgNk9Yq"
+        "youtube_url": "https://youtu.be/cby5iG1aogk?si=squJJVRN_Hz9Ltd1"
       },
       {
         "title": "最高の世界",
@@ -385,7 +391,8 @@
       },
       {
         "title": "Sincerely Me",
-        "work": "Dear Evan Hansen"
+        "work": "Dear Evan Hansen",
+        "youtube_url": ""
       },
       {
         "title": "ジブリメドレー1",
