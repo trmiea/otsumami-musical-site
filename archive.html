@@ -108,11 +108,22 @@
     <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
     <script>
+        function getYouTubeId(url) {
+            if(!url) return null;
+            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+            return match ? match[1] : null;
+        }
+
         fetch('./res/input/archive.json')
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('archive-container');
-                container.innerHTML = data.map(vol => `
+                container.innerHTML = data.map(vol => {
+                    const digestSong = vol.songs.find(s => s.title.includes("ダイジェスト"));
+                    const otherSongs = vol.songs.filter(s => !s.title.includes("ダイジェスト"));
+                    const digestId = digestSong ? getYouTubeId(digestSong.youtube_url) : null;
+                    
+                    return `
                     <div class="archive-card">
                         <div class="archive-header">
                             <h2 class="archive-title">${vol.title}</h2>
@@ -120,9 +131,14 @@
                         </div>
                         <div class="archive-content">
                             <div>
-                                <h3 style="text-align: left; font-size: 1.1rem; margin-top: 0;">Setlist (${vol.songs.length} songs)</h3>
+                                ${digestId ? `
+                                <div style="margin-bottom: 25px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                                    <iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
+                                </div>
+                                ` : ''}
+                                <h3 style="text-align: left; font-size: 1.1rem; margin-top: 0;">Setlist (${otherSongs.length} songs)</h3>
                                 <ul class="song-list">
-                                    ${vol.songs.map(song => `
+                                    ${otherSongs.map(song => `
                                         <li class="song-item">
                                             ${song.youtube_url ? `<a href="${song.youtube_url}" target="_blank" class="song-item-content">` : `<div class="song-item-content">`}
                                                 <span class="song-title">${song.title}${song.youtube_url ? ' <span style="font-size:0.8rem; color:#c29a5b; margin-left:5px;">▶︎</span>' : ''}</span>
@@ -140,7 +156,7 @@
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
                 // Init scroll animations with stagger
                 const observer = new IntersectionObserver((entries) => {
                     let delay = 0;

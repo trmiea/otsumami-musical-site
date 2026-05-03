@@ -29,12 +29,12 @@
     "title": "Otsumami Vol.8",
     "date": "2026.10.24 (SAT)",
     "venue": "未定",
-    "description": "月一ペースでワークショップも開催しています。見学や体験も大歓迎です！<br>まずは公式Slackにご参加いただき、最新情報をゲットしてください！",
-    "btn_text": "入団・エントリーフォームへ",
+    "description": "月一ペースでワークショップを開催しています。見学や体験も大歓迎です！<br>まずは公式Slackにご参加いただき、最新情報をゲットしてください！",
+    "btn_text": "Slack参加フォーム",
     "url": "https://docs.google.com/forms/d/1mGc3fVxqs4p0Ge_7W1OmVB70VtlRMFDaoY8o7AvETu0/edit?usp=drivesdk"
   },
   "youtube": {
-    "section_desc": "全61曲のパフォーマンス映像を公開中",
+    "section_desc": "おつまみミュージカルの動画を公開中",
     "playlists": [
       {
         "label": "おつまみ編集版 全曲集 ↗",
