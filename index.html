@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Otsumami Musical Official</title>
-    
+
     <meta property="og:title" content="Otsumami Musical Official">
     <meta property="og:description" content="「おつまみのように気軽にミュージカルを楽しむ」をモットーとした、筑波大学ESSAのOB・OG中心のコミュニティ。">
     <meta property="og:image" content="https://trmiea.github.io/otsumami-musical-site/res/input/logo.png">
@@ -14,7 +14,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap"
+        rel="stylesheet">
 
     <style>
         html {
@@ -99,7 +101,7 @@
             background: #000;
             overflow: hidden;
         }
-        
+
         .hero-bg-video {
             position: absolute;
             top: 50%;
@@ -114,9 +116,11 @@
 
         .hero-bg-video iframe {
             width: 100vw;
-            height: 56.25vw; /* 16:9 aspect ratio */
+            height: 56.25vw;
+            /* 16:9 aspect ratio */
             min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 aspect ratio */
+            min-width: 177.77vh;
+            /* 16:9 aspect ratio */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -254,13 +258,13 @@
             color: #666;
             background: #000;
         }
-        
+
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
@@ -285,12 +289,14 @@
             opacity: 0;
             visibility: hidden;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
+
         #back-to-top.show {
             opacity: 1;
             visibility: visible;
         }
+
         #back-to-top:hover {
             background: #c29a5b;
             transform: translateY(-3px);
@@ -330,7 +336,7 @@
 
     <section id="next" class="fade-in">
         <div class="container">
-            <h2>Next & 入団フォーム</h2>
+            <h2>Next</h2>
             <div class="next-card">
                 <h3 id="next-title">--</h3>
                 <div class="next-date" id="next-date">--</div>
@@ -346,7 +352,8 @@
             <h2>YouTube Archives</h2>
             <p id="yt-desc" style="text-align: center; color: #888; margin-bottom: 20px;">--</p>
             <div style="text-align: center; margin-bottom: 50px;">
-                <a href="https://www.youtube.com/@otsumami_musical" target="_blank" class="btn-gold" style="font-size: 1rem; padding: 12px 30px;">▶︎ 公式YouTubeチャンネルへ</a>
+                <a href="https://www.youtube.com/@otsumami_musical" target="_blank" class="btn-gold"
+                    style="font-size: 1rem; padding: 12px 30px;">▶︎ 公式YouTubeチャンネルへ</a>
             </div>
             <div class="yt-grid" id="yt-container"></div>
         </div>
@@ -403,15 +410,15 @@
                         <a href="${p.url}" class="yt-label" target="_blank" style="display:block; text-align:center; margin-top:20px; font-weight:700;">${p.label}</a>
                     </div>
                 `).join('');
-                
+
                 // Init scroll animations
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if(entry.isIntersecting) { entry.target.classList.add('visible'); }
+                        if (entry.isIntersecting) { entry.target.classList.add('visible'); }
                     });
                 }, { threshold: 0.1 });
                 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-                
+
                 // Back to top logic
                 window.addEventListener('scroll', () => {
                     const btn = document.getElementById('back-to-top');
