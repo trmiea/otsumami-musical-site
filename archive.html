@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
+        body { margin: 0; background: #0a0a0a radial-gradient(circle at 50% 0%, rgba(194,154,91,0.05), transparent 70%); background-attachment: fixed; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
         
         ::selection { background: #c29a5b; color: #000; }
         ::-moz-selection { background: #c29a5b; color: #000; }
@@ -39,25 +39,26 @@
         .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
         
         .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 50px; }
-        .archive-card { background: #1a1a1a; padding: 40px; border-radius: 12px; border: 1px solid #333; border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .archive-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
         .archive-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(194,154,91,0.05), transparent 50%); opacity: 0; transition: 0.4s; pointer-events: none; }
         .archive-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: #d4af37; }
         .archive-card:hover::before { opacity: 1; }
         .archive-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
         .archive-title { font-family: 'Cinzel', serif; font-size: 2rem; margin: 0; color: #c29a5b; font-weight: 700; }
         .archive-date { font-size: 1rem; color: #888; }
-        .archive-content { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
-        @media (max-width: 768px) { .archive-content { grid-template-columns: 1fr; } .archive-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
+        .archive-content { display: flex; flex-direction: column; gap: 30px; }
+        @media (max-width: 768px) { .archive-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
         
-        .song-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-        .song-item { background: #222; border-radius: 8px; font-size: 0.9rem; transition: 0.3s; }
-        .song-item-content { padding: 15px; display: block; color: inherit; text-decoration: none; }
-        .song-item a.song-item-content:hover { background: #2a2a2a; border-radius: 8px; }
+        .song-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .song-item-content { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: inherit; text-decoration: none; transition: 0.3s; }
+        @media (max-width: 600px) { .song-item-content { flex-direction: column; align-items: flex-start; gap: 5px; } }
+        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.15); padding-left: 25px; }
         .song-item a.song-item-content:hover .song-title { color: #c29a5b; }
-        .song-title { font-weight: 700; display: block; margin-bottom: 5px; color: #fff; transition: 0.3s; }
+        .song-title { font-weight: 700; display: block; color: #fff; transition: 0.3s; font-size: 1rem; letter-spacing: 0.05em; }
         .song-work { font-size: 0.8rem; color: #888; }
         
-        .links-area { background: #000; padding: 25px; border-radius: 8px; height: fit-content; text-align: center; }
+        .links-area { text-align: center; margin: 10px 0 30px; }
         .btn-gold-outline { display: inline-block; border: 1px solid #c29a5b; color: #c29a5b; padding: 12px 25px; border-radius: 50px; font-size: 0.9rem; letter-spacing: 0.1em; transition: 0.3s; margin-top: 15px; width: 100%; box-sizing: border-box; position: relative; overflow: hidden; }
         .btn-gold-outline::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(194,154,91,0.3) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: 0.5s; }
         .btn-gold-outline:hover { background: #c29a5b; color: #000; box-shadow: 0 4px 15px rgba(194,154,91,0.4); }
@@ -209,32 +210,35 @@
                             <h2 class="archive-title">${vol.title}</h2>
                             <div class="archive-date">${vol.date}</div>
                         </div>
-                        <div class="archive-content">
-                            <div>
+                                                    <div class="archive-content">
                                 ${digestId ? `
-                                <div style="margin-bottom: 25px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
                                     <iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
                                 </div>
                                 ` : ''}
-                                <h3 style="text-align: left; font-size: 1.1rem; margin-top: 0;">Setlist (${otherSongs.length} songs)</h3>
-                                <ul class="song-list">
-                                    ${otherSongs.map(song => `
-                                        <li class="song-item">
-                                            ${song.youtube_url ? `<a href="${song.youtube_url}" target="_blank" class="song-item-content">` : `<div class="song-item-content">`}
-                                                <span class="song-title">${song.title}${song.youtube_url ? ' <span style="font-size:0.8rem; color:#c29a5b; margin-left:5px;">▶︎</span>' : ''}</span>
-                                                <span class="song-work">${song.work}</span>
-                                            ${song.youtube_url ? `</a>` : `</div>`}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            </div>
-                            <div class="links-area">
-                                <div style="display: flex; gap: 10px;">
-                                    <a href="${vol.photo_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; text-align: center; flex: 1;">Photos ↗</a>
-                                    <a href="${vol.video_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; text-align: center; flex: 1;">Videos ↗</a>
+                                
+                                <div class="links-area">
+                                    <a href="${vol.album_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; max-width: 400px; width: 100%; font-size: 1rem; padding: 15px 30px; border-radius: 50px; background: rgba(194, 154, 91, 0.05);">
+                                        Photos & Videos ↗
+                                    </a>
+                                </div>
+
+                                <div style="margin-top: 10px;">
+                                    <h3 style="text-align: left; font-size: 1.2rem; margin-bottom: 20px; color: #c29a5b; border-bottom: 1px solid rgba(194,154,91,0.3); padding-bottom: 10px;">
+                                        Setlist <span style="font-size: 0.9rem; color: #888;">(${otherSongs.length} songs)</span>
+                                    </h3>
+                                    <ul class="song-list">
+                                        ${otherSongs.map(song => `
+                                            <li class="song-item">
+                                                ${song.youtube_url ? `<a href="${song.youtube_url}" target="_blank" class="song-item-content">` : `<div class="song-item-content">`}
+                                                    <span class="song-title">${song.youtube_url ? '<span style="color:#c29a5b; margin-right:8px; font-size: 0.8rem;">▶︎</span>' : ''}${song.title}</span>
+                                                    <span class="song-work">${song.work}</span>
+                                                ${song.youtube_url ? `</a>` : `</div>`}
+                                            </li>
+                                        `).join('')}
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 `}).join('');
                 // Init scroll animations with stagger
