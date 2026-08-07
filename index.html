@@ -26,7 +26,7 @@
         body {
             margin: 0;
             font-family: 'Noto Sans JP', sans-serif;
-            background-color: #1a1a1a;
+            background-color: #050505;
             color: #f5f5f5;
             line-height: 1.8;
             overflow-x: hidden;
@@ -61,23 +61,32 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 1000;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         nav .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 65px;
+            height: 90px;
         }
 
         nav .logo {
+            display: flex;
+            align-items: center;
             font-weight: 700;
             color: #c29a5b;
-            font-size: 1.1rem;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+        }
+        nav .logo img {
+            height: 55px; /* Adjusting for cropped image, 55px is now purely the logo */
+            margin-right: 18px;
+            filter: drop-shadow(0 0 5px rgba(194, 154, 91, 0.4));
         }
 
         nav ul {
@@ -88,8 +97,18 @@
         }
 
         nav ul li {
-            margin-left: 20px;
-            font-size: 0.8rem;
+            margin-left: 25px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+        
+        nav ul li a {
+            color: #ccc;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #fff;
         }
 
         header {
@@ -98,104 +117,158 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #000;
+            background: transparent;
             overflow: hidden;
         }
 
         .hero-bg-video {
-            position: absolute;
+            position: fixed;
             top: 50%;
             left: 50%;
             width: 100vw;
             height: 100vh;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            z-index: 1;
-            opacity: 0.4;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .hero-bg-video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(17,17,17,1) 100%);
+            z-index: 2;
         }
 
         .hero-bg-video iframe {
             width: 100vw;
             height: 56.25vw;
-            /* 16:9 aspect ratio */
             min-height: 100vh;
             min-width: 177.77vh;
-            /* 16:9 aspect ratio */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            z-index: 1;
         }
 
         .hero-content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             text-align: center;
         }
 
         .hero-title {
             font-family: 'Cinzel', serif;
-            font-size: 5rem;
+            font-size: 5.5rem;
             margin-bottom: 0;
             font-weight: 700;
-            color: #c29a5b;
+            background: linear-gradient(to right, #e8d099, #c29a5b, #e8d099);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: 0.1em;
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 10px rgba(194, 154, 91, 0.5);
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
         }
 
         @media (max-width: 600px) {
             .hero-title {
-                font-size: 3rem;
+                font-size: 3.5rem;
             }
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+        
+        .scroll-indicator::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+            margin-top: 15px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
         }
 
         section {
-            padding: 100px 0;
-            border-bottom: 1px solid #222;
+            padding: 120px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            background-color: rgba(5, 5, 5, 0.65);
         }
 
         .section-intro {
-            background-color: #222;
+            background-color: transparent;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 30px;
-            margin-top: 50px;
+            margin-top: 60px;
         }
 
         .stat-item {
-            background: #1a1a1a;
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 40px 20px;
-            border-bottom: 4px solid #c29a5b;
+            border-bottom: 3px solid #c29a5b;
             text-align: center;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border-radius: 16px 16px 0 0;
         }
 
         .stat-item:hover {
             transform: translateY(-8px);
+            background: rgba(40, 40, 40, 0.6);
         }
 
         .stat-number {
             display: block;
-            font-size: 2.8rem;
+            font-size: 3rem;
             color: #c29a5b;
             font-weight: 700;
         }
 
         .stat-label {
-            font-size: 0.8rem;
-            color: #888;
+            font-size: 0.85rem;
+            color: #aaa;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
 
         .next-card {
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-            padding: 70px 40px;
-            border-radius: 20px;
-            border: 1px solid #333;
+            background: rgba(30, 30, 30, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 80px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
             position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
 
         .next-card::before {
@@ -204,26 +277,35 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: #c29a5b;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #c29a5b, transparent);
         }
 
         .next-date {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: #c29a5b;
-            margin: 25px 0;
+            margin: 30px 0;
             font-weight: 700;
+            letter-spacing: 0.05em;
         }
 
         .btn-gold {
             display: inline-block;
-            background: #c29a5b;
-            color: #fff;
+            background: linear-gradient(135deg, #d4af37, #aa7c11);
+            color: #fff !important;
             padding: 20px 60px;
             border-radius: 50px;
             font-weight: 700;
-            letter-spacing: 0.1em;
-            box-shadow: 0 4px 15px rgba(194, 154, 91, 0.4);
+            letter-spacing: 0.15em;
+            box-shadow: 0 10px 20px rgba(170, 124, 17, 0.2);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(170, 124, 17, 0.4);
+            background: linear-gradient(135deg, #ebd171, #c29a5b);
         }
 
         .yt-grid {
@@ -240,29 +322,43 @@
         }
 
         .yt-item {
-            background: #1a1a1a;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #222;
-            transition: 0.3s;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .yt-item:hover {
-            border-color: #c29a5b;
+            border-color: rgba(194, 154, 91, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        
+        .yt-label {
+            color: #eee !important;
+            transition: color 0.3s;
+        }
+        
+        .yt-item:hover .yt-label {
+            color: #c29a5b !important;
         }
 
         footer {
             padding: 80px 0;
             text-align: center;
-            font-size: 0.75rem;
-            color: #666;
-            background: #000;
+            font-size: 0.8rem;
+            color: #555;
+            background: rgba(5, 5, 5, 0.9);
+            letter-spacing: 0.05em;
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(50px);
+            transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .fade-in.visible {
@@ -272,12 +368,13 @@
 
         #back-to-top {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 40px;
+            right: 40px;
             background: rgba(194, 154, 91, 0.8);
+            backdrop-filter: blur(5px);
             color: #000;
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -288,8 +385,8 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
 
         #back-to-top.show {
@@ -299,16 +396,20 @@
 
         #back-to-top:hover {
             background: #c29a5b;
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(194, 154, 91, 0.4);
         }
     </style>
 </head>
 
 <body>
 
+    <!-- Fixed Background Video -->
+    <div class="hero-bg-video" id="hero-bg-container"></div>
+
     <nav>
         <div class="container">
-            <div class="logo">Otsumami Musical</div>
+            <div class="logo"><img src="./res/input/logo2_cropped.png" alt="Logo">Otsumami Musical</div>
             <ul>
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#next">NEXT</a></li>
@@ -319,10 +420,10 @@
     </nav>
 
     <header id="top">
-        <div class="hero-bg-video" id="hero-bg-container"></div>
         <div class="container hero-content">
             <div class="hero-title fade-in" id="hero-title">--</div>
         </div>
+        <div class="scroll-indicator fade-in">Scroll Down</div>
     </header>
 
     <section class="section-intro fade-in" id="about">
@@ -340,7 +441,7 @@
             <div class="next-card">
                 <h3 id="next-title">--</h3>
                 <div class="next-date" id="next-date">--</div>
-                <p>Venue: <span id="next-venue">--</span></p>
+
                 <p id="next-desc" style="color: #888; font-size: 0.95rem; margin: 25px 0;">--</p><a href="#"
                     id="next-link" class="btn-gold" target="_blank">--</a>
             </div>
@@ -355,7 +456,17 @@
                 <a href="https://www.youtube.com/@otsumami_musical" target="_blank" class="btn-gold"
                     style="font-size: 1rem; padding: 12px 30px;">▶︎ 公式YouTubeチャンネルへ</a>
             </div>
+            <div id="yt-main-container" style="margin-bottom: 60px;"></div>
+
             <div class="yt-grid" id="yt-container"></div>
+
+            <div style="text-align: center; margin-top: 100px; padding-top: 60px; border-top: 1px solid rgba(255,255,255,0.05);" class="fade-in">
+                <h3 style="font-size: 2rem; margin-bottom: 15px; color: #c29a5b;">Performance Archive</h3>
+                <p style="color: #aaa; margin-bottom: 40px; font-size: 0.95rem;">過去の発表会の記録・セットリストはこちらから</p>
+                <a href="archive.html" class="btn-gold" style="font-size: 1.1rem; padding: 18px 50px;">
+                    アーカイブページへ
+                </a>
+            </div>
         </div>
     </section>
 
@@ -396,7 +507,7 @@
                 // Next Event
                 document.getElementById('next-title').textContent = data.next_event.title;
                 document.getElementById('next-date').textContent = data.next_event.date;
-                document.getElementById('next-venue').textContent = data.next_event.venue;
+
                 document.getElementById('next-desc').innerHTML = data.next_event.description;
                 const linkBtn = document.getElementById('next-link');
                 linkBtn.textContent = data.next_event.btn_text;
@@ -404,6 +515,17 @@
 
                 // YouTube
                 document.getElementById('yt-desc').textContent = data.youtube.section_desc;
+                
+                if (data.youtube.main_video) {
+                    const mv = data.youtube.main_video;
+                    document.getElementById('yt-main-container').innerHTML = `
+                        <div class="yt-item" style="max-width: 800px; margin: 0 auto; border-color: rgba(194,154,91,0.4); box-shadow: 0 15px 40px rgba(194,154,91,0.2);">
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;"><iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${mv.embed_id}" allowfullscreen></iframe></div>
+                            <a href="${mv.url}" class="yt-label" target="_blank" style="display:block; text-align:center; margin-top:25px; font-size: 1.25rem; font-weight:700;">${mv.label}</a>
+                        </div>
+                    `;
+                }
+
                 document.getElementById('yt-container').innerHTML = data.youtube.playlists.map(p => `
                     <div class="yt-item">
                         <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;"><iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${p.embed_id}" allowfullscreen></iframe></div>
