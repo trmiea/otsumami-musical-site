@@ -14,8 +14,40 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
     <style>
+        .hero-bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #000;
+        }
+        .hero-bg-video::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.7) 50%, rgba(10,10,10,0.9) 100%);
+            z-index: 1;
+        }
+        .hero-bg-video iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            transform: translate(-50%, -50%);
+            opacity: 0.4;
+        }
+
         html { scroll-behavior: smooth; }
-        body { margin: 0; background: #0a0a0a radial-gradient(circle at 50% 0%, rgba(194,154,91,0.05), transparent 70%); background-attachment: fixed; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
+        body { margin: 0; background: transparent;  font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
         
         ::selection { background: #c29a5b; color: #000; }
         ::-moz-selection { background: #c29a5b; color: #000; }
@@ -35,10 +67,10 @@
         nav ul { display: flex; list-style: none; margin: 0; padding: 0; }
         nav ul li { margin-left: 20px; font-size: 0.8rem; }
         
-        header { padding: 140px 0 80px; text-align: center; background: #000; }
+        header { padding: 120px 0 40px; text-align: center; background: transparent; }
         .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
         
-        .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 50px; }
+        .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 20px; }
         .archive-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
         .archive-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(194,154,91,0.05), transparent 50%); opacity: 0; transition: 0.4s; pointer-events: none; }
         .archive-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: #d4af37; }
@@ -64,7 +96,7 @@
         .btn-gold-outline:hover { background: #c29a5b; color: #000; box-shadow: 0 4px 15px rgba(194,154,91,0.4); }
         .btn-gold-outline:hover::after { left: 150%; }
         
-        footer { padding: 80px 0; text-align: center; font-size: 0.75rem; color: #666; background: #000; margin-top: 80px; }
+        footer { padding: 60px 0; text-align: center; font-size: 0.75rem; color: #666; background: rgba(0,0,0,0.6); margin-top: 80px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -151,6 +183,7 @@
     </style>
 </head>
 <body>
+    <div class="hero-bg-video" id="hero-bg-container"></div>
     <nav>
         <div class="container">
             <a href="index.html" class="logo">Otsumami Musical</a>
@@ -194,6 +227,14 @@
             const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
             return match ? match[1] : null;
         }
+
+        // Fetch info for background video
+        fetch('./res/input/info.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('hero-bg-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
+            })
+            .catch(err => console.error(err));
 
         fetch('./res/input/archive.json')
             .then(res => res.json())
@@ -249,15 +290,21 @@
                             setTimeout(() => {
                                 entry.target.classList.add('visible');
                             }, delay);
-                            delay += 150; // stagger effect
+                            delay += 150;
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.05 }); // Lowered threshold just in case
-                document.querySelectorAll('.fade-in, .archive-card').forEach(el => {
+                }, { threshold: 0, rootMargin: '0px 0px -50px 0px' }); 
+                
+                const elements = document.querySelectorAll('.fade-in, .archive-card');
+                elements.forEach((el, index) => {
                     el.classList.add('fade-in');
-                    // Add a tiny delay to ensure DOM is ready before observing
-                    setTimeout(() => observer.observe(el), 100);
+                    // Immediately show the header and the first card to avoid "empty" feel
+                    if (index < 3) {
+                        setTimeout(() => el.classList.add('visible'), index * 150);
+                    } else {
+                        setTimeout(() => observer.observe(el), 100);
+                    }
                 });
                 
                 // Back to top logic
