@@ -399,6 +399,82 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 25px rgba(194, 154, 91, 0.4);
         }
+
+        /* Hamburger Menu (Global) */
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 35px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 1001;
+            margin-left: auto;
+        }
+        .menu-toggle span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #c29a5b;
+            border-radius: 2px;
+            transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .menu-toggle.is-active span:nth-child(1) { transform: translateY(11.5px) rotate(45deg); }
+        .menu-toggle.is-active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.is-active span:nth-child(3) { transform: translateY(-11.5px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(5,5,5,0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            z-index: 999; opacity: 0; visibility: hidden; transition: 0.4s;
+        }
+        .nav-overlay.is-active { opacity: 1; visibility: visible; }
+
+        nav ul.nav-links {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            padding: 120px 0 50px 0; /* Space for navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 40px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.4s;
+            overflow-y: auto;
+            margin: 0;
+        }
+        nav ul.nav-links.is-active { opacity: 1; visibility: visible; }
+        
+        nav ul.nav-links li { margin: 0; }
+        nav ul.nav-links li a { font-size: 2rem; font-weight: 700; letter-spacing: 0.1em; color: #fff; }
+        nav ul.nav-links li a:hover { color: #c29a5b; }
+
+        @media (max-width: 768px) {
+            nav .container { padding: 0 20px; height: 70px; }
+            nav .logo img { height: 45px; margin-right: 10px; }
+            nav .logo { font-size: 1.1rem; }
+            
+            nav ul.nav-links li a { font-size: 1.5rem; }
+            
+            section { padding: 80px 0; }
+            .hero-title { font-size: 2.2rem !important; }
+            h2 { font-size: 1.8rem; }
+            
+            .next-card { padding: 40px 20px; }
+            .next-date { font-size: 1.8rem; }
+            .btn-gold { padding: 15px 30px; font-size: 0.9rem !important; width: 100%; box-sizing: border-box; text-align: center; }
+            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
+            
+            #yt-main-container h3 { font-size: 1.4rem !important; }
+            .archive-title { font-size: 1.5rem; }
+            .archive-card { padding: 25px; }
+        }
     </style>
 </head>
 
@@ -410,7 +486,11 @@
     <nav>
         <div class="container">
             <div class="logo"><img src="./res/input/logo2_cropped.png" alt="Logo">Otsumami Musical</div>
-            <ul>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="nav-overlay" id="nav-overlay"></div>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#next">NEXT</a></li>
                 <li><a href="#youtube">YOUTUBE</a></li>
@@ -549,6 +629,23 @@
                 });
             })
             .catch(err => console.error("Data load failed:", err));
+
+        // Mobile Menu Logic
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        const navOverlay = document.getElementById('nav-overlay');
+        if (mobileMenu && navLinks && navOverlay) {
+            const toggleMenu = () => {
+                mobileMenu.classList.toggle('is-active');
+                navLinks.classList.toggle('is-active');
+                navOverlay.classList.toggle('is-active');
+            };
+            mobileMenu.addEventListener('click', toggleMenu);
+            navOverlay.addEventListener('click', toggleMenu);
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+        }
     </script>
 </body>
 
