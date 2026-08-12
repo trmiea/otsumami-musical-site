@@ -494,6 +494,7 @@
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#next">NEXT</a></li>
                 <li><a href="#youtube">YOUTUBE</a></li>
+                <li><a href="vol8.html">VOL.8</a></li>
                 <li><a href="archive.html">ARCHIVE</a></li>
             </ul>
         </div>
@@ -523,7 +524,7 @@
                 <div class="next-date" id="next-date">--</div>
 
                 <p id="next-desc" style="color: #888; font-size: 0.95rem; margin: 25px 0;">--</p><a href="#"
-                    id="next-link" class="btn-gold" target="_blank">--</a>
+                    id="next-link" class="btn-gold">--</a>
             </div>
         </div>
     </section>
@@ -591,7 +592,7 @@
                 document.getElementById('next-desc').innerHTML = data.next_event.description;
                 const linkBtn = document.getElementById('next-link');
                 linkBtn.textContent = data.next_event.btn_text;
-                linkBtn.href = data.next_event.url;
+                linkBtn.href = data.next_event.btn_link || data.next_event.url || "#";
 
                 // YouTube
                 document.getElementById('yt-desc').textContent = data.youtube.section_desc;
