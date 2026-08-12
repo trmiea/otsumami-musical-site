@@ -13,15 +13,18 @@
     "stats": [
       {
         "num": "98",
-        "label": "TOTAL MEMBERS"
+        "label": "TOTAL MEMBERS",
+        "url": "https://docs.google.com/forms/d/1mGc3fVxqs4p0Ge_7W1OmVB70VtlRMFDaoY8o7AvETu0/edit"
       },
       {
-        "num": "98",
-        "label": "PERFORMED SONGS"
+        "num": "323",
+        "label": "TOTAL MOVIES",
+        "url": "https://www.youtube.com/@otumami.musical_gentei"
       },
       {
         "num": "63",
-        "label": "EDITED MOVIES"
+        "label": "EDITED MOVIES",
+        "url": "https://youtube.com/playlist?list=PLSGdTZX1FuTTLhJun70R1KCWgyMMu4JcX&si=WemIz5dZzPErPuEY"
       }
     ]
   },

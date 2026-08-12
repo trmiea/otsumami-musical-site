@@ -582,7 +582,7 @@
                 // About
                 document.getElementById('about-desc').innerHTML = data.about.description;
                 document.getElementById('stats-container').innerHTML = data.about.stats.map(s => `
-                    <div class="stat-item"><span class="stat-number">${s.num}</span><span class="stat-label">${s.label}</span></div>
+                    <a href="${s.url}" target="_blank" class="stat-item" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;"><span class="stat-number">${s.num}</span><span class="stat-label">${s.label}</span></a>
                 `).join('');
 
                 // Next Event
