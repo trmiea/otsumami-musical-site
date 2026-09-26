@@ -425,6 +425,11 @@
             const cols = table.cols.map(c => c ? c.label : '');
             const rows = table.rows;
             
+            // 診断ログ: 全列名と行数
+            console.log('[診断] 総行数:', rows.length);
+            console.log('[診断] 全列名:', cols);
+            console.log('[診断] 曲列インデックス:', cols.map((c,i) => SONG_KEYS.some(k => c.includes(k)) ? `${i}:${c}` : null).filter(Boolean));
+            
             appData.rawCols = cols;
             appData.rawRows = rows;
 
