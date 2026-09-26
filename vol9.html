@@ -415,7 +415,7 @@
 
             const idxName = findCol(["名前", "氏名"]);
             const idxMsg = findCol(["意気込み", "メッセージ", "自由記述"]);
-            const idxNote = findCol(["特記", "条件", "備考"]);
+            const idxNote = findCol(["特記", "条件", "備考", "何かあれば", "確認"]);
             
             const idxStaff = findCols(STAFF_KEYS);
             const idxWs = findCols(WS_KEYS);
@@ -430,37 +430,30 @@
                     return val != null ? String(val) : "";
                 };
 
-                // スタッフ希望の抽出 (カンマ区切り文字列の可能性も考慮)
+                // スタッフ希望・WS希望の抽出
                 let staffRoles = [];
-                idxStaff.forEach(idx => {
-                    const val = getStr(idx);
+                let wsRoles = [];
+                
+                const parseRoles = (val) => {
+                    if (!val) return;
                     STAFF_KEYS.forEach(k => {
-                        if (val.includes(k) || cols[idx].includes(k) && val) {
-                            if (!staffRoles.includes(k) && val !== "いいえ" && val !== "参加しない" && val !== "不可") staffRoles.push(k);
+                        if (val.includes(k) && !val.includes("いいえ") && !val.includes("不可")) {
+                            if (!staffRoles.includes(k)) staffRoles.push(k);
                         }
                     });
-                });
-                // 1つの列にカンマ区切りで入っているケースのフォールバック
-                const singleStaffCol = findCol("スタッフ");
-                if (singleStaffCol >= 0 && staffRoles.length === 0) {
-                    const val = getStr(singleStaffCol);
-                    STAFF_KEYS.forEach(k => { if (val.includes(k)) staffRoles.push(k); });
-                }
-
-                // WS希望の抽出
-                let wsRoles = [];
-                idxWs.forEach(idx => {
-                    const val = getStr(idx);
                     WS_KEYS.forEach(k => {
-                        if ((val.includes(k) || cols[idx].includes(k)) && val && val !== "いいえ") {
+                        if (val.includes(k) && !val.includes("いいえ") && !val.includes("不可")) {
                             if (!wsRoles.includes(k)) wsRoles.push(k);
                         }
                     });
-                });
-                const singleWsCol = findCol("ワークショップ");
-                if (singleWsCol >= 0 && wsRoles.length === 0) {
-                    const val = getStr(singleWsCol);
-                    WS_KEYS.forEach(k => { if (val.includes(k)) wsRoles.push(k); });
+                };
+
+                idxStaff.forEach(idx => parseRoles(getStr(idx)));
+                idxWs.forEach(idx => parseRoles(getStr(idx)));
+                
+                const singleStaffWsCol = findCol(["運営", "協力", "スタッフ", "ワークショップ"]);
+                if (singleStaffWsCol >= 0) {
+                    parseRoles(getStr(singleStaffWsCol));
                 }
 
                 // 日程抽出
@@ -468,11 +461,18 @@
                 idxSchedule.forEach(idx => {
                     const val = getStr(idx);
                     if (val && !val.includes("欠席") && !val.includes("未定") && !val.includes("×")) {
-                        // コラム名から日付を抽出
                         const dateMatch = cols[idx].match(/\d{1,2}\/\d{1,2}/);
                         if (dateMatch) attends.push(dateMatch[0]);
                     }
                 });
+                
+                const singleScheduleCol = findCol(["参加予定日", "練習参加", "日程"]);
+                if (singleScheduleCol >= 0) {
+                    const val = getStr(singleScheduleCol);
+                    SCHEDULE_KEYS.forEach(k => {
+                        if (val.includes(k)) attends.push(k);
+                    });
+                }
 
                 // 曲評価抽出 (1~5の数値想定)
                 let songScores = {};
