@@ -265,6 +265,22 @@
                             <!-- JSにて生成 -->
                         </div>
                     </div>
+                <!-- 7. 生データ一覧 -->
+                <div class="glass-panel p-6 rounded-xl mt-8 overflow-hidden">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-300">
+                        <i data-lucide="database" class="w-5 h-5 text-slate-400"></i>
+                        回答一覧（全体版）
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs whitespace-nowrap">
+                            <thead class="text-slate-400 bg-slate-800/80" id="raw-table-head">
+                                <!-- JS -->
+                            </thead>
+                            <tbody class="divide-y divide-slate-700/50 text-slate-300" id="raw-table-body">
+                                <!-- JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -301,7 +317,9 @@
             songs: [],
             schedules: [],
             ws: {},
-            staff: {}
+            staff: {},
+            rawCols: [],
+            rawRows: []
         };
         let songChartInstance = null;
 
@@ -402,6 +420,9 @@
         function processData(table) {
             const cols = table.cols.map(c => c ? c.label : '');
             const rows = table.rows;
+            
+            appData.rawCols = cols;
+            appData.rawRows = rows;
 
             // 列インデックスの特定 (曖昧検索)
             const findCol = (keywords) => {
@@ -478,7 +499,11 @@
                 let songScores = {};
                 idxSongs.forEach(idx => {
                     const val = getVal(idx);
-                    const numVal = parseFloat(val);
+                    let numVal = parseFloat(val);
+                    if (isNaN(numVal) && typeof val === 'string') {
+                        const match = val.match(/\d/);
+                        if (match) numVal = parseInt(match[0], 10);
+                    }
                     if (!isNaN(numVal)) {
                         const songName = SONG_KEYS.find(k => cols[idx].includes(k)) || cols[idx];
                         songScores[songName] = numVal;
@@ -586,6 +611,9 @@
 
             // 6. メンバーリスト
             renderMembers(appData.rows);
+            
+            // 7. 全体データ
+            renderRawTable();
         }
 
         function renderChart() {
@@ -829,6 +857,32 @@
                 `;
             }).join('');
             lucide.createIcons();
+        }
+        
+        function renderRawTable() {
+            const head = document.getElementById('raw-table-head');
+            const body = document.getElementById('raw-table-body');
+            
+            if (appData.rawCols.length === 0) return;
+            
+            const escapeHTML = str => String(str).replace(/[&<>"']/g, m => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m]));
+
+            head.innerHTML = `<tr>${appData.rawCols.map(c => `<th class="px-4 py-3 font-medium whitespace-nowrap min-w-[120px]">${escapeHTML(c)}</th>`).join('')}</tr>`;
+            
+            body.innerHTML = appData.rawRows.map(r => {
+                return `<tr class="hover:bg-slate-800/50">` + appData.rawCols.map((c, idx) => {
+                    let rawVal = '';
+                    if (r.c[idx] && r.c[idx].f != null) {
+                        rawVal = r.c[idx].f;
+                    } else if (r.c[idx] && r.c[idx].v != null) {
+                        rawVal = r.c[idx].v;
+                    } else {
+                        rawVal = '';
+                    }
+                    const displayVal = escapeHTML(rawVal);
+                    return `<td class="px-4 py-3 text-ellipsis overflow-hidden max-w-[250px]" title="${displayVal}">${displayVal}</td>`;
+                }).join('') + `</tr>`;
+            }).join('');
         }
 
         function filterMembers() {
