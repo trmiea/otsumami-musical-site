@@ -242,10 +242,11 @@
                     <!-- 5. 全体曲スコア詳細 -->
                     <div class="glass-panel p-6 rounded-xl relative overflow-hidden flex flex-col h-full">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-brand-300">
+                        <h3 class="text-lg font-bold mb-1 flex items-center gap-2 text-brand-300">
                             <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                             【選曲検討用】全体曲スコア詳細
                         </h3>
+                        <p class="text-xs text-slate-400 mb-4">※空白・1(絶対参加しない)は0ptとして総合スコアを集計</p>
                         <div class="h-64 relative w-full shrink-0">
                             <canvas id="songChart"></canvas>
                         </div>
@@ -495,7 +496,7 @@
                     });
                 }
 
-                // 曲評価抽出 (1~5の数値想定)
+                // 曲評価抽出 (1~5の数値想定: 空白および1は0点として集計)
                 let songScores = {};
                 idxSongs.forEach(idx => {
                     const val = getVal(idx);
@@ -504,10 +505,13 @@
                         const match = val.match(/\d/);
                         if (match) numVal = parseInt(match[0], 10);
                     }
-                    if (!isNaN(numVal)) {
-                        const songName = SONG_KEYS.find(k => cols[idx].includes(k)) || cols[idx];
-                        songScores[songName] = numVal;
+                    const isFirstChoice = (numVal === 5);
+                    // 空白・未回答または1(絶対参加しない)は0点として扱う
+                    if (isNaN(numVal) || numVal <= 1) {
+                        numVal = 0;
                     }
+                    const songName = SONG_KEYS.find(k => cols[idx].includes(k)) || cols[idx];
+                    songScores[songName] = { score: numVal, isFirstChoice };
                 });
 
                 return {
@@ -523,23 +527,23 @@
             }).filter(m => m.name !== ''); // 空行除外
 
             // --- 集計ロジック ---
-            // 曲集計
+            // 曲集計 (総合スコア重視、空白・1は0pt)
             let songStats = {};
+            SONG_KEYS.forEach(song => {
+                songStats[song] = { total: 0, firstChoice: 0, count: 0 };
+            });
             appData.rows.forEach(member => {
-                Object.entries(member.songScores).forEach(([song, score]) => {
-                    if (!songStats[song]) songStats[song] = { total: 0, count: 0, firstChoice: 0, positive: 0 };
-                    songStats[song].total += score;
+                Object.entries(member.songScores).forEach(([song, data]) => {
+                    if (!songStats[song]) songStats[song] = { total: 0, firstChoice: 0, count: 0 };
+                    songStats[song].total += data.score;
                     songStats[song].count += 1;
-                    if (score === 5) songStats[song].firstChoice += 1;
-                    if (score >= 4) songStats[song].positive += 1;
+                    if (data.isFirstChoice) songStats[song].firstChoice += 1;
                 });
             });
             appData.songs = Object.entries(songStats).map(([song, stats]) => ({
                 name: song,
-                avg: stats.count > 0 ? (stats.total / stats.count) : 0,
                 scorePt: stats.total, // 総合スコア
-                firstChoice: stats.firstChoice,
-                positive: stats.positive
+                firstChoice: stats.firstChoice
             })).sort((a, b) => b.scorePt - a.scorePt); // 総合スコア降順
 
             // 日程集計
@@ -588,7 +592,7 @@
                 const topSong = appData.songs[0];
                 document.getElementById('kpi-top-song').textContent = topSong.name;
                 document.getElementById('kpi-top-song').title = topSong.name;
-                document.getElementById('kpi-top-song-score').textContent = `総合: ${topSong.scorePt} pt / 平均: ${topSong.avg.toFixed(1)}`;
+                document.getElementById('kpi-top-song-score').textContent = `総合: ${topSong.scorePt} pt (第1希望: ${topSong.firstChoice}名)`;
             }
 
             const staffCount = appData.rows.filter(m => m.staffRoles.length > 0).length;
@@ -671,7 +675,7 @@
                         </div>
                         <div class="truncate">
                             <p class="text-sm font-medium text-slate-200 truncate" title="${song.name}">${song.name}</p>
-                            <p class="text-xs text-slate-400">平均: ${song.avg.toFixed(2)} | 第1希望(5): ${song.firstChoice}名 | 前向き(4~5): ${song.positive}名</p>
+                            <p class="text-xs text-slate-400">総合スコア: <span class="text-brand-300 font-bold">${song.scorePt} pt</span> | 第1希望(5点): <span class="text-emerald-400 font-semibold">${song.firstChoice}名</span></p>
                         </div>
                     </div>
                     <div class="flex-shrink-0 text-right">
