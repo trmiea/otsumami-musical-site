@@ -460,7 +460,7 @@
                     const val = getStr(idx);
                     if (val && !val.includes("欠席") && !val.includes("未定") && !val.includes("×")) {
                         // コラム名から日付を抽出
-                        const dateMatch = cols[idx].match(/\d{1,2}\\/\d{1,2}/);
+                        const dateMatch = cols[idx].match(/\d{1,2}\/\d{1,2}/);
                         if (dateMatch) attends.push(dateMatch[0]);
                     }
                 });
