@@ -168,46 +168,16 @@
                     </div>
                 </div>
 
-                <!-- 2 & 3: チャート・日程ヒートマップ -->
+                <!-- 2 & 3: 日程ヒートマップ・スタッフ役割 -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- 全体曲ランキング -->
-                    <div class="glass-panel p-6 rounded-xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="bar-chart-2" class="w-5 h-5 text-brand-400"></i>
-                            全体曲 スコアランキング
-                        </h2>
-                        <div class="h-64 relative w-full">
-                            <canvas id="songChart"></canvas>
-                        </div>
-                        <div id="song-ranking-list" class="mt-4 space-y-2">
-                            <!-- JSにてランキングリストを生成 -->
-                        </div>
-                    </div>
-
                     <!-- 練習日程ヒートマップ -->
                     <div class="glass-panel p-6 rounded-xl">
                         <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
                             <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
-                            練習日程 参加状況
+                            練習日程 参加予定者
                         </h2>
                         <div class="space-y-4" id="schedule-heatmap">
                             <!-- JSにて日程バーを生成 -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. WS最適開催マトリクス & 5. スタッフ役割 -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    
-                    <!-- WSマトリクス -->
-                    <div class="glass-panel p-6 rounded-xl">
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="users" class="w-5 h-5 text-pink-400"></i>
-                            ワークショップ講師候補
-                        </h2>
-                        <div class="grid grid-cols-2 gap-4" id="ws-matrix">
-                            <!-- JSにて生成 -->
                         </div>
                     </div>
 
@@ -255,6 +225,45 @@
                     <!-- 空状態 -->
                     <div id="member-empty-state" class="hidden text-center py-8 text-slate-500">
                         該当するメンバーが見つかりません。
+                    </div>
+                </div>
+
+                <!-- 管理者用 分析セクション -->
+                <hr class="border-slate-700/50 my-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-300 flex justify-center items-center gap-2">
+                        <i data-lucide="search" class="w-6 h-6 text-brand-400"></i>
+                        管理者用 分析セクション
+                    </h2>
+                    <p class="text-slate-400 text-sm">※全体曲の絞り込み、およびWSスケジュール決定用の情報です</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 5. 全体曲スコア詳細 -->
+                    <div class="glass-panel p-6 rounded-xl relative overflow-hidden flex flex-col h-full">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-brand-300">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                            【選曲検討用】全体曲スコア詳細
+                        </h3>
+                        <div class="h-64 relative w-full shrink-0">
+                            <canvas id="songChart"></canvas>
+                        </div>
+                        <div id="song-ranking-list" class="mt-4 space-y-2 flex-grow overflow-y-auto">
+                            <!-- JSにてランキングリストを生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 6. ワークショップ講師情報 -->
+                    <div class="glass-panel p-6 rounded-xl flex flex-col h-full">
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-pink-400">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                            【WS検討用】講師と参加可能日程
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-4">※誰に・いつお願いするかの検討材料</p>
+                        <div class="grid grid-cols-1 gap-4 flex-grow overflow-y-auto" id="ws-matrix">
+                            <!-- JSにて生成 -->
+                        </div>
                     </div>
                 </div>
 
@@ -510,17 +519,17 @@
 
             // 日程集計
             let scheduleStats = {};
-            SCHEDULE_KEYS.forEach(k => scheduleStats[k] = 0);
+            SCHEDULE_KEYS.forEach(k => scheduleStats[k] = []);
             appData.rows.forEach(member => {
                 member.attends.forEach(d => {
                     // d (e.g. "11/28") が含まれるキーを探す
                     const key = SCHEDULE_KEYS.find(k => d.includes(k) || k.includes(d));
                     if (key) {
-                        scheduleStats[key] = (scheduleStats[key] || 0) + 1;
+                        scheduleStats[key].push(member.name);
                     }
                 });
             });
-            appData.schedules = Object.entries(scheduleStats).map(([date, count]) => ({ date, count }));
+            appData.schedules = Object.entries(scheduleStats).map(([date, members]) => ({ date, members }));
 
             // スタッフ集計
             let staffStats = {};
@@ -532,12 +541,12 @@
             });
             appData.staff = staffStats;
 
-            // WS集計
+            // WS集計 (参加可能日程つき)
             let wsStats = {};
             WS_KEYS.forEach(k => wsStats[k] = []);
             appData.rows.forEach(member => {
                 member.wsRoles.forEach(r => {
-                    if (wsStats[r]) wsStats[r].push(member.name);
+                    if (wsStats[r]) wsStats[r].push({ name: member.name, attends: member.attends });
                 });
             });
             appData.ws = wsStats;
@@ -634,7 +643,7 @@
                         </div>
                         <div class="truncate">
                             <p class="text-sm font-medium text-slate-200 truncate" title="${song.name}">${song.name}</p>
-                            <p class="text-xs text-slate-400">平均: ${song.avg.toFixed(2)} | 前向き: ${song.positive}名</p>
+                            <p class="text-xs text-slate-400">平均: ${song.avg.toFixed(2)} | 第1希望(5): ${song.firstChoice}名 | 前向き(4~5): ${song.positive}名</p>
                         </div>
                     </div>
                     <div class="flex-shrink-0 text-right">
@@ -647,12 +656,13 @@
 
         function renderSchedules(total) {
             const container = document.getElementById('schedule-heatmap');
-            let maxCount = Math.max(...appData.schedules.map(s => s.count), 1);
+            let maxCount = Math.max(...appData.schedules.map(s => s.members.length), 1);
 
             container.innerHTML = appData.schedules.map((sch, i) => {
-                const percent = Math.round((sch.count / maxCount) * 100);
-                const absPercent = total > 0 ? Math.round((sch.count / total) * 100) : 0;
-                const isMax = sch.count === maxCount && sch.count > 0;
+                const count = sch.members.length;
+                const percent = Math.round((count / maxCount) * 100);
+                const absPercent = total > 0 ? Math.round((count / total) * 100) : 0;
+                const isMax = count === maxCount && count > 0;
                 
                 return `
                 <div class="relative">
@@ -660,10 +670,13 @@
                         <span class="font-medium ${isMax ? 'text-emerald-400 font-bold' : 'text-slate-300'}">
                             第${i+1}回 ${sch.date} ${isMax ? '<span class="text-xs bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded ml-1">最多</span>' : ''}
                         </span>
-                        <span class="text-slate-400">${sch.count}名 <span class="text-xs">(${absPercent}%)</span></span>
+                        <span class="text-slate-400">${count}名 <span class="text-xs">(${absPercent}%)</span></span>
                     </div>
-                    <div class="w-full bg-slate-800 rounded-full h-2.5">
+                    <div class="w-full bg-slate-800 rounded-full h-2.5 mb-2">
                         <div class="bg-emerald-500 h-2.5 rounded-full transition-all duration-1000" style="width: ${percent}%"></div>
+                    </div>
+                    <div class="text-[10px] text-slate-500 leading-tight bg-slate-800/50 p-2 rounded border border-slate-700/50">
+                        ${count > 0 ? sch.members.join(', ') : '参加予定者なし'}
                     </div>
                 </div>
                 `;
@@ -681,24 +694,35 @@
             };
             const fallbackIcons = { "演技": "smile", "ダンス": "play" };
 
-            container.innerHTML = Object.entries(appData.ws).map(([role, members]) => {
+            container.innerHTML = Object.entries(appData.ws).map(([role, instructorData]) => {
                 const iconName = icons[role] || fallbackIcons[role] || 'star';
-                const hasMembers = members.length > 0;
+                const hasMembers = instructorData.length > 0;
                 
+                // 講師ごとのHTMLを生成
+                const instructorsHtml = instructorData.map(inst => `
+                    <div class="flex justify-between items-start text-xs border-t border-slate-700/50 pt-2 mt-2">
+                        <span class="font-medium text-slate-300">${inst.name}</span>
+                        <div class="text-right max-w-[60%]">
+                            <span class="text-[10px] text-slate-500 block mb-0.5">参加可能日程:</span>
+                            <span class="text-[10px] text-emerald-400">${inst.attends.length > 0 ? inst.attends.join(', ') : 'なし'}</span>
+                        </div>
+                    </div>
+                `).join('');
+
                 return `
                 <div class="p-4 rounded-xl bg-slate-800 border ${hasMembers ? 'border-pink-500/30' : 'border-slate-700/50'}">
                     <div class="flex items-center gap-2 mb-2">
                         <i data-lucide="${iconName}" class="w-4 h-4 ${hasMembers ? 'text-pink-400' : 'text-slate-500'}"></i>
                         <span class="font-medium text-sm text-slate-200">${role}</span>
                     </div>
-                    <div class="text-xl font-bold ${hasMembers ? 'text-white' : 'text-slate-600'}">
-                        ${members.length}<span class="text-xs font-normal ml-1 text-slate-500">名</span>
+                    <div class="text-xl font-bold mb-1 ${hasMembers ? 'text-white' : 'text-slate-600'}">
+                        ${instructorData.length}<span class="text-xs font-normal ml-1 text-slate-500">名</span>
                     </div>
                     ${hasMembers ? `
-                        <div class="mt-2 text-xs text-slate-400 leading-tight">
-                            ${members.join(', ')}
+                        <div class="mt-3 flex flex-col gap-1">
+                            ${instructorsHtml}
                         </div>
-                    ` : ''}
+                    ` : '<div class="text-xs text-slate-500 mt-2">希望者なし</div>'}
                 </div>
                 `;
             }).join('');
