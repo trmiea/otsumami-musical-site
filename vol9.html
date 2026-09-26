@@ -456,7 +456,14 @@
 
             // メンバー行データのパース
             appData.rows = rows.map((r, rowIdx) => {
-                const getVal = (idx) => (idx >= 0 && r.c[idx]) ? r.c[idx].v : null;
+                // .v が null の場合は .f (フォーマット済み値) もフォールバックとして読む
+                // スプレッドシート直接入力値は {v: null, f: "5(絶対参加する)"} で返ることがある
+                const getVal = (idx) => {
+                    if (idx < 0 || !r.c[idx]) return null;
+                    const cell = r.c[idx];
+                    if (cell.v !== null && cell.v !== undefined) return cell.v;
+                    return (cell.f !== null && cell.f !== undefined) ? cell.f : null;
+                };
                 const getStr = (idx) => {
                     const val = getVal(idx);
                     return val != null ? String(val) : "";
@@ -522,8 +529,9 @@
                     }
                     const songName = SONG_KEYS.find(k => cols[idx].includes(k)) || cols[idx];
                     songScores[songName] = { score: numVal, isFirstChoice };
-                    // デバッグ: コンソールで確認できるようにする
-                    console.log(`[曲スコア] 行${rowIdx} | 列"${cols[idx]}" | 生値:"${getVal(idx)}" | 変換後:${numVal} | 第1希望:${isFirstChoice}`);
+                    // デバッグ: .v と .f 両方を確認できるようにする
+                    const cell = (idx >= 0 && r.c[idx]) ? r.c[idx] : null;
+                    console.log(`[曲スコア] 行${rowIdx} | 列"${cols[idx]}" | .v:"${cell ? cell.v : 'null(cellなし)'}" | .f:"${cell ? cell.f : '-'}" | 変換後:${numVal} | 第1希望:${isFirstChoice}`);
                 });
 
                 return {
