@@ -382,6 +382,42 @@
             document.getElementById('dashboard').classList.remove('hidden');
         }
 
+        // RFC-4180準拠のCSVパーサー (改行を含むセルやダブルクォートに対応)
+        function parseCSV(text) {
+            const lines = [];
+            let row = [];
+            let cell = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                const nextCh = text[i + 1];
+                if (ch === '"') {
+                    if (inQuotes && nextCh === '"') {
+                        cell += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (ch === ',' && !inQuotes) {
+                    row.push(cell.trim());
+                    cell = '';
+                } else if ((ch === '\r' || ch === '\n') && !inQuotes) {
+                    if (ch === '\r' && nextCh === '\n') i++;
+                    row.push(cell.trim());
+                    if (row.some(c => c !== '')) lines.push(row);
+                    row = [];
+                    cell = '';
+                } else {
+                    cell += ch;
+                }
+            }
+            if (cell || row.length > 0) {
+                row.push(cell.trim());
+                if (row.some(c => c !== '')) lines.push(row);
+            }
+            return lines;
+        }
+
         // --- データフェッチ (Live Sync) ---
         async function fetchData() {
             const spinner = document.getElementById('loading-spinner');
@@ -395,19 +431,47 @@
             try {
                 // キャッシュバスティング: スプレッドシート直接編集後もすぐ反映されるよう毎回新鮮なデータを取得
                 const cacheBust = Date.now();
-                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&v=${cacheBust}`;
-                const response = await fetch(url, { cache: 'no-store' });
-                if (!response.ok) throw new Error('Network response was not ok');
                 
-                const text = await response.text();
-                // jsonpからJSONを抽出: /*O_o*/ google.visualization.Query.setResponse({ ... });
+                // Google Sheets CSVエクスポート: GViz APIの型自動推論による文字列セル欠落（"5(絶対参加する)"がnullになる問題）を完全に防止
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&v=${cacheBust}`;
+                let response = await fetch(csvUrl, { cache: 'no-store' });
+                
+                if (response.ok) {
+                    const csvText = await response.text();
+                    const csvLines = parseCSV(csvText);
+                    if (csvLines.length >= 2) {
+                        const headers = csvLines[0];
+                        const dataRows = csvLines.slice(1);
+                        const table = {
+                            cols: headers.map(h => ({ label: h })),
+                            rows: dataRows.map(r => ({
+                                c: headers.map((_, idx) => ({
+                                    v: r[idx] !== undefined ? r[idx] : '',
+                                    f: r[idx] !== undefined ? r[idx] : ''
+                                }))
+                            }))
+                        };
+                        processData(table);
+                        updateUI();
+                        
+                        const now = new Date();
+                        document.getElementById('last-sync-time').textContent = `最終同期: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                        document.getElementById('last-sync-time').classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                // フォールバック: GViz API
+                const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&v=${cacheBust}`;
+                const gvizRes = await fetch(gvizUrl, { cache: 'no-store' });
+                if (!gvizRes.ok) throw new Error('Network response was not ok');
+                const text = await gvizRes.text();
                 const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
                 const data = JSON.parse(jsonString);
 
                 processData(data.table);
                 updateUI();
                 
-                // 最終更新時刻
                 const now = new Date();
                 document.getElementById('last-sync-time').textContent = `最終同期: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
                 document.getElementById('last-sync-time').classList.remove('hidden');
