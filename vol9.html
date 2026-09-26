@@ -184,7 +184,7 @@
                     <!-- スタッフ役割 -->
                     <div class="glass-panel p-6 rounded-xl">
                         <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="tool" class="w-5 h-5 text-blue-400"></i>
+                            <i data-lucide="wrench" class="w-5 h-5 text-blue-400"></i>
                             運営スタッフ 役割別
                         </h2>
                         <div class="space-y-3" id="staff-roles">
@@ -347,7 +347,7 @@
             document.getElementById('auth-form').addEventListener('submit', handleAuth);
             document.getElementById('btn-logout').addEventListener('click', handleLogout);
             document.getElementById('btn-refresh').addEventListener('click', () => {
-                document.getElementById('btn-refresh').querySelector('i').classList.add('animate-spin');
+                document.getElementById('btn-refresh').querySelector('i')?.classList.add('animate-spin');
                 fetchData();
             });
             document.getElementById('search-input').addEventListener('input', filterMembers);
@@ -416,9 +416,9 @@
                 console.error("データの取得に失敗しました:", error);
                 alert("データの取得に失敗しました。シートの権限（リンクを知っている全員が閲覧可）を確認してください。");
             } finally {
-                spinner.classList.add('hidden');
-                content.classList.remove('hidden');
-                document.getElementById('btn-refresh').querySelector('i').classList.remove('animate-spin');
+                spinner?.classList.add('hidden');
+                content?.classList.remove('hidden');
+                document.getElementById('btn-refresh')?.querySelector('i')?.classList.remove('animate-spin');
             }
         }
 
