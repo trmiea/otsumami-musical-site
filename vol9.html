@@ -435,30 +435,11 @@
             <div id="dashboard-content" class="hidden space-y-8">
                 
                 <!-- 1. KPIサマリー -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
                     <div class="glass-panel p-5 rounded-xl border-l-4 border-l-brand-500">
                         <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">総回答数</p>
                         <div class="flex items-end gap-2">
                             <h3 id="kpi-total" class="text-3xl font-bold text-white">0</h3>
-                            <span class="text-slate-400 mb-1">名</span>
-                        </div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-accent-500">
-                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">第1位 全体曲</p>
-                        <h3 id="kpi-top-song" class="text-lg font-bold text-white leading-tight truncate" title="-">-</h3>
-                        <p id="kpi-top-song-score" class="text-sm text-accent-500 mt-1">- pt</p>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-emerald-500">
-                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">スタッフ協力率</p>
-                        <div class="flex items-end gap-2">
-                            <h3 id="kpi-staff-ratio" class="text-3xl font-bold text-white">0</h3>
-                            <span class="text-slate-400 mb-1">%</span>
-                        </div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-pink-500">
-                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">WS講師候補数</p>
-                        <div class="flex items-end gap-2">
-                            <h3 id="kpi-ws-count" class="text-3xl font-bold text-white">0</h3>
                             <span class="text-slate-400 mb-1">名</span>
                         </div>
                     </div>
@@ -1046,17 +1027,23 @@
             
             if (appData.songs.length > 0) {
                 const topSong = appData.songs[0];
-                document.getElementById('kpi-top-song').textContent = topSong.name;
-                document.getElementById('kpi-top-song').title = topSong.name;
-                document.getElementById('kpi-top-song-score').textContent = `総合: ${topSong.scorePt} pt (第1希望: ${topSong.firstChoice}名)`;
+                const topSongEl = document.getElementById('kpi-top-song');
+                if (topSongEl) {
+                    topSongEl.textContent = topSong.name;
+                    topSongEl.title = topSong.name;
+                    document.getElementById('kpi-top-song-score').textContent = `総合: ${topSong.scorePt} pt (第1希望: ${topSong.firstChoice}名)`;
+                }
             }
 
             const staffCount = appData.rows.filter(m => m.staffRoles.length > 0).length;
             const staffRatio = totalMembers > 0 ? Math.round((staffCount / totalMembers) * 100) : 0;
-            document.getElementById('kpi-staff-ratio').textContent = staffRatio;
+            const staffRatioEl = document.getElementById('kpi-staff-ratio');
+            if (staffRatioEl) staffRatioEl.textContent = staffRatio;
 
             const wsCount = appData.rows.filter(m => m.wsRoles.length > 0).length;
-            document.getElementById('kpi-ws-count').textContent = wsCount;
+            const wsCountEl = document.getElementById('kpi-ws-count');
+            if (wsCountEl) wsCountEl.textContent = wsCount;
+
 
             // 2. チャート描画
             renderChart();

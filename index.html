@@ -652,7 +652,9 @@ header {
                 style="text-align: center; color: #ccc; max-width: 750px; margin: 0 auto;">--</div>
             <div class="stats-grid" id="stats-container"></div>
             
-            <div style="text-align: center; margin-top: 60px;">
+            <div id="yt-main-container" style="margin-top: 60px; margin-bottom: 20px;"></div>
+            
+            <div style="text-align: center; margin-top: 40px;">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLScchz9AbiB1mQlBYGvO7p5RMJv8FZumpCP144HquiOjxFAJ5g/viewform?usp=sharing&ouid=107683113805178822487" target="_blank" class="btn-gold" style="font-size: 1rem; padding: 15px 40px;">公式Slack 加入申請はこちら ↗</a>
             </div>
         </div>
@@ -679,7 +681,6 @@ header {
                 <a href="https://www.youtube.com/@otsumami_musical" target="_blank" class="btn-gold"
                     style="font-size: 1rem; padding: 12px 30px;">▶︎ 公式YouTubeチャンネルへ</a>
             </div>
-            <div id="yt-main-container" style="margin-bottom: 60px;"></div>
 
             <div class="yt-grid" id="yt-container"></div>
 
@@ -761,7 +762,13 @@ header {
                 document.getElementById('about-desc').innerHTML = data.about.description;
                 document.getElementById('stats-container').innerHTML = data.about.stats.map(s => {
                     const isMember = s.label.toUpperCase().includes('MEMBER');
-                    const idAttr = isMember ? ' id="stat-total-members"' : '';
+                    const isSongs = s.label.toUpperCase().includes('SONGS');
+                    const isWorkshops = s.label.toUpperCase().includes('WORKSHOP');
+                    let idAttr = '';
+                    if (isMember) idAttr = ' id="stat-total-members"';
+                    else if (isSongs) idAttr = ' id="stat-total-songs"';
+                    else if (isWorkshops) idAttr = ' id="stat-total-workshops"';
+
                     return `
                     <a href="${s.url}" target="_blank" class="stat-item" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;"><span class="stat-number"${idAttr}>${s.num}</span><span class="stat-label">${s.label}</span></a>
                 `;
@@ -791,6 +798,47 @@ header {
                     .catch(err => {
                         console.warn('Failed to fetch dynamic member count from spreadsheet:', err);
                     });
+
+                // Songs & Workshops 数を自動取得
+                const DATA_SHEET_ID = '14z8Gj5NfRcjcDWpLeZntWNuGn5FBOamtvS604c-4gro';
+                const songsCsvUrl = `https://docs.google.com/spreadsheets/d/${DATA_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Songs&v=${Date.now()}`;
+                const wsCsvUrl = `https://docs.google.com/spreadsheets/d/${DATA_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Workshops&v=${Date.now()}`;
+                
+                // Songs
+                fetch(songsCsvUrl, { cache: 'no-store' })
+                    .then(res => res.text())
+                    .then(csvText => {
+                        const rows = parseCSV(csvText);
+                        if (rows.length >= 2 && rows[1].length >= 2) {
+                            let songsCount = rows[1][1]; // Cell B2
+                            // In CSV from gviz, numbers might be wrapped in quotes
+                            songsCount = songsCount.replace(/^["']|["']$/g, '');
+                            const songsEl = document.getElementById('stat-total-songs');
+                            if (songsEl && !isNaN(parseInt(songsCount))) {
+                                songsEl.textContent = parseInt(songsCount);
+                            }
+                        }
+                    })
+                    .catch(e => console.warn('Songs fetch failed', e));
+
+                // Workshops
+                fetch(wsCsvUrl, { cache: 'no-store' })
+                    .then(res => res.text())
+                    .then(csvText => {
+                        const rows = parseCSV(csvText);
+                        // count rows ignoring header (row 0) and empty rows
+                        let count = 0;
+                        for (let i = 1; i < rows.length; i++) {
+                            if (rows[i] && rows[i][0] && rows[i][0].replace(/^["']|["']$/g, '').trim() !== '') {
+                                count++;
+                            }
+                        }
+                        const wsEl = document.getElementById('stat-total-workshops');
+                        if (wsEl && count > 0) {
+                            wsEl.textContent = count;
+                        }
+                    })
+                    .catch(e => console.warn('Workshops fetch failed', e));
 
                 // Next Event
                 document.getElementById('next-title').textContent = data.next_event.title;
