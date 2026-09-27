@@ -60,61 +60,233 @@
             color: #f5f5f5;
         }
         
-        /* Navbar Styles from index */
-        nav {
+        
+        /* ==========================================
+           UNIFIED NAVIGATION (Desktop: Links, Mobile: Hamburger)
+        ========================================== */
+        nav.unified-nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            height: 90px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.25);
+            z-index: 9999;
+            box-sizing: border-box;
         }
-        nav .nav-container {
+
+        .unified-nav .nav-container {
             max-width: 1200px;
+            height: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 90px;
+            box-sizing: border-box;
         }
-        nav .logo {
+
+        .unified-nav .logo {
             display: flex;
             align-items: center;
             font-weight: 700;
             color: #c29a5b;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             letter-spacing: 0.05em;
             font-family: 'Cinzel', serif;
             text-decoration: none;
+            transition: opacity 0.3s;
         }
-        nav .logo img {
-            height: 55px;
-            margin-right: 18px;
-            filter: drop-shadow(0 0 5px rgba(194, 154, 91, 0.4));
+        .unified-nav .logo:hover {
+            opacity: 0.85;
         }
-        nav ul {
-            display: flex;
+
+        .unified-nav .logo img {
+            height: 52px;
+            margin-right: 14px;
+            filter: drop-shadow(0 0 6px rgba(194, 154, 91, 0.4));
+        }
+
+        /* PC Desktop Navigation Links */
+        .unified-nav .desktop-links {
+            display: flex !important;
+            align-items: center;
+            gap: 28px;
             list-style: none;
             margin: 0;
             padding: 0;
         }
-        nav ul li {
-            margin-left: 25px;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
+
+        .unified-nav .desktop-links li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
-        nav ul li a {
+
+        .unified-nav .desktop-links li a {
             color: #ccc;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
             text-decoration: none;
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        nav ul li a:hover {
+
+        .unified-nav .desktop-links li a:hover {
             color: #fff;
+            border-bottom-color: #c29a5b;
         }
-        
+
+        .unified-nav .desktop-links li a.practice-link {
+            color: #c29a5b;
+            font-weight: 700;
+        }
+
+        .unified-nav .desktop-links li a.practice-link:hover {
+            color: #ffd88a;
+            border-bottom-color: #ffd88a;
+        }
+
+        /* Hamburger Button */
+        .unified-nav .hamburger-btn {
+            display: none !important;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 28px;
+            height: 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10001;
+        }
+
+        .unified-nav .hamburger-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #c29a5b;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Animated Hamburger to 'X' */
+        .unified-nav .hamburger-btn.is-active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile Dropdown Menu */
+        .unified-nav .mobile-dropdown {
+            display: none;
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            z-index: 10000;
+        }
+
+        .unified-nav .mobile-dropdown.is-open {
+            display: block;
+            animation: navFadeDown 0.25s ease-out forwards;
+        }
+
+        @keyframes navFadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unified-nav .mobile-dropdown ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px 20px 20px;
+        }
+
+        .unified-nav .mobile-dropdown li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            list-style: none;
+            margin: 0;
+        }
+
+        .unified-nav .mobile-dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .unified-nav .mobile-dropdown li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 8px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .unified-nav .mobile-dropdown li a:hover,
+        .unified-nav .mobile-dropdown li a:active {
+            color: #fff;
+            padding-left: 14px;
+        }
+
+        .unified-nav .mobile-dropdown li a.practice-link {
+            color: #c29a5b;
+            font-weight: 700;
+        }
+
+        /* Mobile Breakpoint: 768px */
+        @media (max-width: 768px) {
+            nav.unified-nav {
+                height: 70px;
+            }
+            .unified-nav .nav-container {
+                padding: 0 16px;
+            }
+            .unified-nav .logo img {
+                height: 42px;
+                margin-right: 10px;
+            }
+            .unified-nav .logo {
+                font-size: 1.15rem;
+            }
+            .unified-nav .desktop-links {
+                display: none !important;
+            }
+            .unified-nav .hamburger-btn {
+                display: flex !important;
+            }
+            .unified-nav .mobile-dropdown {
+                top: 70px;
+            }
+        }
+
         @keyframes float {
             0% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.05); }
@@ -126,25 +298,25 @@
         .animate-float-3 { animation: float 25s ease-in-out infinite 2s; }
 
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(15, 15, 15, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(194, 154, 91, 0.15); /* Gold border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .glass-panel:hover {
             transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
+            border-color: rgba(194, 154, 91, 0.35);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.8), 0 0 20px rgba(194, 154, 91, 0.15);
         }
 
         .table-row-hover {
             transition: all 0.2s ease;
         }
         .table-row-hover:hover {
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            background: rgba(30, 30, 30, 0.8);
+            box-shadow: inset 0 0 0 1px rgba(194, 154, 91, 0.2);
         }
 
         .animate-fade-in {
@@ -166,34 +338,37 @@
     </style>
 </head>
 <body class="min-h-screen hidden" id="app-body">
-    <!-- Navbar -->
-    <nav>
+        <!-- Unified Navigation Bar -->
+    <nav class="unified-nav">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
             
-            <ul class="nav-links hidden sm:flex">
+            <!-- Desktop Links (PC: 右上に文字リンク表示) -->
+            <ul class="desktop-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
-                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;" class="flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Practice</a></li>
+                <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
 
-            <!-- Mobile Hamburger Button -->
-            <button id="mobile-menu-btn" class="sm:hidden text-white focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                <i data-lucide="menu" class="w-6 h-6"></i>
+            <!-- Mobile Hamburger Button (スマホ: ハンバーガー表示) -->
+            <button class="hamburger-btn" id="unified-hamburger-btn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden sm:hidden bg-[#0a0a0a] border-t border-slate-800 absolute w-full left-0 top-[90px]">
-            <ul class="flex flex-col py-2 px-6">
-                <li class="py-3 border-b border-slate-800"><a href="index.html" class="block text-slate-300 hover:text-white">Home</a></li>
-                <li class="py-3 border-b border-slate-800"><a href="vol8.html" class="block text-slate-300 hover:text-white">Next</a></li>
-                <li class="py-3 border-b border-slate-800"><a href="archive.html" class="block text-slate-300 hover:text-white">Archive</a></li>
-                <li class="py-3"><a href="vol9.html" class="flex items-center gap-1 text-[#c29a5b] font-bold"><i data-lucide="lock" class="w-4 h-4"></i> Practice</a></li>
+        <!-- Mobile Dropdown Menu -->
+        <div id="unified-mobile-dropdown" class="mobile-dropdown">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vol8.html">Next</a></li>
+                <li><a href="archive.html">Archive</a></li>
+                <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
         </div>
     </nav>
@@ -1024,7 +1199,7 @@
             const container = document.getElementById('ws-matrix');
 
             const WS_ICONS = { "歌": "mic", "ダンス": "play", "演技": "smile", "体力": "activity" };
-            const WS_COLORS = { "歌": "pink", "ダンス": "violet", "演技": "amber", "体力": "emerald" };
+            const WS_COLORS = { "歌": "amber", "ダンス": "orange", "演技": "yellow", "体力": "emerald" };
 
             // 練習日 x WSカテゴリのマトリクスを構築
             // セル: その日に参加できてそのWSをできる人のリスト
@@ -1148,7 +1323,15 @@
             const container = document.getElementById('song-overlap-matrix');
             if (!appData.songGroups || appData.songGroups.length === 0) return;
 
-            const songs = appData.songGroups.map(g => g.name);
+            // 参加メンバー数が多い順（降順）に配列を並び替える
+            const sortedGroups = [...appData.songGroups].sort((a, b) => {
+                const countA = (a.members || []).length;
+                const countB = (b.members || []).length;
+                if (countB !== countA) return countB - countA;
+                return a.name.localeCompare(b.name, 'ja');
+            });
+
+            const songs = sortedGroups.map(g => g.name);
             const n = songs.length;
             
             // Overlap counts: matrix[i][j]
@@ -1160,10 +1343,10 @@
             for (let i = 0; i < n; i++) {
                 for (let j = 0; j < n; j++) {
                     if (i === j) {
-                        matrix[i][j] = appData.songGroups[i].members.length; // diagonal is total members
+                        matrix[i][j] = sortedGroups[i].members.length; // diagonal is total members
                     } else {
-                        const membersI = appData.songGroups[i].members;
-                        const membersJ = appData.songGroups[j].members;
+                        const membersI = sortedGroups[i].members;
+                        const membersJ = sortedGroups[j].members;
                         const common = membersI.filter(m => membersJ.includes(m));
                         matrix[i][j] = common.length;
                         overlapDetails[i][j] = common;
@@ -1172,14 +1355,24 @@
             }
 
             // Generate HTML
-            // Header
-            const ths = songs.map(s => `<th class="px-2 py-3 text-center min-w-[80px] font-bold text-slate-300 text-xs transform -rotate-45 relative"><div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-max truncate max-w-[100px]" title="${s}">${s}</div><div class="h-16"></div></th>`).join('');
+            // Header: 曲名と参加人数を表示
+            const ths = sortedGroups.map(g => {
+                const s = g.name;
+                const count = g.members.length;
+                const label = `${s} (${count}名)`;
+                return `<th class="px-2 py-3 text-center min-w-[85px] font-bold text-slate-300 text-xs transform -rotate-45 relative">
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-max truncate max-w-[120px]" title="${label}">${s} <span class="text-amber-400 font-normal">(${count})</span></div>
+                    <div class="h-20"></div>
+                </th>`;
+            }).join('');
             
-            const rowsHtml = songs.map((s, i) => {
-                const tds = songs.map((_, j) => {
+            const rowsHtml = sortedGroups.map((g, i) => {
+                const s = g.name;
+                const songMemberCount = g.members.length;
+                const tds = sortedGroups.map((_, j) => {
                     if (i === j) {
                         // diagonal
-                        return `<td class="px-2 py-2 text-center bg-slate-800/80 text-slate-500 font-bold">${matrix[i][j]}</td>`;
+                        return `<td class="px-2 py-2 text-center bg-slate-800/80 text-amber-300 font-bold border border-slate-700/50" title="${s}の総メンバー数: ${matrix[i][j]}名">${matrix[i][j]}</td>`;
                     }
                     
                     const count = matrix[i][j];
@@ -1205,7 +1398,9 @@
                 }).join('');
                 
                 return `<tr class="border-t border-slate-700/50">
-                            <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[150px] truncate" title="${s}">${s}</th>
+                            <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[170px] truncate" title="${s} (${songMemberCount}名)">
+                                ${s} <span class="text-amber-400 font-normal text-[11px]">(${songMemberCount}名)</span>
+                            </th>
                             ${tds}
                         </tr>`;
             }).join('');
@@ -1229,7 +1424,7 @@
             const resultContainer = document.getElementById('overlap-result-container');
             const resultList = document.getElementById('overlap-result-list');
             
-            select.innerHTML = '<option value="">-- 曲を選択してください --</option>' + songs.map((s, idx) => `<option value="${idx}">${s}</option>`).join('');
+            select.innerHTML = '<option value="">-- 曲を選択してください（人数順） --</option>' + sortedGroups.map((g, idx) => `<option value="${idx}">${g.name} (${g.members.length}名)</option>`).join('');
             
             // 既存のイベントリスナーをリセットするためにclone
             const newSelect = select.cloneNode(true);
@@ -1248,15 +1443,15 @@
                 for (let j = 0; j < n; j++) {
                     if (parseInt(idx) !== j) {
                         if (matrix[idx][j] === 0) {
-                            noOverlapSongs.push(songs[j]);
+                            noOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length });
                         } else if (matrix[idx][j] === 1) {
-                            oneOverlapSongs.push({ song: songs[j], members: overlapDetails[idx][j] });
+                            oneOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length, members: overlapDetails[idx][j] });
                         }
                     }
                 }
                 
                 if (noOverlapSongs.length > 0) {
-                    resultList.innerHTML = noOverlapSongs.map(s => `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm">${s}</span>`).join('');
+                    resultList.innerHTML = noOverlapSongs.map(s => `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm">${s.song} <span class="text-xs text-emerald-400/80 font-normal">(${s.count}名)</span></span>`).join('');
                 } else {
                     resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません。</span>`;
                 }
@@ -1265,8 +1460,8 @@
                 if (oneOverlapSongs.length > 0) {
                     result1List.innerHTML = oneOverlapSongs.map(s => `
                         <div class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg shadow-sm flex items-center gap-2">
-                            <span class="text-amber-300 text-sm font-medium">${s.song}</span>
-                            <span class="text-xs text-slate-400 bg-slate-900/50 px-2 py-0.5 rounded border border-slate-700">${s.members.join(', ')}</span>
+                            <span class="text-amber-300 text-sm font-medium">${s.song} <span class="text-xs text-amber-400/70 font-normal">(${s.count}名)</span></span>
+                            <span class="text-xs text-slate-400 bg-slate-900/50 px-2 py-0.5 rounded border border-slate-700">被り: ${s.members.join(', ')}</span>
                         </div>
                     `).join('');
                 } else {
@@ -1305,12 +1500,12 @@
                 const hasPrivateInfo = member.message || member.note;
                 const rowId = `member-detail-${member.id}`;
                 
-                const staffTags = member.staffRoles.map(r => `<span class="px-1.5 py-0.5 bg-blue-500/20 text-blue-300 rounded text-[10px] mr-1">${r}</span>`).join('');
-                const wsTags = member.wsRoles.map(r => `<span class="px-1.5 py-0.5 bg-pink-500/20 text-pink-300 rounded text-[10px] mr-1">${r}</span>`).join('');
+                const staffTags = member.staffRoles.map(r => `<span class="px-1.5 py-0.5 bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded text-[10px] mr-1">${r}</span>`).join('');
+                const wsTags = member.wsRoles.map(r => `<span class="px-1.5 py-0.5 bg-orange-500/10 text-orange-300 border border-orange-500/30 rounded text-[10px] mr-1">${r}</span>`).join('');
                 const tagsHtml = (staffTags || wsTags) ? `${staffTags}${wsTags}` : '<span class="text-slate-600 text-xs">-</span>';
 
-                const songTags = member.joinedSongs.map(s => `<span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded text-[10px] mr-1 inline-block mb-1">${s}</span>`).join('');
-                const songCountStr = member.joinedSongs.length > 0 ? `<div class="font-bold text-purple-400 mb-1">${member.joinedSongs.length}曲</div><div class="flex flex-wrap max-w-[200px]">${songTags}</div>` : '<span class="text-slate-600 text-xs">未定</span>';
+                const songTags = member.joinedSongs.map(s => `<span class="px-1.5 py-0.5 bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 rounded text-[10px] mr-1 inline-block mb-1">${s}</span>`).join('');
+                const songCountStr = member.joinedSongs.length > 0 ? `<div class="font-bold text-yellow-500 mb-1">${member.joinedSongs.length}曲</div><div class="flex flex-wrap max-w-[200px]">${songTags}</div>` : '<span class="text-slate-600 text-xs">未定</span>';
 
                 return `
                 <tr class="table-row-hover cursor-default">
@@ -1405,5 +1600,40 @@
             lucide.createIcons();
         }
     </script>
+<script>
+    // Unified Navigation Toggle Logic
+    (function() {
+        function initUnifiedNav() {
+            const btn = document.getElementById('unified-hamburger-btn');
+            const menu = document.getElementById('unified-mobile-dropdown');
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                btn.classList.toggle('is-active');
+                menu.classList.toggle('is-open');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    btn.classList.remove('is-active');
+                    menu.classList.remove('is-open');
+                }
+            });
+
+            menu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    btn.classList.remove('is-active');
+                    menu.classList.remove('is-open');
+                });
+            });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initUnifiedNav);
+        } else {
+            initUnifiedNav();
+        }
+    })();
+</script>
 </body>
 </html>

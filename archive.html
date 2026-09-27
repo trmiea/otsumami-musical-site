@@ -62,120 +62,233 @@
         a:hover { opacity: 0.7; }
         
         
-        nav {
+        
+        /* ==========================================
+           UNIFIED NAVIGATION (Desktop: Links, Mobile: Hamburger)
+        ========================================== */
+        nav.unified-nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            height: 90px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.25);
+            z-index: 9999;
+            box-sizing: border-box;
         }
-        nav .nav-container {
-            max-width: 1000px;
+
+        .unified-nav .nav-container {
+            max-width: 1200px;
+            height: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 90px;
+            box-sizing: border-box;
         }
-        nav .logo {
+
+        .unified-nav .logo {
             display: flex;
             align-items: center;
             font-weight: 700;
             color: #c29a5b;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             letter-spacing: 0.05em;
+            font-family: 'Cinzel', serif;
             text-decoration: none;
+            transition: opacity 0.3s;
         }
-        nav .logo img {
-            height: 55px;
-            margin-right: 18px;
-            filter: drop-shadow(0 0 5px rgba(194, 154, 91, 0.4));
+        .unified-nav .logo:hover {
+            opacity: 0.85;
         }
-        nav .nav-links {
-            display: flex;
+
+        .unified-nav .logo img {
+            height: 52px;
+            margin-right: 14px;
+            filter: drop-shadow(0 0 6px rgba(194, 154, 91, 0.4));
+        }
+
+        /* PC Desktop Navigation Links */
+        .unified-nav .desktop-links {
+            display: flex !important;
+            align-items: center;
+            gap: 28px;
             list-style: none;
             margin: 0;
             padding: 0;
         }
-        nav .nav-links li {
-            margin-left: 25px;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            display: flex;
-            align-items: center;
+
+        .unified-nav .desktop-links li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
-        nav .nav-links li a {
+
+        .unified-nav .desktop-links li a {
             color: #ccc;
-            transition: color 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
             text-decoration: none;
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        nav .nav-links li a:hover {
+
+        .unified-nav .desktop-links li a:hover {
             color: #fff;
+            border-bottom-color: #c29a5b;
         }
-        
+
+        .unified-nav .desktop-links li a.practice-link {
+            color: #c29a5b;
+            font-weight: 700;
+        }
+
+        .unified-nav .desktop-links li a.practice-link:hover {
+            color: #ffd88a;
+            border-bottom-color: #ffd88a;
+        }
+
         /* Hamburger Button */
-        .hamburger {
-            display: none;
+        .unified-nav .hamburger-btn {
+            display: none !important;
             flex-direction: column;
-            justify-content: space-between;
-            width: 24px;
-            height: 18px;
+            justify-content: space-around;
+            width: 28px;
+            height: 22px;
+            background: transparent;
+            border: none;
             cursor: pointer;
-            z-index: 1001;
+            padding: 0;
+            z-index: 10001;
         }
-        .hamburger span {
+
+        .unified-nav .hamburger-btn span {
             display: block;
-            height: 2px;
             width: 100%;
-            background-color: #fff;
+            height: 2px;
+            background-color: #c29a5b;
             border-radius: 2px;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
-        
-        /* Mobile Menu */
-        .mobile-menu {
+
+        /* Animated Hamburger to 'X' */
+        .unified-nav .hamburger-btn.is-active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile Dropdown Menu */
+        .unified-nav .mobile-dropdown {
             display: none;
-            background: #0a0a0a;
-            border-top: 1px solid rgba(255,255,255,0.05);
             position: absolute;
             top: 90px;
             left: 0;
             width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            z-index: 10000;
         }
-        .mobile-menu.active {
+
+        .unified-nav .mobile-dropdown.is-open {
             display: block;
+            animation: navFadeDown 0.25s ease-out forwards;
         }
-        .mobile-menu ul {
+
+        @keyframes navFadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unified-nav .mobile-dropdown ul {
             list-style: none;
             margin: 0;
-            padding: 10px 0;
+            padding: 10px 20px 20px;
         }
-        .mobile-menu li {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+
+        .unified-nav .mobile-dropdown li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            list-style: none;
+            margin: 0;
         }
-        .mobile-menu li:last-child {
+
+        .unified-nav .mobile-dropdown li:last-child {
             border-bottom: none;
         }
-        .mobile-menu li a {
+
+        .unified-nav .mobile-dropdown li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 8px;
             color: #ccc;
             text-decoration: none;
-            font-size: 1rem;
-            display: block;
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.2s, padding-left 0.2s;
         }
-        
+
+        .unified-nav .mobile-dropdown li a:hover,
+        .unified-nav .mobile-dropdown li a:active {
+            color: #fff;
+            padding-left: 14px;
+        }
+
+        .unified-nav .mobile-dropdown li a.practice-link {
+            color: #c29a5b;
+            font-weight: 700;
+        }
+
+        /* Mobile Breakpoint: 768px */
         @media (max-width: 768px) {
-            nav .nav-links {
-                display: none;
+            nav.unified-nav {
+                height: 70px;
             }
-            .hamburger {
-                display: flex;
+            .unified-nav .nav-container {
+                padding: 0 16px;
+            }
+            .unified-nav .logo img {
+                height: 42px;
+                margin-right: 10px;
+            }
+            .unified-nav .logo {
+                font-size: 1.15rem;
+            }
+            .unified-nav .desktop-links {
+                display: none !important;
+            }
+            .unified-nav .hamburger-btn {
+                display: flex !important;
+            }
+            .unified-nav .mobile-dropdown {
+                top: 70px;
             }
         }
+
 header { padding: 120px 0 40px; text-align: center; background: transparent; }
         .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
         
@@ -214,67 +327,8 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         #back-to-top.show { opacity: 1; visibility: visible; }
         #back-to-top:hover { background: #c29a5b; transform: translateY(-3px); }
 
-        /* Hamburger Menu (Global) */
-        .menu-toggle {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 35px;
-            height: 25px;
-            cursor: pointer;
-            z-index: 1001;
-            margin-left: auto;
-        }
-        .menu-toggle span {
-            display: block;
-            height: 2px;
-            width: 100%;
-            background-color: #c29a5b;
-            border-radius: 2px;
-            transition: 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .menu-toggle.is-active span:nth-child(1) { transform: translateY(11.5px) rotate(45deg); }
-        .menu-toggle.is-active span:nth-child(2) { opacity: 0; }
-        .menu-toggle.is-active span:nth-child(3) { transform: translateY(-11.5px) rotate(-45deg); }
-
-        .nav-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: rgba(5,5,5,0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            z-index: 999; opacity: 0; visibility: hidden; transition: 0.4s;
-        }
-        .nav-overlay.is-active { opacity: 1; visibility: visible; }
-
-        nav ul.nav-links {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            padding: 120px 0 50px 0; /* Space for navbar */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 40px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.4s;
-            overflow-y: auto;
-            margin: 0;
-        }
-        nav ul.nav-links.is-active { opacity: 1; visibility: visible; }
-        
-        nav ul.nav-links li { margin: 0; }
-        nav ul.nav-links li a { font-size: 2rem; font-weight: 700; letter-spacing: 0.1em; color: #fff; }
-        nav ul.nav-links li a:hover { color: #c29a5b; }
-
         @media (max-width: 768px) {
-            nav .container { padding: 0 20px; height: 70px; }
-            nav .logo img { height: 45px; margin-right: 10px; }
-            nav .logo { font-size: 1.1rem; }
             
-            nav ul.nav-links li a { font-size: 1.5rem; }
             
             section { padding: 80px 0; }
             .hero-title { font-size: 2.2rem !important; }
@@ -293,33 +347,37 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
 </head>
 <body>
     <div class="hero-bg-video" id="hero-bg-container"></div>
-        <nav>
+            <!-- Unified Navigation Bar -->
+    <nav class="unified-nav">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
             
-            <ul class="nav-links">
+            <!-- Desktop Links (PC: 右上に文字リンク表示) -->
+            <ul class="desktop-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
-                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
+                <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
 
-            <div class="hamburger" id="hamburger-btn" onclick="document.getElementById('mobile-menu').classList.toggle('active')">
+            <!-- Mobile Hamburger Button (スマホ: ハンバーガー表示) -->
+            <button class="hamburger-btn" id="unified-hamburger-btn" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
 
-        <div id="mobile-menu" class="mobile-menu">
+        <!-- Mobile Dropdown Menu -->
+        <div id="unified-mobile-dropdown" class="mobile-dropdown">
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
-                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
+                <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
         </div>
     </nav>
@@ -443,22 +501,41 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
                 document.getElementById('archive-container').innerHTML = `<p style="color:red; text-align:center;">データの読み込みに失敗しました。ローカル環境の場合はローカルサーバー（Live Server等）経由で開いてください。<br>Error: ${err.message}</p>`;
             });
 
-        // Mobile Menu Logic
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-        const navOverlay = document.getElementById('nav-overlay');
-        if (mobileMenu && navLinks && navOverlay) {
-            const toggleMenu = () => {
-                mobileMenu.classList.toggle('is-active');
-                navLinks.classList.toggle('is-active');
-                navOverlay.classList.toggle('is-active');
-            };
-            mobileMenu.addEventListener('click', toggleMenu);
-            navOverlay.addEventListener('click', toggleMenu);
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', toggleMenu);
+        
+    // Unified Navigation Toggle Logic
+    (function() {
+        function initUnifiedNav() {
+            const btn = document.getElementById('unified-hamburger-btn');
+            const menu = document.getElementById('unified-mobile-dropdown');
+            if (!btn || !menu) return;
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                btn.classList.toggle('is-active');
+                menu.classList.toggle('is-open');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    btn.classList.remove('is-active');
+                    menu.classList.remove('is-open');
+                }
+            });
+
+            menu.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    btn.classList.remove('is-active');
+                    menu.classList.remove('is-open');
+                });
             });
         }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initUnifiedNav);
+        } else {
+            initUnifiedNav();
+        }
+    })();
+
     </script>
 </body>
 </html>
