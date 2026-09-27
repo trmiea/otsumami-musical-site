@@ -45,6 +45,10 @@
             text-align: center;
             text-transform: uppercase;
             font-weight: 300;
+            background: linear-gradient(135deg, #f5f5f5 0%, #c29a5b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
 
         a {
@@ -423,6 +427,7 @@ header {
             font-size: 3rem;
             color: #c29a5b;
             font-weight: 700;
+            text-shadow: 0 0 20px rgba(194, 154, 91, 0.4);
         }
 
         .stat-label {
@@ -695,6 +700,42 @@ header {
     <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
     <script>
+        // RFC-4180準拠のCSVパーサー
+        function parseCSV(text) {
+            const lines = [];
+            let row = [];
+            let cell = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                const nextCh = text[i + 1];
+                if (ch === '"') {
+                    if (inQuotes && nextCh === '"') {
+                        cell += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (ch === ',' && !inQuotes) {
+                    row.push(cell.trim());
+                    cell = '';
+                } else if ((ch === '\r' || ch === '\n') && !inQuotes) {
+                    if (ch === '\r' && nextCh === '\n') i++;
+                    row.push(cell.trim());
+                    if (row.some(c => c !== '')) lines.push(row);
+                    row = [];
+                    cell = '';
+                } else {
+                    cell += ch;
+                }
+            }
+            if (cell || row.length > 0) {
+                row.push(cell.trim());
+                if (row.some(c => c !== '')) lines.push(row);
+            }
+            return lines;
+        }
+
         fetch('./res/input/info.json')
             .then(res => res.json())
             .then(data => {
@@ -718,9 +759,38 @@ header {
 
                 // About
                 document.getElementById('about-desc').innerHTML = data.about.description;
-                document.getElementById('stats-container').innerHTML = data.about.stats.map(s => `
-                    <a href="${s.url}" target="_blank" class="stat-item" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;"><span class="stat-number">${s.num}</span><span class="stat-label">${s.label}</span></a>
-                `).join('');
+                document.getElementById('stats-container').innerHTML = data.about.stats.map(s => {
+                    const isMember = s.label.toUpperCase().includes('MEMBER');
+                    const idAttr = isMember ? ' id="stat-total-members"' : '';
+                    return `
+                    <a href="${s.url}" target="_blank" class="stat-item" style="text-decoration: none; color: inherit; display: flex; flex-direction: column;"><span class="stat-number"${idAttr}>${s.num}</span><span class="stat-label">${s.label}</span></a>
+                `;
+                }).join('');
+
+                // Google Spreadsheetから最新メンバー数を自動取得
+                const MEMBER_SHEET_ID = '1faekL6DCyvXmEDpzeoFdKw-aWlLR_40mHQU69g7Q4Mg';
+                const memberCsvUrl = `https://docs.google.com/spreadsheets/d/${MEMBER_SHEET_ID}/export?format=csv&v=${Date.now()}`;
+                fetch(memberCsvUrl, { cache: 'no-store' })
+                    .then(res => {
+                        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+                        return res.text();
+                    })
+                    .then(csvText => {
+                        const rows = parseCSV(csvText);
+                        let members = rows.map(r => (r[0] || '').trim()).filter(Boolean);
+                        if (members.length > 0 && (members[0] === 'Slack名' || members[0].toLowerCase().includes('name') || members[0] === '氏名')) {
+                            members = members.slice(1);
+                        }
+                        if (members.length > 0) {
+                            const memberEl = document.getElementById('stat-total-members');
+                            if (memberEl) {
+                                memberEl.textContent = members.length;
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('Failed to fetch dynamic member count from spreadsheet:', err);
+                    });
 
                 // Next Event
                 document.getElementById('next-title').textContent = data.next_event.title;
