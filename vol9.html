@@ -279,6 +279,22 @@
                         縦軸の曲と横軸の曲の両方に参加しているメンバーの人数です。<br>
                         <strong>0名</strong> の組み合わせは、別室等で同時並行で練習が可能です。
                     </p>
+
+                    <!-- クイックチェッカー -->
+                    <div class="mb-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">特定の曲と、同時並行で練習できる曲を検索する</label>
+                        <select id="overlap-song-select" class="w-full sm:w-1/2 px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-200">
+                            <option value="">-- 曲を選択してください --</option>
+                        </select>
+                        
+                        <div id="overlap-result-container" class="mt-4 hidden animate-fade-in">
+                            <p class="text-xs text-slate-400 mb-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> 並行練習が可能な曲（被り0名）:</p>
+                            <div id="overlap-result-list" class="flex flex-wrap gap-2">
+                                <!-- JSにて生成 -->
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="song-overlap-matrix" class="overflow-x-auto pb-4">
                         <!-- JSにて生成 -->
                     </div>
@@ -1056,6 +1072,40 @@
                     </tbody>
                 </table>
             `;
+            
+            // クイックチェッカーのセットアップ
+            const select = document.getElementById('overlap-song-select');
+            const resultContainer = document.getElementById('overlap-result-container');
+            const resultList = document.getElementById('overlap-result-list');
+            
+            select.innerHTML = '<option value="">-- 曲を選択してください --</option>' + songs.map((s, idx) => `<option value="${idx}">${s}</option>`).join('');
+            
+            // 既存のイベントリスナーをリセットするためにclone
+            const newSelect = select.cloneNode(true);
+            select.parentNode.replaceChild(newSelect, select);
+            
+            newSelect.addEventListener('change', (e) => {
+                const idx = e.target.value;
+                if (idx === "") {
+                    resultContainer.classList.add('hidden');
+                    return;
+                }
+                
+                resultContainer.classList.remove('hidden');
+                const noOverlapSongs = [];
+                for (let j = 0; j < n; j++) {
+                    if (parseInt(idx) !== j && matrix[idx][j] === 0) {
+                        noOverlapSongs.push(songs[j]);
+                    }
+                }
+                
+                if (noOverlapSongs.length > 0) {
+                    resultList.innerHTML = noOverlapSongs.map(s => `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm">${s}</span>`).join('');
+                } else {
+                    resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません（すべての曲とメンバーが重複しています）</span>`;
+                }
+            });
+
             lucide.createIcons();
         }
 
