@@ -7,6 +7,11 @@
     <!-- 検索エンジン除外（SEO遮断） -->
     <meta name="robots" content="noindex, nofollow, noarchive">
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,16 +21,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            200: '#ddd6fe',
-                            300: '#c4b5fd',
-                            400: '#a78bfa',
-                            500: '#8b5cf6', // indigo/purple accent
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                            900: '#4c1d95',
+                            50: '#fdfaee',
+                            100: '#f9f2d5',
+                            200: '#f2e2ad',
+                            300: '#e9cc7b',
+                            400: '#e1b553',
+                            500: '#c29a5b', // Gold base
+                            600: '#aa7a3b',
+                            700: '#8c5d31',
+                            800: '#754b2d',
+                            900: '#643f29',
                         },
                         accent: {
                             500: '#f59e0b', // amber
@@ -50,9 +55,64 @@
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            background-color: #0f172a; /* Slate 900 */
-            color: #f1f5f9; /* Slate 100 */
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #050505;
+            color: #f5f5f5;
+        }
+        
+        /* Navbar Styles from index */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        nav .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+        }
+        nav .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #c29a5b;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+        }
+        nav .logo img {
+            height: 55px;
+            margin-right: 18px;
+            filter: drop-shadow(0 0 5px rgba(194, 154, 91, 0.4));
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin-left: 25px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+        nav ul li a {
+            color: #ccc;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            color: #fff;
         }
         
         @keyframes float {
@@ -106,11 +166,27 @@
     </style>
 </head>
 <body class="min-h-screen hidden" id="app-body">
+    <!-- Navbar -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="res/input/logo.png" alt="Otsumami Logo">
+                <span>Otsumami Musical</span>
+            </a>
+            <ul class="hidden sm:flex">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#schedule">Schedule</a></li>
+                <li><a href="archive.html">Archive</a></li>
+                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">Vol.9 Practice</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <!-- 背景エフェクト -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-slate-950">
-        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/20 blur-[120px] mix-blend-screen animate-float-1"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-pink-600/20 blur-[120px] mix-blend-screen animate-float-2"></div>
-        <div class="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-purple-600/15 blur-[120px] mix-blend-screen animate-float-3"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#050505]">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/15 blur-[120px] mix-blend-screen animate-float-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/10 blur-[120px] mix-blend-screen animate-float-2"></div>
+        <div class="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-orange-600/10 blur-[120px] mix-blend-screen animate-float-3"></div>
     </div>
 
     <!-- パスコード認証モーダル -->
@@ -139,35 +215,25 @@
     </div>
 
     <!-- メインダッシュボード (認証後に表示) -->
-    <div id="dashboard" class="hidden">
-        <!-- ヘッダー -->
-        <header class="sticky top-0 z-40 glass-panel border-b border-slate-700/50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg">
-                            <i data-lucide="music" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">おつまみミュージカル <span class="text-brand-400">vol.9</span></h1>
-                    </div>
-                    
-                    <div class="flex items-center gap-3 text-sm">
-                        <span id="last-sync-time" class="text-slate-400 hidden sm:inline-block"></span>
-                        <button id="btn-refresh" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-colors border border-slate-700">
-                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">更新</span>
-                        </button>
-                        <button id="btn-logout" class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg flex items-center gap-2 transition-colors border border-red-500/20">
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">ログアウト</span>
-                        </button>
-                    </div>
-                </div>
+    <div id="dashboard" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-32 hidden">
+        <!-- ヘッダーエリア -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-slate-800 pb-6">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-white mb-2" style="font-family: 'Cinzel', serif;">Vol.9 Practice Dashboard</h1>
+                <p class="text-slate-400">おつまみミュージカル Vol.9 練習・選曲検討用システム</p>
             </div>
-        </header>
+            
+            <div class="flex items-center gap-3 text-sm">
+                <span id="last-sync-time" class="text-slate-400 hidden sm:inline-block"></span>
+                <button id="btn-refresh" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-colors border border-slate-700">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">データ更新</span>
+                </button>
+            </div>
+        </div>
 
         <!-- メインコンテンツ -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <main class="space-y-8">
             
             <!-- ローディング表示 -->
             <div id="loading-spinner" class="flex flex-col items-center justify-center py-20 text-brand-400">
