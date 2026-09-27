@@ -269,6 +269,21 @@
                     </div>
                 </div>
 
+                <!-- 練習メニュー被りチェッカー -->
+                <div class="glass-panel p-6 rounded-xl mt-8">
+                    <h3 class="text-lg font-bold mb-1 flex items-center gap-2 text-amber-400">
+                        <i data-lucide="git-merge" class="w-5 h-5"></i>
+                        【練習メニュー検討】曲同士のメンバー被り人数マトリクス
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-5">
+                        縦軸の曲と横軸の曲の両方に参加しているメンバーの人数です。<br>
+                        <strong>0名</strong> の組み合わせは、別室等で同時並行で練習が可能です。
+                    </p>
+                    <div id="song-overlap-matrix" class="overflow-x-auto pb-4">
+                        <!-- JSにて生成 -->
+                    </div>
+                </div>
+
                 <!-- 7. 生データ一覧 -->
                 <div class="glass-panel p-6 rounded-xl mt-8 overflow-hidden">
                     <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-300">
@@ -335,17 +350,15 @@
             // bodyの非表示を解除 (FOUC対策)
             document.getElementById('app-body').classList.remove('hidden');
 
-            // 認証チェック
-            if (sessionStorage.getItem('auth_vol9') === 'true') {
-                showDashboard();
-                fetchData();
-            } else {
-                document.getElementById('auth-modal').classList.remove('hidden');
-            }
+            // パスワード認証をスキップして直接ダッシュボードを表示
+            document.getElementById('auth-modal').classList.add('hidden');
+            showDashboard();
+            fetchData();
 
             // イベントリスナー登録
-            document.getElementById('auth-form').addEventListener('submit', handleAuth);
-            document.getElementById('btn-logout').addEventListener('click', handleLogout);
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                alert('パスワード認証は現在無効化されています。');
+            });
             document.getElementById('btn-refresh').addEventListener('click', () => {
                 document.getElementById('btn-refresh').querySelector('i')?.classList.add('animate-spin');
                 fetchData();
@@ -353,31 +366,7 @@
             document.getElementById('search-input').addEventListener('input', filterMembers);
         });
 
-        // --- 認証ロジック ---
-        function handleAuth(e) {
-            e.preventDefault();
-            const input = document.getElementById('passcode-input').value;
-            if (input === ACCESS_CODE) {
-                sessionStorage.setItem('auth_vol9', 'true');
-                document.getElementById('auth-modal').classList.add('hidden');
-                showDashboard();
-                fetchData();
-            } else {
-                const err = document.getElementById('auth-error');
-                err.classList.remove('hidden');
-                // シェイクアニメーションを追加したい場合はここで
-                setTimeout(() => err.classList.add('hidden'), 3000);
-            }
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('auth_vol9');
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('auth-modal').classList.remove('hidden');
-            document.getElementById('passcode-input').value = '';
-            document.getElementById('dashboard-content').classList.add('hidden');
-        }
-
+        // --- 認証ロジック (無効化済み) ---
         function showDashboard() {
             document.getElementById('dashboard').classList.remove('hidden');
         }
@@ -429,19 +418,27 @@
             }
 
             try {
-                // キャッシュバスティング: スプレッドシート直接編集後もすぐ反映されるよう毎回新鮮なデータを取得
                 const cacheBust = Date.now();
                 
-                // Google Sheets CSVエクスポート: GViz APIの型自動推論による文字列セル欠落（"5(絶対参加する)"がnullになる問題）を完全に防止
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&v=${cacheBust}`;
-                let response = await fetch(csvUrl, { cache: 'no-store' });
+                const sheet2Id = '1b-e22SsmbBK_9gz_imYwdqkoI0g_DAZUblDFNozIT_c';
+                const csvUrl2 = `https://docs.google.com/spreadsheets/d/${sheet2Id}/export?format=csv&v=${cacheBust}`;
                 
-                if (response.ok) {
-                    const csvText = await response.text();
-                    const csvLines = parseCSV(csvText);
-                    if (csvLines.length >= 2) {
-                        const headers = csvLines[0];
-                        const dataRows = csvLines.slice(1);
+                const [res1, res2] = await Promise.all([
+                    fetch(csvUrl, { cache: 'no-store' }),
+                    fetch(csvUrl2, { cache: 'no-store' })
+                ]);
+                
+                if (res1.ok && res2.ok) {
+                    const csvText1 = await res1.text();
+                    const csvLines1 = parseCSV(csvText1);
+                    
+                    const csvText2 = await res2.text();
+                    const csvLines2 = parseCSV(csvText2);
+
+                    if (csvLines1.length >= 2) {
+                        const headers = csvLines1[0];
+                        const dataRows = csvLines1.slice(1);
                         const table = {
                             cols: headers.map(h => ({ label: h })),
                             rows: dataRows.map(r => ({
@@ -451,6 +448,26 @@
                                 }))
                             }))
                         };
+                        
+                        // Parse second sheet (Songs & Members)
+                        appData.songGroups = [];
+                        if (csvLines2.length >= 2) {
+                            const headers2 = csvLines2[1]; // 2行目がヘッダー
+                            const dataRows2 = csvLines2.slice(2);
+                            dataRows2.forEach(row => {
+                                const songName = row[0];
+                                if (!songName || songName.trim() === '') return;
+                                const members = [];
+                                // 希望者1~16 はインデックス8から23
+                                for (let i = 8; i <= 23; i++) {
+                                    if (row[i] && row[i].trim() !== '') {
+                                        members.push(row[i].trim());
+                                    }
+                                }
+                                appData.songGroups.push({ name: songName, members });
+                            });
+                        }
+
                         processData(table);
                         updateUI();
                         
@@ -460,22 +477,7 @@
                         return;
                     }
                 }
-
-                // フォールバック: GViz API
-                const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&v=${cacheBust}`;
-                const gvizRes = await fetch(gvizUrl, { cache: 'no-store' });
-                if (!gvizRes.ok) throw new Error('Network response was not ok');
-                const text = await gvizRes.text();
-                const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                const data = JSON.parse(jsonString);
-
-                processData(data.table);
-                updateUI();
-                
-                const now = new Date();
-                document.getElementById('last-sync-time').textContent = `最終同期: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                document.getElementById('last-sync-time').classList.remove('hidden');
-
+                throw new Error('CSV fetch failed');
             } catch (error) {
                 console.error("データの取得に失敗しました:", error);
                 alert("データの取得に失敗しました。シートの権限（リンクを知っている全員が閲覧可）を確認してください。");
@@ -511,7 +513,7 @@
 
             const idxName = findCol(["名前", "氏名"]);
             const idxMsg = findCol(["意気込み", "メッセージ", "自由記述"]);
-            const idxNote = findCol(["特記", "条件", "備考", "何かあれば", "確認"]);
+            const idxNote = findCol(["特記", "条件", "備考", "何かあれば"]);
             
             const idxStaff = findCols(STAFF_KEYS);
             const idxWs = findCols(WS_KEYS);
@@ -539,15 +541,21 @@
                 
                 const parseRoles = (val) => {
                     if (!val) return;
-                    STAFF_KEYS.forEach(k => {
-                        if (val.includes(k) && !val.includes("いいえ") && !val.includes("不可")) {
-                            if (!staffRoles.includes(k)) staffRoles.push(k);
-                        }
-                    });
-                    WS_KEYS.forEach(k => {
-                        if (val.includes(k) && !val.includes("いいえ") && !val.includes("不可")) {
-                            if (!wsRoles.includes(k)) wsRoles.push(k);
-                        }
+                    
+                    const items = val.split(/[,、\n]/).map(s => s.trim());
+                    items.forEach(item => {
+                        STAFF_KEYS.forEach(k => {
+                            if (item.includes(k) && !item.includes("いいえ") && !item.includes("不可")) {
+                                if (!staffRoles.includes(k)) staffRoles.push(k);
+                            }
+                        });
+                        WS_KEYS.forEach(k => {
+                            if (item.includes(k) && !item.includes("いいえ") && !item.includes("不可")) {
+                                // 誤爆防止: 「歌唱指導」に「歌」が反応しないようにする
+                                if (k === "歌" && item.includes("歌唱指導")) return;
+                                if (!wsRoles.includes(k)) wsRoles.push(k);
+                            }
+                        });
                     });
                 };
 
@@ -606,9 +614,25 @@
                     staffRoles,
                     wsRoles,
                     attends,
-                    songScores
+                    songScores,
+                    joinedSongs: []
                 };
             }).filter(m => m.name !== ''); // 空行除外
+            
+            // 参加曲のマッチング
+            if (appData.songGroups) {
+                appData.rows.forEach(member => {
+                    appData.songGroups.forEach(song => {
+                        // 完全一致だけでなく、名字・名前のみでの揺れを許容する場合は工夫が必要ですが、
+                        // 基本的にはシート上の名前を信じて一致判定します
+                        if (song.members.some(m => m === member.name || member.name.includes(m) || m.includes(member.name))) {
+                            if (!member.joinedSongs.includes(song.name)) {
+                                member.joinedSongs.push(song.name);
+                            }
+                        }
+                    });
+                });
+            }
 
             // --- 集計ロジック ---
             // 曲集計 (総合スコア重視、空白・1は0pt)
@@ -700,6 +724,11 @@
             // 4. WS & スタッフ
             renderWS();
             renderStaff();
+
+            // 5. 曲被りマトリクス
+            if (appData.songGroups) {
+                renderOverlapMatrix();
+            }
 
             // 6. メンバーリスト
             renderMembers(appData.rows);
@@ -948,6 +977,88 @@
             lucide.createIcons();
         }
 
+        function renderOverlapMatrix() {
+            const container = document.getElementById('song-overlap-matrix');
+            if (!appData.songGroups || appData.songGroups.length === 0) return;
+
+            const songs = appData.songGroups.map(g => g.name);
+            const n = songs.length;
+            
+            // Overlap counts: matrix[i][j]
+            const matrix = Array.from({ length: n }, () => Array(n).fill(0));
+            // Store who exactly overlaps
+            const overlapDetails = Array.from({ length: n }, () => Array(n).fill(null).map(() => []));
+
+            // Populate matrix
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (i === j) {
+                        matrix[i][j] = appData.songGroups[i].members.length; // diagonal is total members
+                    } else {
+                        const membersI = appData.songGroups[i].members;
+                        const membersJ = appData.songGroups[j].members;
+                        const common = membersI.filter(m => membersJ.includes(m));
+                        matrix[i][j] = common.length;
+                        overlapDetails[i][j] = common;
+                    }
+                }
+            }
+
+            // Generate HTML
+            // Header
+            const ths = songs.map(s => `<th class="px-2 py-3 text-center min-w-[80px] font-bold text-slate-300 text-xs transform -rotate-45 relative"><div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-max truncate max-w-[100px]" title="${s}">${s}</div><div class="h-16"></div></th>`).join('');
+            
+            const rowsHtml = songs.map((s, i) => {
+                const tds = songs.map((_, j) => {
+                    if (i === j) {
+                        // diagonal
+                        return `<td class="px-2 py-2 text-center bg-slate-800/80 text-slate-500 font-bold">${matrix[i][j]}</td>`;
+                    }
+                    
+                    const count = matrix[i][j];
+                    let bgClass = "bg-slate-800/30";
+                    let textClass = "text-slate-400";
+                    
+                    if (count === 0) {
+                        bgClass = "bg-emerald-500/20 border border-emerald-500/40";
+                        textClass = "text-emerald-400 font-bold";
+                    } else if (count >= 5) {
+                        bgClass = "bg-rose-500/20 border border-rose-500/30";
+                        textClass = "text-rose-400";
+                    } else if (count >= 3) {
+                        bgClass = "bg-amber-500/20 border border-amber-500/30";
+                        textClass = "text-amber-400";
+                    }
+
+                    const names = count > 0 ? overlapDetails[i][j].join(', ') : '被りなし！並行練習可能';
+                    
+                    return `<td class="px-2 py-2 text-center ${bgClass} cursor-help group relative" title="${names}">
+                                <span class="${textClass}">${count}</span>
+                            </td>`;
+                }).join('');
+                
+                return `<tr class="border-t border-slate-700/50">
+                            <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[150px] truncate" title="${s}">${s}</th>
+                            ${tds}
+                        </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <table class="w-full border-collapse">
+                    <thead class="bg-slate-900 z-20">
+                        <tr>
+                            <th class="px-3 py-3 sticky left-0 bg-slate-900 z-30"></th>
+                            ${ths}
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+            `;
+            lucide.createIcons();
+        }
+
         // --- メンバーリスト制御 ---
         function renderMembers(rows) {
             const tbody = document.getElementById('member-list-body');
@@ -960,6 +1071,18 @@
             }
             emptyState.classList.add('hidden');
 
+            // テーブルのヘッダーも更新するため、DOMの<thead>内に直接ではなくここで更新
+            const thead = document.querySelector('table th:nth-child(2)').parentElement;
+            if (thead && !thead.innerHTML.includes('参加曲数')) {
+                thead.innerHTML = `
+                    <th class="px-4 py-3 rounded-tl-lg">名前</th>
+                    <th class="px-4 py-3">参加曲数</th>
+                    <th class="px-4 py-3">スタッフ/WS</th>
+                    <th class="px-4 py-3">参加日程数</th>
+                    <th class="px-4 py-3 rounded-tr-lg">プライベート情報</th>
+                `;
+            }
+
             tbody.innerHTML = rows.map(member => {
                 const hasPrivateInfo = member.message || member.note;
                 const rowId = `member-detail-${member.id}`;
@@ -968,27 +1091,31 @@
                 const wsTags = member.wsRoles.map(r => `<span class="px-1.5 py-0.5 bg-pink-500/20 text-pink-300 rounded text-[10px] mr-1">${r}</span>`).join('');
                 const tagsHtml = (staffTags || wsTags) ? `${staffTags}${wsTags}` : '<span class="text-slate-600 text-xs">-</span>';
 
+                const songTags = member.joinedSongs.map(s => `<span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded text-[10px] mr-1 inline-block mb-1">${s}</span>`).join('');
+                const songCountStr = member.joinedSongs.length > 0 ? `<div class="font-bold text-purple-400 mb-1">${member.joinedSongs.length}曲</div><div class="flex flex-wrap max-w-[200px]">${songTags}</div>` : '<span class="text-slate-600 text-xs">未定</span>';
+
                 return `
                 <tr class="hover:bg-slate-800/50 transition-colors">
                     <td class="px-4 py-3 font-medium text-slate-200">${member.name}</td>
-                    <td class="px-4 py-3 whitespace-normal">${tagsHtml}</td>
-                    <td class="px-4 py-3">
-                        <div class="flex items-center gap-1.5">
+                    <td class="px-4 py-3 whitespace-normal align-top">${songCountStr}</td>
+                    <td class="px-4 py-3 whitespace-normal align-top">${tagsHtml}</td>
+                    <td class="px-4 py-3 align-top">
+                        <div class="flex items-center gap-1.5 mt-1">
                             <span class="text-sm ${member.attends.length > 4 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${member.attends.length}</span>
                             <span class="text-xs text-slate-500">/ 6回</span>
                         </div>
                     </td>
-                    <td class="px-4 py-3">
+                    <td class="px-4 py-3 align-top">
                         ${hasPrivateInfo ? `
-                            <button onclick="toggleAccordion('${rowId}', this)" class="flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 bg-brand-500/10 hover:bg-brand-500/20 px-2 py-1 rounded transition-colors">
+                            <button onclick="toggleAccordion('${rowId}', this)" class="flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 bg-brand-500/10 hover:bg-brand-500/20 px-2 py-1 rounded transition-colors mt-0.5">
                                 <i data-lucide="eye" class="w-3 h-3"></i> 詳細を見る
                             </button>
-                        ` : '<span class="text-xs text-slate-600">特記なし</span>'}
+                        ` : '<span class="text-xs text-slate-600 mt-1 block">特記なし</span>'}
                     </td>
                 </tr>
                 ${hasPrivateInfo ? `
                 <tr class="bg-slate-800/30 border-0">
-                    <td colspan="4" class="p-0">
+                    <td colspan="5" class="p-0">
                         <div id="${rowId}" class="accordion-content">
                             <div class="p-4 mx-4 mb-4 rounded-lg bg-slate-900 border border-slate-700 space-y-3">
                                 ${member.message ? `
