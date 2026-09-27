@@ -43,17 +43,50 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        /* カスタムスクロールバー */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             background-color: #0f172a; /* Slate 900 */
             color: #f1f5f9; /* Slate 100 */
         }
+        
+        @keyframes float {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-float-1 { animation: float 18s ease-in-out infinite; }
+        .animate-float-2 { animation: float 22s ease-in-out infinite reverse; }
+        .animate-float-3 { animation: float 25s ease-in-out infinite 2s; }
+
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
+        .glass-panel:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
+        }
+
+        .table-row-hover {
+            transition: all 0.2s ease;
+        }
+        .table-row-hover:hover {
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
@@ -73,6 +106,12 @@
     </style>
 </head>
 <body class="min-h-screen hidden" id="app-body">
+    <!-- 背景エフェクト -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-slate-950">
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/20 blur-[120px] mix-blend-screen animate-float-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-pink-600/20 blur-[120px] mix-blend-screen animate-float-2"></div>
+        <div class="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-purple-600/15 blur-[120px] mix-blend-screen animate-float-3"></div>
+    </div>
 
     <!-- パスコード認証モーダル -->
     <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm px-4">
@@ -290,6 +329,11 @@
                         <div id="overlap-result-container" class="mt-4 hidden animate-fade-in">
                             <p class="text-xs text-slate-400 mb-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> 並行練習が可能な曲（被り0名）:</p>
                             <div id="overlap-result-list" class="flex flex-wrap gap-2">
+                                <!-- JSにて生成 -->
+                            </div>
+                            
+                            <p class="text-xs text-slate-400 mb-2 mt-4 pt-4 border-t border-slate-700/50 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i> 惜しい！被り1名の曲（調整次第で並行可能かも）:</p>
+                            <div id="overlap-1-result-list" class="flex flex-wrap gap-2">
                                 <!-- JSにて生成 -->
                             </div>
                         </div>
@@ -1093,16 +1137,33 @@
                 
                 resultContainer.classList.remove('hidden');
                 const noOverlapSongs = [];
+                const oneOverlapSongs = [];
                 for (let j = 0; j < n; j++) {
-                    if (parseInt(idx) !== j && matrix[idx][j] === 0) {
-                        noOverlapSongs.push(songs[j]);
+                    if (parseInt(idx) !== j) {
+                        if (matrix[idx][j] === 0) {
+                            noOverlapSongs.push(songs[j]);
+                        } else if (matrix[idx][j] === 1) {
+                            oneOverlapSongs.push({ song: songs[j], members: overlapDetails[idx][j] });
+                        }
                     }
                 }
                 
                 if (noOverlapSongs.length > 0) {
                     resultList.innerHTML = noOverlapSongs.map(s => `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm">${s}</span>`).join('');
                 } else {
-                    resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません（すべての曲とメンバーが重複しています）</span>`;
+                    resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません。</span>`;
+                }
+                
+                const result1List = document.getElementById('overlap-1-result-list');
+                if (oneOverlapSongs.length > 0) {
+                    result1List.innerHTML = oneOverlapSongs.map(s => `
+                        <div class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg shadow-sm flex items-center gap-2">
+                            <span class="text-amber-300 text-sm font-medium">${s.song}</span>
+                            <span class="text-xs text-slate-400 bg-slate-900/50 px-2 py-0.5 rounded border border-slate-700">${s.members.join(', ')}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    result1List.innerHTML = `<span class="text-sm text-slate-500 py-1">被り1名の曲はありません。</span>`;
                 }
             });
 
@@ -1145,7 +1206,7 @@
                 const songCountStr = member.joinedSongs.length > 0 ? `<div class="font-bold text-purple-400 mb-1">${member.joinedSongs.length}曲</div><div class="flex flex-wrap max-w-[200px]">${songTags}</div>` : '<span class="text-slate-600 text-xs">未定</span>';
 
                 return `
-                <tr class="hover:bg-slate-800/50 transition-colors">
+                <tr class="table-row-hover cursor-default">
                     <td class="px-4 py-3 font-medium text-slate-200">${member.name}</td>
                     <td class="px-4 py-3 whitespace-normal align-top">${songCountStr}</td>
                     <td class="px-4 py-3 whitespace-normal align-top">${tagsHtml}</td>
