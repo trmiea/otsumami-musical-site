@@ -856,6 +856,7 @@
             const idxName = findCol(["名前", "氏名"]);
             const idxMsg = findCol(["意気込み", "メッセージ", "自由記述"]);
             const idxNote = findCol(["特記", "条件", "備考", "何かあれば"]);
+            const idxSongCount = findCol(["参加曲数"]);
             
             const idxStaff = findCols(STAFF_KEYS);
             const idxWs = findCols(WS_KEYS);
@@ -953,6 +954,7 @@
                     name: getStr(idxName) || `参加者 ${rowIdx + 1}`,
                     message: getStr(idxMsg),
                     note: getStr(idxNote),
+                    desiredSongCount: getStr(idxSongCount),
                     staffRoles,
                     wsRoles,
                     attends,
@@ -1151,10 +1153,8 @@
                         ${song.voters.length > 0 ? song.voters.map(v => {
                             let extraInfo = '';
                             const m = appData.rows.find(row => row.name === v.name);
-                            if (m) {
-                                const firstCount = Object.values(m.songScores).filter(s => s.isFirstChoice).length;
-                                const totalCount = Object.values(m.songScores).filter(s => s.score > 0).length;
-                                extraInfo = ` <span class="text-[9px] font-normal opacity-75 ml-0.5" title="第1希望: ${firstCount}曲 / 全希望: ${totalCount}曲">(1位:${firstCount}曲/全${totalCount}曲)</span>`;
+                            if (m && m.desiredSongCount) {
+                                extraInfo = ` <span class="text-[10px] font-medium text-amber-200/90 ml-0.5" title="参加希望曲数">(${m.desiredSongCount})</span>`;
                             }
                             return `
                             <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] ${
