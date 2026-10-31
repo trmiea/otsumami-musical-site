@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おつまみミュージカル vol.9 回答集計</title>
+    <title>おつまみミュージカル vol.9 練習・エントリー管理</title>
     <!-- 検索エンジン除外（SEO遮断） -->
     <meta name="robots" content="noindex, nofollow, noarchive">
     
@@ -41,9 +41,6 @@
         }
     </script>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -411,7 +408,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-slate-800 pb-6">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight text-white mb-2" style="font-family: 'Cinzel', serif;">Vol.9 Practice Dashboard</h1>
-                <p class="text-slate-400">おつまみミュージカル Vol.9 練習・選曲検討用システム</p>
+                <p class="text-slate-400">おつまみミュージカル Vol.9 練習・タイムテーブル検討用システム</p>
             </div>
             
             <div class="flex items-center gap-3 text-sm">
@@ -435,123 +432,38 @@
             <div id="dashboard-content" class="hidden space-y-8">
                 
                 <!-- 1. KPIサマリー -->
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="glass-panel p-5 rounded-xl border-l-4 border-l-brand-500">
-                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">総回答数</p>
+                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">参加メンバー数</p>
                         <div class="flex items-end gap-2">
                             <h3 id="kpi-total" class="text-3xl font-bold text-white">0</h3>
                             <span class="text-slate-400 mb-1">名</span>
                         </div>
+                        <p id="kpi-yt-ok" class="text-xs text-slate-400 mt-1">YouTube公開OK: - 名</p>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-amber-500">
+                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">エントリー確定曲数</p>
+                        <div class="flex items-end gap-2">
+                            <h3 id="kpi-song-total" class="text-3xl font-bold text-white">0</h3>
+                            <span class="text-slate-400 mb-1">曲</span>
+                        </div>
+                        <p id="kpi-song-breakdown" class="text-xs text-amber-400/90 mt-1">Vol.9: 0曲 / Vol.10移行: 0曲</p>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-emerald-500">
+                        <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">最多参加予定の練習日</p>
+                        <div class="flex items-end gap-2">
+                            <h3 id="kpi-max-schedule" class="text-2xl font-bold text-white">-</h3>
+                        </div>
+                        <p id="kpi-max-schedule-sub" class="text-xs text-emerald-400 mt-1">参加予定: - 名</p>
                     </div>
                 </div>
 
-                <!-- 2 & 3: 日程ヒートマップ・スタッフ役割 -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- 練習日程ヒートマップ -->
-                    <div class="glass-panel p-6 rounded-xl">
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
-                            練習日程 参加予定者
-                        </h2>
-                        <div class="space-y-4" id="schedule-heatmap">
-                            <!-- JSにて日程バーを生成 -->
-                        </div>
-                    </div>
-
-                    <!-- スタッフ役割 -->
-                    <div class="glass-panel p-6 rounded-xl">
-                        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                            <i data-lucide="wrench" class="w-5 h-5 text-blue-400"></i>
-                            運営スタッフ 役割別
-                        </h2>
-                        <div class="space-y-3" id="staff-roles">
-                            <!-- JSにて生成 -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. メンバー一覧 (プライバシー配慮) -->
+                <!-- 2. 練習メニュー被りチェッカー -->
                 <div class="glass-panel p-6 rounded-xl">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                        <h2 class="text-lg font-bold flex items-center gap-2">
-                            <i data-lucide="list" class="w-5 h-5 text-brand-400"></i>
-                            メンバー回答一覧
-                        </h2>
-                        <div class="w-full sm:w-auto relative">
-                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="search-input" placeholder="名前で検索..." 
-                                class="w-full sm:w-64 pl-9 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
-                        </div>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead class="text-xs text-slate-400 uppercase bg-slate-800/50">
-                                <tr>
-                                    <th class="px-4 py-3 rounded-tl-lg">名前</th>
-                                    <th class="px-4 py-3">スタッフ/WS</th>
-                                    <th class="px-4 py-3">参加日程数</th>
-                                    <th class="px-4 py-3 rounded-tr-lg">プライベート情報</th>
-                                </tr>
-                            </thead>
-                            <tbody id="member-list-body" class="divide-y divide-slate-700/50">
-                                <!-- JSにて生成 -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 空状態 -->
-                    <div id="member-empty-state" class="hidden text-center py-8 text-slate-500">
-                        該当するメンバーが見つかりません。
-                    </div>
-                </div>
-
-                <!-- 管理者用 分析セクション -->
-                <hr class="border-slate-700/50 my-8">
-                <div class="text-center mb-6">
-                    <h2 class="text-xl sm:text-2xl font-bold mb-2 text-slate-300 flex justify-center items-center gap-2">
-                        <i data-lucide="search" class="w-6 h-6 text-brand-400"></i>
-                        管理者用 分析セクション
-                    </h2>
-                    <p class="text-slate-400 text-sm">※全体曲の絞り込み、およびWSスケジュール決定用の情報です</p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- 5. 全体曲スコア詳細 -->
-                    <div class="glass-panel p-6 rounded-xl relative overflow-hidden flex flex-col h-full">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
-                        <h3 class="text-lg font-bold mb-1 flex items-center gap-2 text-brand-300">
-                            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-                            【選曲検討用】全体曲スコア詳細
-                        </h3>
-                        <p class="text-xs text-slate-400 mb-4">※空白・1(絶対参加しない)は0ptとして総合スコアを集計</p>
-                        <div class="h-64 relative w-full shrink-0">
-                            <canvas id="songChart"></canvas>
-                        </div>
-                        <div id="song-ranking-list" class="mt-4 space-y-2 flex-grow overflow-y-auto">
-                            <!-- JSにてランキングリストを生成 -->
-                        </div>
-                    </div>
-
-                </div><!-- /grid cols-2 -->
-
-                <!-- WS日程別マトリクス (全幅) -->
-                <div class="glass-panel p-6 rounded-xl">
-                    <h3 class="text-lg font-bold mb-1 flex items-center gap-2 text-pink-400">
-                        <i data-lucide="calendar-check" class="w-5 h-5"></i>
-                        【WS検討用】練習日 × WSカテゴリ 講師マトリクス
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-5">各練習日に参加でき、かつWSを担当できる人を一覧表示しています</p>
-                    <div id="ws-matrix" class="overflow-x-auto">
-                        <!-- JSにて生成 -->
-                    </div>
-                </div>
-
-                <!-- 練習メニュー被りチェッカー -->
-                <div class="glass-panel p-6 rounded-xl mt-8">
-                    <h3 class="text-lg font-bold mb-1 flex items-center gap-2 text-amber-400">
+                    <h2 class="text-lg font-bold mb-1 flex items-center gap-2 text-amber-400">
                         <i data-lucide="git-merge" class="w-5 h-5"></i>
                         【練習メニュー検討】曲同士のメンバー被り人数マトリクス
-                    </h3>
+                    </h2>
                     <p class="text-xs text-slate-400 mb-5">
                         縦軸の曲と横軸の曲の両方に参加しているメンバーの人数です。<br>
                         <strong>0名</strong> の組み合わせは、別室等で同時並行で練習が可能です。
@@ -582,21 +494,38 @@
                     </div>
                 </div>
 
-                <!-- 7. 生データ一覧 -->
-                <div class="glass-panel p-6 rounded-xl mt-8 overflow-hidden">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-300">
-                        <i data-lucide="database" class="w-5 h-5 text-slate-400"></i>
-                        回答一覧（全体版）
-                    </h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs whitespace-nowrap">
-                            <thead class="text-slate-400 bg-slate-800/80" id="raw-table-head">
-                                <!-- JS -->
-                            </thead>
-                            <tbody class="divide-y divide-slate-700/50 text-slate-300" id="raw-table-body">
-                                <!-- JS -->
-                            </tbody>
-                        </table>
+                <!-- 3. エントリー確定曲一覧 -->
+                <div class="glass-panel p-6 rounded-xl">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold flex items-center gap-2 text-brand-300">
+                                <i data-lucide="music" class="w-5 h-5 text-brand-400"></i>
+                                エントリー確定曲一覧
+                                <span class="text-xs font-normal px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full ml-1">募集終了</span>
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1">各ナンバーのリーダー(LD)・参加メンバー・YouTube公開可否・Vol.10移行ステータスの一覧です</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                            <div class="inline-flex rounded-lg bg-slate-900/90 p-1 border border-slate-700/70 text-xs" id="song-filter-tabs">
+                                <button type="button" data-filter="all" class="song-filter-btn px-3 py-1.5 rounded-md font-semibold bg-brand-600 text-white transition-colors">すべて</button>
+                                <button type="button" data-filter="vol9" class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.9 発表</button>
+                                <button type="button" data-filter="vol10" class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.10 移行</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="confirmed-songs-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- JSにて生成 -->
+                    </div>
+                </div>
+
+                <!-- 4. 練習日程ヒートマップ -->
+                <div class="glass-panel p-6 rounded-xl">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-emerald-400"></i>
+                        練習日程 参加予定者
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="schedule-heatmap">
+                        <!-- JSにて日程バーを生成 -->
                     </div>
                 </div>
 
@@ -609,36 +538,17 @@
         // --- 設定・定数 ---
         const ACCESS_CODE = '4708';
         const SHEET_ID = '10wIqAp99erzJC_SZ6IpCdkxFUMMWPsv5dW6nvXsWOwo';
-        const SHEET_NAME = 'フォームの回答 1';
-        
-        // 曲名リスト (キーワード)
-        const SONG_KEYS = [
-            "Supercalifragilisticexpialidocious", 
-            "It's Only a Matter of Time", 
-            "Take me to heaven", 
-            "地平線を目指して"
-        ];
         
         // 日程リスト (キーワード)
         const SCHEDULE_KEYS = ["11/28", "12/12", "1/16", "2/20", "3/13", "4/10"];
-        
-        // WSリスト (キーワード)
-        const WS_KEYS = ["歌", "ダンス", "演技", "体力"];
-        
-        // スタッフリスト (キーワード)
-        const STAFF_KEYS = ["歌唱指導", "振付", "撮影", "動画", "司会", "音響", "照明", "衣装", "サムネ", "企画"];
 
         // 状態管理
         let appData = {
             rows: [],
-            songs: [],
             schedules: [],
-            ws: {},
-            staff: {},
-            rawCols: [],
-            rawRows: []
+            songGroups: [],
+            songFilter: 'all'
         };
-        let songChartInstance = null;
 
         // --- 初期化 ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -658,12 +568,26 @@
 
             // イベントリスナー登録
             document.getElementById('auth-form').addEventListener('submit', handleAuth);
-            document.getElementById('btn-logout').addEventListener('click', handleLogout);
+            document.getElementById('btn-logout')?.addEventListener('click', handleLogout);
             document.getElementById('btn-refresh').addEventListener('click', () => {
                 document.getElementById('btn-refresh').querySelector('i')?.classList.add('animate-spin');
                 fetchData();
             });
-            document.getElementById('search-input').addEventListener('input', filterMembers);
+
+            // 曲一覧フィルタータブ
+            document.querySelectorAll('.song-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    appData.songFilter = btn.dataset.filter || 'all';
+                    document.querySelectorAll('.song-filter-btn').forEach(b => {
+                        if (b === btn) {
+                            b.className = 'song-filter-btn px-3 py-1.5 rounded-md font-semibold bg-brand-600 text-white transition-colors';
+                        } else {
+                            b.className = 'song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors';
+                        }
+                    });
+                    renderConfirmedSongs();
+                });
+            });
         });
 
         // --- 認証ロジック ---
@@ -777,17 +701,54 @@
                         if (csvLines2.length >= 2) {
                             const headers2 = csvLines2[1]; // 2行目がヘッダー
                             const dataRows2 = csvLines2.slice(2);
+                            const findIdx2 = (kw, fallback) => {
+                                const i = headers2.findIndex(h => h && h.toLowerCase().includes(kw.toLowerCase()));
+                                return i >= 0 ? i : fallback;
+                            };
+                            const idxLd = findIdx2('LD', 1);
+                            const idxComment = findIdx2('コメント', 5);
+                            const idxYt = findIdx2('youtube', 6);
+                            const idxVol10 = findIdx2('vol10', 7);
+                            const idxStatus = findIdx2('状況', 8);
+                            
+                            // 「希望者」列のインデックス配列を動的に取得 (Vol10列追加による列ズレ対応)
+                            let memberColIndices = headers2
+                                .map((h, i) => (h && h.includes('希望者')) ? i : -1)
+                                .filter(i => i !== -1);
+                            if (memberColIndices.length === 0) {
+                                memberColIndices = Array.from({ length: 16 }, (_, k) => 9 + k);
+                            }
+
                             dataRows2.forEach(row => {
-                                const songName = row[0];
-                                if (!songName || songName.trim() === '') return;
+                                const rawSongName = row[0];
+                                if (!rawSongName || rawSongName.trim() === '') return;
+
+                                // 曲名セル内に改行や参考URLが含まれる場合を分離
+                                const lines = rawSongName.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+                                const cleanName = lines[0] || rawSongName.trim();
+                                const urlLine = lines.find(l => /^https?:\/\//i.test(l)) || '';
+
                                 const members = [];
-                                // 希望者1~16 はインデックス8から23
-                                for (let i = 8; i <= 23; i++) {
-                                    if (row[i] && row[i].trim() !== '') {
-                                        members.push(row[i].trim());
+                                memberColIndices.forEach(colIdx => {
+                                    const mName = row[colIdx] ? row[colIdx].trim() : '';
+                                    if (mName !== '' && mName !== '募集終了' && mName !== '募集中') {
+                                        members.push(mName);
                                     }
-                                }
-                                appData.songGroups.push({ name: songName, members });
+                                });
+
+                                const vol10Val = (idxVol10 >= 0 && row[idxVol10]) ? row[idxVol10].trim() : '';
+                                const isVol10 = vol10Val !== '';
+
+                                appData.songGroups.push({
+                                    name: cleanName,
+                                    refUrl: urlLine,
+                                    ld: (row[idxLd] || '').trim(),
+                                    comment: (row[idxComment] || '').trim(),
+                                    youtube: (row[idxYt] || '').trim(),
+                                    isVol10: isVol10,
+                                    status: (row[idxStatus] || '').trim(),
+                                    members
+                                });
                             });
                         }
 
@@ -815,14 +776,6 @@
         function processData(table) {
             const cols = table.cols.map(c => c ? c.label : '');
             const rows = table.rows;
-            
-            // 診断ログ: 全列名と行数
-            console.log('[診断] 総行数:', rows.length);
-            console.log('[診断] 全列名:', cols);
-            console.log('[診断] 曲列インデックス:', cols.map((c,i) => SONG_KEYS.some(k => c.includes(k)) ? `${i}:${c}` : null).filter(Boolean));
-            
-            appData.rawCols = cols;
-            appData.rawRows = rows;
 
             // 列インデックスの特定 (曖昧検索)
             const findCol = (keywords) => {
@@ -835,19 +788,11 @@
             };
 
             const idxName = findCol(["名前", "氏名"]);
-            const idxMsg = findCol(["意気込み", "メッセージ", "自由記述"]);
-            const idxNote = findCol(["特記", "条件", "備考", "何かあれば"]);
-            const idxSongCount = findCol(["参加曲数"]);
-            
-            const idxStaff = findCols(STAFF_KEYS);
-            const idxWs = findCols(WS_KEYS);
+            const idxYtOk = findCol(["youtube", "投稿"]);
             const idxSchedule = findCols(SCHEDULE_KEYS);
-            const idxSongs = findCols(SONG_KEYS);
 
             // メンバー行データのパース
             appData.rows = rows.map((r, rowIdx) => {
-                // .v が null の場合は .f (フォーマット済み値) もフォールバックとして読む
-                // スプレッドシート直接入力値は {v: null, f: "5(絶対参加する)"} で返ることがある
                 const getVal = (idx) => {
                     if (idx < 0 || !r.c[idx]) return null;
                     const cell = r.c[idx];
@@ -858,38 +803,6 @@
                     const val = getVal(idx);
                     return val != null ? String(val) : "";
                 };
-
-                // スタッフ希望・WS希望の抽出
-                let staffRoles = [];
-                let wsRoles = [];
-                
-                const parseRoles = (val) => {
-                    if (!val) return;
-                    
-                    const items = val.split(/[,、\n]/).map(s => s.trim());
-                    items.forEach(item => {
-                        STAFF_KEYS.forEach(k => {
-                            if (item.includes(k) && !item.includes("いいえ") && !item.includes("不可")) {
-                                if (!staffRoles.includes(k)) staffRoles.push(k);
-                            }
-                        });
-                        WS_KEYS.forEach(k => {
-                            if (item.includes(k) && !item.includes("いいえ") && !item.includes("不可")) {
-                                // 誤爆防止: 「歌唱指導」に「歌」が反応しないようにする
-                                if (k === "歌" && item.includes("歌唱指導")) return;
-                                if (!wsRoles.includes(k)) wsRoles.push(k);
-                            }
-                        });
-                    });
-                };
-
-                idxStaff.forEach(idx => parseRoles(getStr(idx)));
-                idxWs.forEach(idx => parseRoles(getStr(idx)));
-                
-                const singleStaffWsCol = findCol(["運営", "協力", "スタッフ", "ワークショップ"]);
-                if (singleStaffWsCol >= 0) {
-                    parseRoles(getStr(singleStaffWsCol));
-                }
 
                 // 日程抽出
                 let attends = [];
@@ -909,86 +822,19 @@
                     });
                 }
 
-                // 曲評価抽出 (1~5の数値想定: 空白および1は0点として集計)
-                let songScores = {};
-                idxSongs.forEach(idx => {
-                    const val = getVal(idx);
-                    let numVal = parseFloat(val);
-                    if (isNaN(numVal) && typeof val === 'string') {
-                        const match = val.match(/\d/);
-                        if (match) numVal = parseInt(match[0], 10);
-                    }
-                    const isFirstChoice = (numVal === 5);
-                    // 空白・未回答または1(絶対参加しない)は0点として扱う
-                    if (isNaN(numVal) || numVal <= 1) {
-                        numVal = 0;
-                    }
-                    const songName = SONG_KEYS.find(k => cols[idx].includes(k)) || cols[idx];
-                    songScores[songName] = { score: numVal, isFirstChoice };
-                    // デバッグ: .v と .f 両方を確認できるようにする
-                    const cell = (idx >= 0 && r.c[idx]) ? r.c[idx] : null;
-                    console.log(`[曲スコア] 行${rowIdx} | 列"${cols[idx]}" | .v:"${cell ? cell.v : 'null(cellなし)'}" | .f:"${cell ? cell.f : '-'}" | 変換後:${numVal} | 第1希望:${isFirstChoice}`);
-                });
-
                 return {
                     id: rowIdx,
                     name: getStr(idxName) || `参加者 ${rowIdx + 1}`,
-                    message: getStr(idxMsg),
-                    note: getStr(idxNote),
-                    desiredSongCount: getStr(idxSongCount),
-                    staffRoles,
-                    wsRoles,
-                    attends,
-                    songScores,
-                    joinedSongs: []
+                    ytOk: getStr(idxYtOk),
+                    attends
                 };
             }).filter(m => m.name !== ''); // 空行除外
-            
-            // 参加曲のマッチング
-            if (appData.songGroups) {
-                appData.rows.forEach(member => {
-                    appData.songGroups.forEach(song => {
-                        // 完全一致だけでなく、名字・名前のみでの揺れを許容する場合は工夫が必要ですが、
-                        // 基本的にはシート上の名前を信じて一致判定します
-                        if (song.members.some(m => m === member.name || member.name.includes(m) || m.includes(member.name))) {
-                            if (!member.joinedSongs.includes(song.name)) {
-                                member.joinedSongs.push(song.name);
-                            }
-                        }
-                    });
-                });
-            }
-
-            // --- 集計ロジック ---
-            // 曲集計 (総合スコア重視、空白・1は0pt)
-            let songStats = {};
-            SONG_KEYS.forEach(song => {
-                songStats[song] = { total: 0, firstChoice: 0, count: 0, voters: [] };
-            });
-            appData.rows.forEach(member => {
-                Object.entries(member.songScores).forEach(([song, data]) => {
-                    if (!songStats[song]) songStats[song] = { total: 0, firstChoice: 0, count: 0, voters: [] };
-                    if (data.score > 0) {
-                        songStats[song].total += data.score;
-                        songStats[song].voters.push({ name: member.name, score: data.score, isFirst: data.isFirstChoice });
-                    }
-                    songStats[song].count += 1;
-                    if (data.isFirstChoice) songStats[song].firstChoice += 1;
-                });
-            });
-            appData.songs = Object.entries(songStats).map(([song, stats]) => ({
-                name: song,
-                scorePt: stats.total, // 総合スコア
-                firstChoice: stats.firstChoice,
-                voters: stats.voters.sort((a, b) => b.score - a.score)
-            })).sort((a, b) => b.scorePt - a.scorePt); // 総合スコア降順
 
             // 日程集計
             let scheduleStats = {};
             SCHEDULE_KEYS.forEach(k => scheduleStats[k] = []);
             appData.rows.forEach(member => {
                 member.attends.forEach(d => {
-                    // d (e.g. "11/28") が含まれるキーを探す
                     const key = SCHEDULE_KEYS.find(k => d.includes(k) || k.includes(d));
                     if (key) {
                         scheduleStats[key].push(member.name);
@@ -996,26 +842,6 @@
                 });
             });
             appData.schedules = Object.entries(scheduleStats).map(([date, members]) => ({ date, members }));
-
-            // スタッフ集計
-            let staffStats = {};
-            STAFF_KEYS.forEach(k => staffStats[k] = []);
-            appData.rows.forEach(member => {
-                member.staffRoles.forEach(r => {
-                    if (staffStats[r]) staffStats[r].push(member.name);
-                });
-            });
-            appData.staff = staffStats;
-
-            // WS集計 (参加可能日程つき)
-            let wsStats = {};
-            WS_KEYS.forEach(k => wsStats[k] = []);
-            appData.rows.forEach(member => {
-                member.wsRoles.forEach(r => {
-                    if (wsStats[r]) wsStats[r].push({ name: member.name, attends: member.attends });
-                });
-            });
-            appData.ws = wsStats;
         }
 
         // --- UI更新 ---
@@ -1024,141 +850,116 @@
             
             // 1. KPI
             document.getElementById('kpi-total').textContent = totalMembers;
-            
-            if (appData.songs.length > 0) {
-                const topSong = appData.songs[0];
-                const topSongEl = document.getElementById('kpi-top-song');
-                if (topSongEl) {
-                    topSongEl.textContent = topSong.name;
-                    topSongEl.title = topSong.name;
-                    document.getElementById('kpi-top-song-score').textContent = `総合: ${topSong.scorePt} pt (第1希望: ${topSong.firstChoice}名)`;
+            const ytOkCount = appData.rows.filter(m => m.ytOk && m.ytOk.toUpperCase().includes('OK')).length;
+            const ytOkEl = document.getElementById('kpi-yt-ok');
+            if (ytOkEl) ytOkEl.textContent = `YouTube公開OK: ${ytOkCount} 名`;
+
+            if (appData.songGroups) {
+                const totalSongs = appData.songGroups.length;
+                const vol10Songs = appData.songGroups.filter(s => s.isVol10).length;
+                const vol9Songs = totalSongs - vol10Songs;
+                const songTotalEl = document.getElementById('kpi-song-total');
+                const songBreakdownEl = document.getElementById('kpi-song-breakdown');
+                if (songTotalEl) songTotalEl.textContent = totalSongs;
+                if (songBreakdownEl) songBreakdownEl.textContent = `Vol.9発表: ${vol9Songs}曲 / Vol.10移行: ${vol10Songs}曲`;
+
+                // フィルターボタンの件数ラベル更新
+                document.querySelectorAll('.song-filter-btn').forEach(btn => {
+                    const f = btn.dataset.filter;
+                    if (f === 'all') btn.textContent = `すべて (${totalSongs})`;
+                    else if (f === 'vol9') btn.textContent = `Vol.9 発表 (${vol9Songs})`;
+                    else if (f === 'vol10') btn.textContent = `Vol.10 移行 (${vol10Songs})`;
+                });
+            }
+
+            if (appData.schedules && appData.schedules.length > 0) {
+                let maxIdx = 0;
+                appData.schedules.forEach((s, i) => {
+                    if (s.members.length > appData.schedules[maxIdx].members.length) maxIdx = i;
+                });
+                const maxSch = appData.schedules[maxIdx];
+                const maxSchEl = document.getElementById('kpi-max-schedule');
+                const maxSchSubEl = document.getElementById('kpi-max-schedule-sub');
+                if (maxSchEl) maxSchEl.textContent = `第${maxIdx + 1}回 (${maxSch.date})`;
+                if (maxSchSubEl) {
+                    const pct = totalMembers > 0 ? Math.round((maxSch.members.length / totalMembers) * 100) : 0;
+                    maxSchSubEl.textContent = `参加予定: ${maxSch.members.length}名 (${pct}%)`;
                 }
             }
 
-            const staffCount = appData.rows.filter(m => m.staffRoles.length > 0).length;
-            const staffRatio = totalMembers > 0 ? Math.round((staffCount / totalMembers) * 100) : 0;
-            const staffRatioEl = document.getElementById('kpi-staff-ratio');
-            if (staffRatioEl) staffRatioEl.textContent = staffRatio;
-
-            const wsCount = appData.rows.filter(m => m.wsRoles.length > 0).length;
-            const wsCountEl = document.getElementById('kpi-ws-count');
-            if (wsCountEl) wsCountEl.textContent = wsCount;
-
-
-            // 2. チャート描画
-            renderChart();
-            renderSongList();
-
-            // 3. 日程ヒートマップ
-            renderSchedules(totalMembers);
-
-            // 4. WS & スタッフ
-            renderWS();
-            renderStaff();
-
-            // 5. 曲被りマトリクス
+            // 2. 曲被りマトリクス
             if (appData.songGroups) {
                 renderOverlapMatrix();
             }
 
-            // 6. メンバーリスト
-            renderMembers(appData.rows);
-            
-            // 7. 全体データ
-            renderRawTable();
+            // 3. エントリー確定曲一覧
+            renderConfirmedSongs();
+
+            // 4. 日程ヒートマップ
+            renderSchedules(totalMembers);
         }
 
-        function renderChart() {
-            const ctx = document.getElementById('songChart').getContext('2d');
-            
-            if (songChartInstance) {
-                songChartInstance.destroy();
+        function renderConfirmedSongs() {
+            const container = document.getElementById('confirmed-songs-grid');
+            if (!container || !appData.songGroups) return;
+
+            const filter = appData.songFilter || 'all';
+            const filtered = appData.songGroups.filter(g => {
+                if (filter === 'vol9') return !g.isVol10;
+                if (filter === 'vol10') return g.isVol10;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500 text-sm">該当する曲がありません。</div>`;
+                return;
             }
 
-            const labels = appData.songs.map(s => s.name.length > 15 ? s.name.substring(0, 15) + '...' : s.name);
-            const dataPts = appData.songs.map(s => s.scorePt);
+            container.innerHTML = filtered.map(song => {
+                const volBadge = song.isVol10
+                    ? `<span class="px-2 py-0.5 bg-purple-500/20 text-purple-300 border border-purple-500/40 rounded text-[10px] font-bold whitespace-nowrap">Vol.10移行</span>`
+                    : `<span class="px-2 py-0.5 bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded text-[10px] font-semibold whitespace-nowrap">Vol.9</span>`;
 
-            songChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '総合スコア (pt)',
-                        data: dataPts,
-                        backgroundColor: 'rgba(139, 92, 246, 0.7)', // brand-500
-                        borderColor: 'rgba(139, 92, 246, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#94a3b8' }
-                        },
-                        y: {
-                            grid: { display: false },
-                            ticks: { color: '#cbd5e1', font: { size: 11 } }
-                        }
-                    }
-                }
-            });
-        }
+                const ytBadge = song.youtube.includes('しない')
+                    ? `<span class="px-2 py-0.5 bg-slate-700/70 text-slate-400 border border-slate-600/50 rounded text-[10px] whitespace-nowrap">YT非公開</span>`
+                    : `<span class="px-2 py-0.5 bg-rose-500/15 text-rose-300 border border-rose-500/30 rounded text-[10px] whitespace-nowrap">YT投稿</span>`;
 
-        function renderSongList() {
-            const container = document.getElementById('song-ranking-list');
-            container.innerHTML = appData.songs.map((song, i) => `
-                <div class="p-3.5 rounded-lg bg-slate-800/50 border border-slate-700/50 space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <div class="flex-shrink-0 w-6 h-6 rounded bg-brand-500/20 text-brand-400 font-bold flex items-center justify-center text-xs">
-                                ${i + 1}
+                const refLinkHtml = song.refUrl
+                    ? `<a href="${song.refUrl}" target="_blank" rel="noopener noreferrer" class="text-brand-400 hover:text-brand-300 inline-flex items-center gap-0.5 text-xs ml-1" title="参考リンクを開く"><i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>`
+                    : '';
+
+                const memberPills = song.members.map(m => {
+                    const isLeader = (m === song.ld);
+                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${
+                        isLeader
+                            ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40 font-semibold'
+                            : 'bg-slate-800/90 text-slate-300 border border-slate-700/70'
+                    }">${isLeader ? '<span class="text-[9px] text-amber-400 font-bold">LD</span>' : ''}${m}</span>`;
+                }).join('');
+
+                return `
+                <div class="p-4 rounded-xl border ${song.isVol10 ? 'bg-purple-950/15 border-purple-500/25' : 'bg-slate-900/60 border-slate-700/60'} flex flex-col justify-between gap-3">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <div class="flex items-center flex-wrap gap-1.5">
+                                ${volBadge}
+                                <h3 class="font-bold text-slate-100 text-sm sm:text-base">${song.name}</h3>
+                                ${refLinkHtml}
                             </div>
-                            <div class="truncate">
-                                <p class="text-sm font-semibold text-slate-200 truncate" title="${song.name}">${song.name}</p>
-                                <p class="text-xs text-slate-400">総合スコア: <span class="text-brand-300 font-bold">${song.scorePt} pt</span> | 第1希望(5点): <span class="text-emerald-400 font-semibold">${song.firstChoice}名</span> | 投票人数: <span class="text-slate-300">${song.voters.length}名</span></p>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                ${ytBadge}
+                                <span class="px-2 py-0.5 bg-slate-800 text-amber-300 border border-slate-700 rounded text-xs font-bold">${song.members.length}名</span>
                             </div>
                         </div>
-                        <div class="flex-shrink-0 text-right">
-                            <span class="text-xl font-extrabold text-brand-300">${song.scorePt}</span>
-                            <span class="text-xs text-slate-500">pt</span>
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            ${memberPills}
                         </div>
                     </div>
-                    <!-- 投票メンバー・得点の内訳バッジ -->
-                    <div class="pt-2 border-t border-slate-700/40 flex flex-wrap items-center gap-1.5 text-xs">
-                        <span class="text-slate-400 text-[11px] font-medium mr-1 flex items-center gap-1">
-                            <i data-lucide="users" class="w-3 h-3 text-slate-500"></i>得票内訳:
-                        </span>
-                        ${song.voters.length > 0 ? song.voters.map(v => {
-                            let extraInfo = '';
-                            const m = appData.rows.find(row => row.name === v.name);
-                            if (m && m.desiredSongCount) {
-                                extraInfo = ` <span class="text-[10px] font-medium text-amber-200/90 ml-0.5" title="参加希望曲数">(${m.desiredSongCount})</span>`;
-                            }
-                            return `
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] ${
-                                v.score === 5 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold' :
-                                v.score === 4 ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' :
-                                v.score === 3 ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
-                                'bg-slate-700/60 text-slate-300 border border-slate-600/30'
-                            }">
-                                <span>${v.name}${extraInfo}</span>
-                                <span class="font-bold">${v.score}pt</span>
-                                ${v.isFirst ? '<span class="text-[9px] bg-amber-500/30 text-amber-200 px-1 rounded">第1希望</span>' : ''}
-                            </span>
-                            `;
-                        }).join('') : '<span class="text-slate-500 text-[11px]">得票なし</span>'}
-                    </div>
+                    ${song.comment ? `<p class="text-[11px] text-slate-400 bg-slate-950/50 px-2.5 py-1.5 rounded border border-slate-800/80 leading-relaxed">${song.comment}</p>` : ''}
                 </div>
-            `).join('');
+                `;
+            }).join('');
+
             lucide.createIcons();
         }
 
@@ -1183,136 +984,12 @@
                     <div class="w-full bg-slate-800 rounded-full h-2.5 mb-2">
                         <div class="bg-emerald-500 h-2.5 rounded-full transition-all duration-1000" style="width: ${percent}%"></div>
                     </div>
-                    <div class="text-[10px] text-slate-500 leading-tight bg-slate-800/50 p-2 rounded border border-slate-700/50">
+                    <div class="text-xs text-slate-400 leading-relaxed bg-slate-800/50 p-2.5 rounded border border-slate-700/50">
                         ${count > 0 ? sch.members.join(', ') : '参加予定者なし'}
                     </div>
                 </div>
                 `;
             }).join('');
-        }
-
-        function renderWS() {
-            const container = document.getElementById('ws-matrix');
-
-            const WS_ICONS = { "歌": "mic", "ダンス": "play", "演技": "smile", "体力": "activity" };
-            const WS_COLORS = { "歌": "amber", "ダンス": "orange", "演技": "yellow", "体力": "emerald" };
-
-            // 練習日 x WSカテゴリのマトリクスを構築
-            // セル: その日に参加できてそのWSをできる人のリスト
-            const matrix = {}; // matrix[date][wsRole] = [name, ...]
-            SCHEDULE_KEYS.forEach(date => {
-                matrix[date] = {};
-                WS_KEYS.forEach(role => matrix[date][role] = []);
-            });
-
-            // appData.ws[role] = [{name, attends:[日付...]}]
-            Object.entries(appData.ws).forEach(([role, instructors]) => {
-                instructors.forEach(inst => {
-                    inst.attends.forEach(attendDate => {
-                        const key = SCHEDULE_KEYS.find(k => attendDate.includes(k) || k.includes(attendDate));
-                        if (key && matrix[key] && matrix[key][role] !== undefined) {
-                            if (!matrix[key][role].includes(inst.name)) {
-                                matrix[key][role].push(inst.name);
-                            }
-                        }
-                    });
-                });
-            });
-
-            // テーブルヘッダー: 練習日
-            const thCells = SCHEDULE_KEYS.map((date, i) => {
-                const totalAttend = (appData.schedules[i]?.members?.length ?? 0);
-                return `<th class="px-3 py-3 text-center min-w-[120px]">
-                    <div class="font-bold text-slate-200 text-sm">第${i+1}回</div>
-                    <div class="text-emerald-400 font-semibold text-base">${date}</div>
-                    <div class="text-slate-500 text-[10px] mt-0.5">参加 ${totalAttend}名</div>
-                </th>`;
-            }).join('');
-
-            // テーブル行: WSカテゴリ
-            const rows = WS_KEYS.map(role => {
-                const color = WS_COLORS[role] || 'slate';
-                const icon = WS_ICONS[role] || 'star';
-                const rowHeader = `<td class="px-3 py-3 sticky left-0 bg-slate-900 z-10">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="${icon}" class="w-4 h-4 text-${color}-400"></i>
-                        <span class="font-bold text-sm text-${color}-300">${role}</span>
-                    </div>
-                    <div class="text-[10px] text-slate-500 mt-0.5">WS講師</div>
-                </td>`;
-
-                const cells = SCHEDULE_KEYS.map(date => {
-                    const names = matrix[date][role];
-                    const count = names.length;
-                    let cellBg = 'bg-slate-800/30';
-                    let countColor = 'text-slate-600';
-                    if (count >= 2) { cellBg = `bg-${color}-500/15 border border-${color}-500/30`; countColor = `text-${color}-300`; }
-                    else if (count === 1) { cellBg = `bg-${color}-500/08 border border-${color}-500/20`; countColor = `text-${color}-400`; }
-
-                    const namesList = count > 0
-                        ? names.map(n => `<span class="inline-block px-1.5 py-0.5 bg-slate-700/60 rounded text-[10px] text-slate-200 mr-1 mb-1">${n}</span>`).join('')
-                        : `<span class="text-slate-600 text-[10px]">-</span>`;
-
-                    return `<td class="px-3 py-3 text-center align-top">
-                        <div class="rounded-lg p-2 ${cellBg} min-h-[60px]">
-                            <div class="font-bold text-lg ${countColor} leading-none mb-1">${count > 0 ? count + '名' : '×'}</div>
-                            <div class="flex flex-wrap justify-center">${namesList}</div>
-                        </div>
-                    </td>`;
-                }).join('');
-
-                return `<tr class="border-t border-slate-700/50">${rowHeader}${cells}</tr>`;
-            }).join('');
-
-            container.innerHTML = `
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-800/80 text-xs text-slate-400 uppercase tracking-wider">
-                        <tr>
-                            <th class="px-3 py-3 sticky left-0 bg-slate-800/80 z-10 text-slate-400 min-w-[100px]">WSカテゴリ</th>
-                            ${thCells}
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm">${rows}</tbody>
-                </table>
-                <p class="text-[10px] text-slate-600 mt-3">※ 参加予定日 かつ WS担当希望 の両方を回答したメンバーを表示</p>
-            `;
-
-            lucide.createIcons();
-        }
-
-        function renderStaff() {
-            const container = document.getElementById('staff-roles');
-            
-            container.innerHTML = Object.entries(appData.staff).map(([role, members]) => {
-                const count = members.length;
-                let statusClass = "bg-slate-800 border-slate-700 text-slate-300";
-                let alertHtml = "";
-
-                if (count === 0) {
-                    statusClass = "bg-slate-900 border-slate-800 text-slate-600";
-                } else if (count === 1) {
-                    statusClass = "bg-amber-500/10 border-amber-500/30 text-amber-200";
-                    alertHtml = `<span class="flex items-center gap-1 text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded ml-2"><i data-lucide="alert-triangle" class="w-3 h-3"></i> 1名のみ</span>`;
-                } else {
-                    statusClass = "bg-blue-500/10 border-blue-500/30 text-blue-200";
-                }
-
-                return `
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border ${statusClass}">
-                    <div class="flex items-center mb-2 sm:mb-0">
-                        <span class="font-medium text-sm min-w-[5rem]">${role}</span>
-                        ${alertHtml}
-                    </div>
-                    <div class="flex flex-wrap gap-1.5 justify-end">
-                        ${count > 0 
-                            ? members.map(m => `<span class="px-2 py-1 bg-slate-800/80 rounded text-xs text-slate-300">${m}</span>`).join('')
-                            : `<span class="text-xs text-slate-600">希望者なし</span>`
-                        }
-                    </div>
-                </div>
-                `;
-            }).join('');
-            lucide.createIcons();
         }
 
         function renderOverlapMatrix() {
@@ -1355,9 +1032,11 @@
             const ths = sortedGroups.map(g => {
                 const s = g.name;
                 const count = g.members.length;
-                const label = `${s} (${count}名)`;
+                const v10Prefix = g.isVol10 ? '[Vol.10] ' : '';
+                const label = `${v10Prefix}${s} (${count}名)`;
+                const v10Badge = g.isVol10 ? `<span class="text-purple-400 font-semibold mr-0.5">[Vol.10]</span>` : '';
                 return `<th class="px-2 py-3 text-center min-w-[85px] font-bold text-slate-300 text-xs transform -rotate-45 relative">
-                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-max truncate max-w-[120px]" title="${label}">${s} <span class="text-amber-400 font-normal">(${count})</span></div>
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-max truncate max-w-[130px]" title="${label}">${v10Badge}${s} <span class="text-amber-400 font-normal">(${count})</span></div>
                     <div class="h-20"></div>
                 </th>`;
             }).join('');
@@ -1365,6 +1044,7 @@
             const rowsHtml = sortedGroups.map((g, i) => {
                 const s = g.name;
                 const songMemberCount = g.members.length;
+                const v10Badge = g.isVol10 ? `<span class="px-1 py-0.2 bg-purple-500/20 text-purple-300 border border-purple-500/40 rounded text-[9px] mr-1">Vol.10</span>` : '';
                 const tds = sortedGroups.map((_, j) => {
                     if (i === j) {
                         // diagonal
@@ -1394,8 +1074,8 @@
                 }).join('');
                 
                 return `<tr class="border-t border-slate-700/50">
-                            <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[170px] truncate" title="${s} (${songMemberCount}名)">
-                                ${s} <span class="text-amber-400 font-normal text-[11px]">(${songMemberCount}名)</span>
+                            <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[200px] truncate" title="${g.isVol10 ? '[Vol.10移行] ' : ''}${s} (${songMemberCount}名)">
+                                ${v10Badge}${s} <span class="text-amber-400 font-normal text-[11px]">(${songMemberCount}名)</span>
                             </th>
                             ${tds}
                         </tr>`;
@@ -1420,7 +1100,7 @@
             const resultContainer = document.getElementById('overlap-result-container');
             const resultList = document.getElementById('overlap-result-list');
             
-            select.innerHTML = '<option value="">-- 曲を選択してください（人数順） --</option>' + sortedGroups.map((g, idx) => `<option value="${idx}">${g.name} (${g.members.length}名)</option>`).join('');
+            select.innerHTML = '<option value="">-- 曲を選択してください（人数順） --</option>' + sortedGroups.map((g, idx) => `<option value="${idx}">${g.isVol10 ? '[Vol.10移行] ' : ''}${g.name} (${g.members.length}名)</option>`).join('');
             
             // 既存のイベントリスナーをリセットするためにclone
             const newSelect = select.cloneNode(true);
@@ -1439,160 +1119,37 @@
                 for (let j = 0; j < n; j++) {
                     if (parseInt(idx) !== j) {
                         if (matrix[idx][j] === 0) {
-                            noOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length });
+                            noOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length, isVol10: sortedGroups[j].isVol10 });
                         } else if (matrix[idx][j] === 1) {
-                            oneOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length, members: overlapDetails[idx][j] });
+                            oneOverlapSongs.push({ song: songs[j], count: sortedGroups[j].members.length, members: overlapDetails[idx][j], isVol10: sortedGroups[j].isVol10 });
                         }
                     }
                 }
                 
                 if (noOverlapSongs.length > 0) {
-                    resultList.innerHTML = noOverlapSongs.map(s => `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm">${s.song} <span class="text-xs text-emerald-400/80 font-normal">(${s.count}名)</span></span>`).join('');
+                    resultList.innerHTML = noOverlapSongs.map(s => {
+                        const v10Tag = s.isVol10 ? `<span class="px-1.5 py-0.5 bg-purple-500/30 text-purple-200 rounded text-[10px] mr-1">Vol.10</span>` : '';
+                        return `<span class="px-3 py-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-lg text-sm font-bold shadow-sm inline-flex items-center">${v10Tag}${s.song} <span class="text-xs text-emerald-400/80 font-normal ml-1">(${s.count}名)</span></span>`;
+                    }).join('');
                 } else {
                     resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません。</span>`;
                 }
                 
                 const result1List = document.getElementById('overlap-1-result-list');
                 if (oneOverlapSongs.length > 0) {
-                    result1List.innerHTML = oneOverlapSongs.map(s => `
+                    result1List.innerHTML = oneOverlapSongs.map(s => {
+                        const v10Tag = s.isVol10 ? `<span class="px-1.5 py-0.5 bg-purple-500/30 text-purple-200 rounded text-[10px] mr-1">Vol.10</span>` : '';
+                        return `
                         <div class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg shadow-sm flex items-center gap-2">
-                            <span class="text-amber-300 text-sm font-medium">${s.song} <span class="text-xs text-amber-400/70 font-normal">(${s.count}名)</span></span>
+                            <span class="text-amber-300 text-sm font-medium inline-flex items-center">${v10Tag}${s.song} <span class="text-xs text-amber-400/70 font-normal ml-1">(${s.count}名)</span></span>
                             <span class="text-xs text-slate-400 bg-slate-900/50 px-2 py-0.5 rounded border border-slate-700">被り: ${s.members.join(', ')}</span>
                         </div>
-                    `).join('');
+                    `}).join('');
                 } else {
                     result1List.innerHTML = `<span class="text-sm text-slate-500 py-1">被り1名の曲はありません。</span>`;
                 }
             });
 
-            lucide.createIcons();
-        }
-
-        // --- メンバーリスト制御 ---
-        function renderMembers(rows) {
-            const tbody = document.getElementById('member-list-body');
-            const emptyState = document.getElementById('member-empty-state');
-            
-            if (rows.length === 0) {
-                tbody.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-            emptyState.classList.add('hidden');
-
-            // テーブルのヘッダーも更新するため、DOMの<thead>内に直接ではなくここで更新
-            const thead = document.querySelector('table th:nth-child(2)').parentElement;
-            if (thead && !thead.innerHTML.includes('参加曲数')) {
-                thead.innerHTML = `
-                    <th class="px-4 py-3 rounded-tl-lg">名前</th>
-                    <th class="px-4 py-3">参加曲数</th>
-                    <th class="px-4 py-3">スタッフ/WS</th>
-                    <th class="px-4 py-3">参加日程数</th>
-                    <th class="px-4 py-3 rounded-tr-lg">プライベート情報</th>
-                `;
-            }
-
-            tbody.innerHTML = rows.map(member => {
-                const hasPrivateInfo = member.message || member.note;
-                const rowId = `member-detail-${member.id}`;
-                
-                const staffTags = member.staffRoles.map(r => `<span class="px-1.5 py-0.5 bg-amber-500/10 text-amber-300 border border-amber-500/30 rounded text-[10px] mr-1">${r}</span>`).join('');
-                const wsTags = member.wsRoles.map(r => `<span class="px-1.5 py-0.5 bg-orange-500/10 text-orange-300 border border-orange-500/30 rounded text-[10px] mr-1">${r}</span>`).join('');
-                const tagsHtml = (staffTags || wsTags) ? `${staffTags}${wsTags}` : '<span class="text-slate-600 text-xs">-</span>';
-
-                const songTags = member.joinedSongs.map(s => `<span class="px-1.5 py-0.5 bg-yellow-500/10 text-yellow-300 border border-yellow-500/30 rounded text-[10px] mr-1 inline-block mb-1">${s}</span>`).join('');
-                const songCountStr = member.joinedSongs.length > 0 ? `<div class="font-bold text-yellow-500 mb-1">${member.joinedSongs.length}曲</div><div class="flex flex-wrap max-w-[200px]">${songTags}</div>` : '<span class="text-slate-600 text-xs">未定</span>';
-
-                return `
-                <tr class="table-row-hover cursor-default">
-                    <td class="px-4 py-3 font-medium text-slate-200">${member.name}</td>
-                    <td class="px-4 py-3 whitespace-normal align-top">${songCountStr}</td>
-                    <td class="px-4 py-3 whitespace-normal align-top">${tagsHtml}</td>
-                    <td class="px-4 py-3 align-top">
-                        <div class="flex items-center gap-1.5 mt-1">
-                            <span class="text-sm ${member.attends.length > 4 ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${member.attends.length}</span>
-                            <span class="text-xs text-slate-500">/ 6回</span>
-                        </div>
-                    </td>
-                    <td class="px-4 py-3 align-top">
-                        ${hasPrivateInfo ? `
-                            <button onclick="toggleAccordion('${rowId}', this)" class="flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 bg-brand-500/10 hover:bg-brand-500/20 px-2 py-1 rounded transition-colors mt-0.5">
-                                <i data-lucide="eye" class="w-3 h-3"></i> 詳細を見る
-                            </button>
-                        ` : '<span class="text-xs text-slate-600 mt-1 block">特記なし</span>'}
-                    </td>
-                </tr>
-                ${hasPrivateInfo ? `
-                <tr class="bg-slate-800/30 border-0">
-                    <td colspan="5" class="p-0">
-                        <div id="${rowId}" class="accordion-content">
-                            <div class="p-4 mx-4 mb-4 rounded-lg bg-slate-900 border border-slate-700 space-y-3">
-                                ${member.message ? `
-                                    <div>
-                                        <p class="text-xs font-semibold text-slate-400 mb-1 flex items-center gap-1"><i data-lucide="message-circle" class="w-3 h-3"></i> 意気込み・メッセージ</p>
-                                        <p class="text-sm text-slate-300 whitespace-pre-wrap">${member.message}</p>
-                                    </div>
-                                ` : ''}
-                                ${member.note ? `
-                                    <div class="${member.message ? 'pt-3 border-t border-slate-800' : ''}">
-                                        <p class="text-xs font-semibold text-amber-500/70 mb-1 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> 特記事項・条件</p>
-                                        <p class="text-sm text-slate-300 whitespace-pre-wrap">${member.note}</p>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                ` : ''}
-                `;
-            }).join('');
-            lucide.createIcons();
-        }
-        
-        function renderRawTable() {
-            const head = document.getElementById('raw-table-head');
-            const body = document.getElementById('raw-table-body');
-            
-            if (appData.rawCols.length === 0) return;
-            
-            const escapeHTML = str => String(str).replace(/[&<>"']/g, m => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m]));
-
-            head.innerHTML = `<tr>${appData.rawCols.map(c => `<th class="px-4 py-3 font-medium whitespace-nowrap min-w-[120px]">${escapeHTML(c)}</th>`).join('')}</tr>`;
-            
-            body.innerHTML = appData.rawRows.map(r => {
-                return `<tr class="hover:bg-slate-800/50">` + appData.rawCols.map((c, idx) => {
-                    let rawVal = '';
-                    if (r.c[idx] && r.c[idx].f != null) {
-                        rawVal = r.c[idx].f;
-                    } else if (r.c[idx] && r.c[idx].v != null) {
-                        rawVal = r.c[idx].v;
-                    } else {
-                        rawVal = '';
-                    }
-                    const displayVal = escapeHTML(rawVal);
-                    return `<td class="px-4 py-3 text-ellipsis overflow-hidden max-w-[250px]" title="${displayVal}">${displayVal}</td>`;
-                }).join('') + `</tr>`;
-            }).join('');
-        }
-
-        function filterMembers() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = appData.rows.filter(m => m.name.toLowerCase().includes(query));
-            renderMembers(filtered);
-        }
-
-        // アコーディオンの開閉処理（グローバル関数）
-        window.toggleAccordion = function(id, btn) {
-            const el = document.getElementById(id);
-            const icon = btn.querySelector('i');
-            
-            if (el.classList.contains('open')) {
-                el.classList.remove('open');
-                btn.innerHTML = `<i data-lucide="eye" class="w-3 h-3"></i> 詳細を見る`;
-            } else {
-                el.classList.add('open');
-                btn.innerHTML = `<i data-lucide="eye-off" class="w-3 h-3"></i> 閉じる`;
-            }
             lucide.createIcons();
         }
     </script>
