@@ -128,7 +128,6 @@ NAV_HTML = """    <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="archive.html">Archive</a></li>
-                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
             </ul>
 
             <div class="hamburger" id="hamburger-btn" onclick="document.getElementById('mobile-menu').classList.toggle('active')">
@@ -142,7 +141,6 @@ NAV_HTML = """    <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="archive.html">Archive</a></li>
-                <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
             </ul>
         </div>
     </nav>"""
