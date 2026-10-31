@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>おつまみミュージカル vol.9 練習・エントリー管理</title>
     <!-- 検索エンジン除外（SEO遮断） -->
     <meta name="robots" content="noindex, nofollow, noarchive">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap"
+        rel="stylesheet">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -46,18 +49,31 @@
 
     <style>
         /* カスタムスクロールバー */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background-color: #050505;
             color: #f5f5f5;
         }
-        
-        
+
+
         /* ==========================================
            UNIFIED NAVIGATION (Desktop: Links, Mobile: Hamburger)
         ========================================== */
@@ -97,6 +113,7 @@
             text-decoration: none;
             transition: opacity 0.3s;
         }
+
         .unified-nav .logo:hover {
             opacity: 0.85;
         }
@@ -179,10 +196,12 @@
         .unified-nav .hamburger-btn.is-active span:nth-child(1) {
             transform: translateY(7px) rotate(45deg);
         }
+
         .unified-nav .hamburger-btn.is-active span:nth-child(2) {
             opacity: 0;
             transform: translateX(10px);
         }
+
         .unified-nav .hamburger-btn.is-active span:nth-child(3) {
             transform: translateY(-7px) rotate(-45deg);
         }
@@ -198,7 +217,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(194, 154, 91, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
             z-index: 10000;
         }
 
@@ -212,6 +231,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -263,45 +283,73 @@
             nav.unified-nav {
                 height: 70px;
             }
+
             .unified-nav .nav-container {
                 padding: 0 16px;
             }
+
             .unified-nav .logo img {
                 height: 42px;
                 margin-right: 10px;
             }
+
             .unified-nav .logo {
                 font-size: 1.15rem;
             }
+
             .unified-nav .desktop-links {
                 display: none !important;
             }
+
             .unified-nav .hamburger-btn {
                 display: flex !important;
             }
+
             .unified-nav .mobile-dropdown {
                 top: 70px;
             }
         }
 
         @keyframes float {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-            100% { transform: translate(0px, 0px) scale(1); }
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
         }
-        .animate-float-1 { animation: float 18s ease-in-out infinite; }
-        .animate-float-2 { animation: float 22s ease-in-out infinite reverse; }
-        .animate-float-3 { animation: float 25s ease-in-out infinite 2s; }
+
+        .animate-float-1 {
+            animation: float 18s ease-in-out infinite;
+        }
+
+        .animate-float-2 {
+            animation: float 22s ease-in-out infinite reverse;
+        }
+
+        .animate-float-3 {
+            animation: float 25s ease-in-out infinite 2s;
+        }
 
         .glass-panel {
             background: rgba(15, 15, 15, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(194, 154, 91, 0.15); /* Gold border */
+            border: 1px solid rgba(194, 154, 91, 0.15);
+            /* Gold border */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
         }
+
         .glass-panel:hover {
             transform: translateY(-2px);
             border-color: rgba(194, 154, 91, 0.35);
@@ -311,6 +359,7 @@
         .table-row-hover {
             transition: all 0.2s ease;
         }
+
         .table-row-hover:hover {
             background: rgba(30, 30, 30, 0.8);
             box-shadow: inset 0 0 0 1px rgba(194, 154, 91, 0.2);
@@ -319,34 +368,44 @@
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         /* Accordion transition */
         .accordion-content {
             transition: max-height 0.3s ease-out, padding 0.3s ease;
             max-height: 0;
             overflow: hidden;
         }
+
         .accordion-content.open {
             max-height: 500px;
         }
     </style>
 </head>
+
 <body class="min-h-screen hidden" id="app-body">
-        <!-- Unified Navigation Bar -->
+    <!-- Unified Navigation Bar -->
     <nav class="unified-nav">
         <div class="nav-container">
             <a href="index.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
-            
+
             <!-- Desktop Links (PC: 右上に文字リンク表示) -->
             <ul class="desktop-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
                 <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
@@ -363,7 +422,6 @@
         <div id="unified-mobile-dropdown" class="mobile-dropdown">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
                 <li><a href="vol9.html" class="practice-link">🔒 Practice</a></li>
             </ul>
@@ -372,28 +430,36 @@
 
     <!-- 背景エフェクト -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[#050505]">
-        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/15 blur-[120px] mix-blend-screen animate-float-1"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/10 blur-[120px] mix-blend-screen animate-float-2"></div>
-        <div class="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-orange-600/10 blur-[120px] mix-blend-screen animate-float-3"></div>
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-600/15 blur-[120px] mix-blend-screen animate-float-1">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/10 blur-[120px] mix-blend-screen animate-float-2">
+        </div>
+        <div
+            class="absolute top-[30%] left-[50%] w-[40%] h-[40%] rounded-full bg-orange-600/10 blur-[120px] mix-blend-screen animate-float-3">
+        </div>
     </div>
 
     <!-- パスコード認証モーダル -->
-    <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm px-4">
-        <div class="glass-panel p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center animate-fade-in border-brand-500/30 border-t-4">
+    <div id="auth-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm px-4">
+        <div
+            class="glass-panel p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center animate-fade-in border-brand-500/30 border-t-4">
             <div class="flex justify-center mb-4">
                 <i data-lucide="lock" class="w-12 h-12 text-brand-400"></i>
             </div>
             <h2 class="text-2xl font-bold mb-2 text-white">プライベートアクセス</h2>
             <p class="text-slate-400 text-sm mb-6">関係者専用ページです。合言葉を入力してください。</p>
-            
+
             <form id="auth-form" class="space-y-4">
                 <div>
-                    <input type="password" id="passcode-input" 
+                    <input type="password" id="passcode-input"
                         class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 text-white placeholder-slate-500"
                         placeholder="合言葉を入力" required autocomplete="off">
                 </div>
                 <div id="auth-error" class="text-red-400 text-sm hidden font-medium">合言葉が違います</div>
-                <button type="submit" 
+                <button type="submit"
                     class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-lg font-bold transition-colors flex justify-center items-center gap-2 shadow-lg shadow-brand-500/20">
                     <span>認証する</span>
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -407,13 +473,15 @@
         <!-- ヘッダーエリア -->
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-slate-800 pb-6">
             <div>
-                <h1 class="text-3xl font-bold tracking-tight text-white mb-2" style="font-family: 'Cinzel', serif;">Vol.9 Practice Dashboard</h1>
+                <h1 class="text-3xl font-bold tracking-tight text-white mb-2" style="font-family: 'Cinzel', serif;">
+                    Vol.9 Practice Dashboard</h1>
                 <p class="text-slate-400">おつまみミュージカル Vol.9 練習・タイムテーブル検討用システム</p>
             </div>
-            
+
             <div class="flex items-center gap-3 text-sm">
                 <span id="last-sync-time" class="text-slate-400 hidden sm:inline-block"></span>
-                <button id="btn-refresh" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-colors border border-slate-700">
+                <button id="btn-refresh"
+                    class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg flex items-center gap-2 transition-colors border border-slate-700">
                     <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                     <span class="hidden sm:inline">データ更新</span>
                 </button>
@@ -422,7 +490,7 @@
 
         <!-- メインコンテンツ -->
         <main class="space-y-8">
-            
+
             <!-- ローディング表示 -->
             <div id="loading-spinner" class="flex flex-col items-center justify-center py-20 text-brand-400">
                 <i data-lucide="loader-2" class="w-10 h-10 animate-spin mb-4"></i>
@@ -430,7 +498,7 @@
             </div>
 
             <div id="dashboard-content" class="hidden space-y-8">
-                
+
                 <!-- 1. KPIサマリー -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="glass-panel p-5 rounded-xl border-l-4 border-l-brand-500">
@@ -472,17 +540,22 @@
                     <!-- クイックチェッカー -->
                     <div class="mb-6 p-4 bg-slate-800/50 rounded-lg border border-slate-700/50">
                         <label class="block text-sm font-semibold text-slate-300 mb-2">特定の曲と、同時並行で練習できる曲を検索する</label>
-                        <select id="overlap-song-select" class="w-full sm:w-1/2 px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-200">
+                        <select id="overlap-song-select"
+                            class="w-full sm:w-1/2 px-4 py-2 bg-slate-900 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-200">
                             <option value="">-- 曲を選択してください --</option>
                         </select>
-                        
+
                         <div id="overlap-result-container" class="mt-4 hidden animate-fade-in">
-                            <p class="text-xs text-slate-400 mb-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> 並行練習が可能な曲（被り0名）:</p>
+                            <p class="text-xs text-slate-400 mb-2 flex items-center gap-1"><i data-lucide="check-circle"
+                                    class="w-4 h-4 text-emerald-400"></i> 並行練習が可能な曲（被り0名）:</p>
                             <div id="overlap-result-list" class="flex flex-wrap gap-2">
                                 <!-- JSにて生成 -->
                             </div>
-                            
-                            <p class="text-xs text-slate-400 mb-2 mt-4 pt-4 border-t border-slate-700/50 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i> 惜しい！被り1名の曲（調整次第で並行可能かも）:</p>
+
+                            <p
+                                class="text-xs text-slate-400 mb-2 mt-4 pt-4 border-t border-slate-700/50 flex items-center gap-1">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>
+                                惜しい！被り1名の曲（調整次第で並行可能かも）:</p>
                             <div id="overlap-1-result-list" class="flex flex-wrap gap-2">
                                 <!-- JSにて生成 -->
                             </div>
@@ -501,15 +574,23 @@
                             <h2 class="text-lg font-bold flex items-center gap-2 text-brand-300">
                                 <i data-lucide="music" class="w-5 h-5 text-brand-400"></i>
                                 エントリー確定曲一覧
-                                <span class="text-xs font-normal px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full ml-1">募集終了</span>
+                                <span
+                                    class="text-xs font-normal px-2 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full ml-1">募集終了</span>
                             </h2>
-                            <p class="text-xs text-slate-400 mt-1">各ナンバーのリーダー(LD)・参加メンバー・YouTube公開可否・Vol.10移行ステータスの一覧です</p>
+                            <p class="text-xs text-slate-400 mt-1">各ナンバーのリーダー(LD)・参加メンバー・YouTube公開可否・Vol.10移行ステータスの一覧です
+                            </p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                            <div class="inline-flex rounded-lg bg-slate-900/90 p-1 border border-slate-700/70 text-xs" id="song-filter-tabs">
-                                <button type="button" data-filter="all" class="song-filter-btn px-3 py-1.5 rounded-md font-semibold bg-brand-600 text-white transition-colors">すべて</button>
-                                <button type="button" data-filter="vol9" class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.9 発表</button>
-                                <button type="button" data-filter="vol10" class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.10 移行</button>
+                            <div class="inline-flex rounded-lg bg-slate-900/90 p-1 border border-slate-700/70 text-xs"
+                                id="song-filter-tabs">
+                                <button type="button" data-filter="all"
+                                    class="song-filter-btn px-3 py-1.5 rounded-md font-semibold bg-brand-600 text-white transition-colors">すべて</button>
+                                <button type="button" data-filter="vol9"
+                                    class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.9
+                                    発表</button>
+                                <button type="button" data-filter="vol10"
+                                    class="song-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Vol.10
+                                    移行</button>
                             </div>
                         </div>
                     </div>
@@ -538,7 +619,7 @@
         // --- 設定・定数 ---
         const ACCESS_CODE = '4708';
         const SHEET_ID = '10wIqAp99erzJC_SZ6IpCdkxFUMMWPsv5dW6nvXsWOwo';
-        
+
         // 日程リスト (キーワード)
         const SCHEDULE_KEYS = ["11/28", "12/12", "1/16", "2/20", "3/13", "4/10"];
 
@@ -554,7 +635,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Lucideアイコン初期化
             lucide.createIcons();
-            
+
             // bodyの非表示を解除 (FOUC対策)
             document.getElementById('app-body').classList.remove('hidden');
 
@@ -658,7 +739,7 @@
         async function fetchData() {
             const spinner = document.getElementById('loading-spinner');
             const content = document.getElementById('dashboard-content');
-            
+
             if (appData.rows.length === 0) {
                 spinner.classList.remove('hidden');
                 content.classList.add('hidden');
@@ -666,20 +747,20 @@
 
             try {
                 const cacheBust = Date.now();
-                
+
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&v=${cacheBust}`;
                 const sheet2Id = '1b-e22SsmbBK_9gz_imYwdqkoI0g_DAZUblDFNozIT_c';
                 const csvUrl2 = `https://docs.google.com/spreadsheets/d/${sheet2Id}/export?format=csv&v=${cacheBust}`;
-                
+
                 const [res1, res2] = await Promise.all([
                     fetch(csvUrl, { cache: 'no-store' }),
                     fetch(csvUrl2, { cache: 'no-store' })
                 ]);
-                
+
                 if (res1.ok && res2.ok) {
                     const csvText1 = await res1.text();
                     const csvLines1 = parseCSV(csvText1);
-                    
+
                     const csvText2 = await res2.text();
                     const csvLines2 = parseCSV(csvText2);
 
@@ -695,7 +776,7 @@
                                 }))
                             }))
                         };
-                        
+
                         // Parse second sheet (Songs & Members)
                         appData.songGroups = [];
                         if (csvLines2.length >= 2) {
@@ -710,7 +791,7 @@
                             const idxYt = findIdx2('youtube', 6);
                             const idxVol10 = findIdx2('vol10', 7);
                             const idxStatus = findIdx2('状況', 8);
-                            
+
                             // 「希望者」列のインデックス配列を動的に取得 (Vol10列追加による列ズレ対応)
                             let memberColIndices = headers2
                                 .map((h, i) => (h && h.includes('希望者')) ? i : -1)
@@ -754,7 +835,7 @@
 
                         processData(table);
                         updateUI();
-                        
+
                         const now = new Date();
                         document.getElementById('last-sync-time').textContent = `最終同期: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
                         document.getElementById('last-sync-time').classList.remove('hidden');
@@ -813,7 +894,7 @@
                         if (dateMatch) attends.push(dateMatch[0]);
                     }
                 });
-                
+
                 const singleScheduleCol = findCol(["参加予定日", "練習参加", "日程"]);
                 if (singleScheduleCol >= 0) {
                     const val = getStr(singleScheduleCol);
@@ -847,7 +928,7 @@
         // --- UI更新 ---
         function updateUI() {
             const totalMembers = appData.rows.length;
-            
+
             // 1. KPI
             document.getElementById('kpi-total').textContent = totalMembers;
             const ytOkCount = appData.rows.filter(m => m.ytOk && m.ytOk.toUpperCase().includes('OK')).length;
@@ -930,11 +1011,10 @@
 
                 const memberPills = song.members.map(m => {
                     const isLeader = (m === song.ld);
-                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${
-                        isLeader
+                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs ${isLeader
                             ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40 font-semibold'
                             : 'bg-slate-800/90 text-slate-300 border border-slate-700/70'
-                    }">${isLeader ? '<span class="text-[9px] text-amber-400 font-bold">LD</span>' : ''}${m}</span>`;
+                        }">${isLeader ? '<span class="text-[9px] text-amber-400 font-bold">LD</span>' : ''}${m}</span>`;
                 }).join('');
 
                 return `
@@ -972,12 +1052,12 @@
                 const percent = Math.round((count / maxCount) * 100);
                 const absPercent = total > 0 ? Math.round((count / total) * 100) : 0;
                 const isMax = count === maxCount && count > 0;
-                
+
                 return `
                 <div class="relative">
                     <div class="flex justify-between text-sm mb-1">
                         <span class="font-medium ${isMax ? 'text-emerald-400 font-bold' : 'text-slate-300'}">
-                            第${i+1}回 ${sch.date} ${isMax ? '<span class="text-xs bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded ml-1">最多</span>' : ''}
+                            第${i + 1}回 ${sch.date} ${isMax ? '<span class="text-xs bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded ml-1">最多</span>' : ''}
                         </span>
                         <span class="text-slate-400">${count}名 <span class="text-xs">(${absPercent}%)</span></span>
                     </div>
@@ -1006,7 +1086,7 @@
 
             const songs = sortedGroups.map(g => g.name);
             const n = songs.length;
-            
+
             // Overlap counts: matrix[i][j]
             const matrix = Array.from({ length: n }, () => Array(n).fill(0));
             // Store who exactly overlaps
@@ -1040,7 +1120,7 @@
                     <div class="h-20"></div>
                 </th>`;
             }).join('');
-            
+
             const rowsHtml = sortedGroups.map((g, i) => {
                 const s = g.name;
                 const songMemberCount = g.members.length;
@@ -1050,11 +1130,11 @@
                         // diagonal
                         return `<td class="px-2 py-2 text-center bg-slate-800/80 text-amber-300 font-bold border border-slate-700/50" title="${s}の総メンバー数: ${matrix[i][j]}名">${matrix[i][j]}</td>`;
                     }
-                    
+
                     const count = matrix[i][j];
                     let bgClass = "bg-slate-800/30";
                     let textClass = "text-slate-400";
-                    
+
                     if (count === 0) {
                         bgClass = "bg-emerald-500/20 border border-emerald-500/40";
                         textClass = "text-emerald-400 font-bold";
@@ -1067,12 +1147,12 @@
                     }
 
                     const names = count > 0 ? overlapDetails[i][j].join(', ') : '被りなし！並行練習可能';
-                    
+
                     return `<td class="px-2 py-2 text-center ${bgClass} cursor-help group relative" title="${names}">
                                 <span class="${textClass}">${count}</span>
                             </td>`;
                 }).join('');
-                
+
                 return `<tr class="border-t border-slate-700/50">
                             <th class="px-3 py-2 text-right font-bold text-slate-300 text-xs sticky left-0 bg-slate-900 z-10 whitespace-nowrap max-w-[200px] truncate" title="${g.isVol10 ? '[Vol.10移行] ' : ''}${s} (${songMemberCount}名)">
                                 ${v10Badge}${s} <span class="text-amber-400 font-normal text-[11px]">(${songMemberCount}名)</span>
@@ -1094,25 +1174,25 @@
                     </tbody>
                 </table>
             `;
-            
+
             // クイックチェッカーのセットアップ
             const select = document.getElementById('overlap-song-select');
             const resultContainer = document.getElementById('overlap-result-container');
             const resultList = document.getElementById('overlap-result-list');
-            
+
             select.innerHTML = '<option value="">-- 曲を選択してください（人数順） --</option>' + sortedGroups.map((g, idx) => `<option value="${idx}">${g.isVol10 ? '[Vol.10移行] ' : ''}${g.name} (${g.members.length}名)</option>`).join('');
-            
+
             // 既存のイベントリスナーをリセットするためにclone
             const newSelect = select.cloneNode(true);
             select.parentNode.replaceChild(newSelect, select);
-            
+
             newSelect.addEventListener('change', (e) => {
                 const idx = e.target.value;
                 if (idx === "") {
                     resultContainer.classList.add('hidden');
                     return;
                 }
-                
+
                 resultContainer.classList.remove('hidden');
                 const noOverlapSongs = [];
                 const oneOverlapSongs = [];
@@ -1125,7 +1205,7 @@
                         }
                     }
                 }
-                
+
                 if (noOverlapSongs.length > 0) {
                     resultList.innerHTML = noOverlapSongs.map(s => {
                         const v10Tag = s.isVol10 ? `<span class="px-1.5 py-0.5 bg-purple-500/30 text-purple-200 rounded text-[10px] mr-1">Vol.10</span>` : '';
@@ -1134,7 +1214,7 @@
                 } else {
                     resultList.innerHTML = `<span class="text-sm text-slate-500 py-1">並行練習できる曲はありません。</span>`;
                 }
-                
+
                 const result1List = document.getElementById('overlap-1-result-list');
                 if (oneOverlapSongs.length > 0) {
                     result1List.innerHTML = oneOverlapSongs.map(s => {
@@ -1153,40 +1233,41 @@
             lucide.createIcons();
         }
     </script>
-<script>
-    // Unified Navigation Toggle Logic
-    (function() {
-        function initUnifiedNav() {
-            const btn = document.getElementById('unified-hamburger-btn');
-            const menu = document.getElementById('unified-mobile-dropdown');
-            if (!btn || !menu) return;
+    <script>
+        // Unified Navigation Toggle Logic
+        (function () {
+            function initUnifiedNav() {
+                const btn = document.getElementById('unified-hamburger-btn');
+                const menu = document.getElementById('unified-mobile-dropdown');
+                if (!btn || !menu) return;
 
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                btn.classList.toggle('is-active');
-                menu.classList.toggle('is-open');
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!menu.contains(e.target) && !btn.contains(e.target)) {
-                    btn.classList.remove('is-active');
-                    menu.classList.remove('is-open');
-                }
-            });
-
-            menu.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    btn.classList.remove('is-active');
-                    menu.classList.remove('is-open');
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    btn.classList.toggle('is-active');
+                    menu.classList.toggle('is-open');
                 });
-            });
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initUnifiedNav);
-        } else {
-            initUnifiedNav();
-        }
-    })();
-</script>
+
+                document.addEventListener('click', function (e) {
+                    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    }
+                });
+
+                menu.querySelectorAll('a').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initUnifiedNav);
+            } else {
+                initUnifiedNav();
+            }
+        })();
+    </script>
 </body>
+
 </html>

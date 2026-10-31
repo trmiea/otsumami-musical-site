@@ -1,5 +1,118 @@
 [
   {
+    "id": "vol8",
+    "title": "Otsumami Musical vol8",
+    "date": "2026/10/24",
+    "songs": [
+      {
+        "title": "The Greatest Show",
+        "work": "The Greatest Showman",
+        "youtube_url": "https://youtu.be/q6XzeZHNwBw"
+      },
+      {
+        "title": "女王は私",
+        "work": "魔法にかけられて2",
+        "youtube_url": "https://youtu.be/ox8ZXGL4WmY"
+      },
+      {
+        "title": "皇后の務め",
+        "work": "エリザベート",
+        "youtube_url": "https://youtu.be/a5ljvVFqDRI"
+      },
+      {
+        "title": "Sister Act",
+        "work": "天使にラブ・ソングを…",
+        "youtube_url": "https://youtu.be/hDYy3f4whTE"
+      },
+      {
+        "title": "Blue Jeans",
+        "work": "HANA",
+        "youtube_url": "https://youtu.be/dcbj-O3wByc"
+      },
+      {
+        "title": "ただ一つの未来",
+        "work": "フランケンシュタイン",
+        "youtube_url": "https://youtu.be/4CvRIFSWga0"
+      },
+      {
+        "title": "盛れ！ミ・アモーレ",
+        "work": "Juice=Juice",
+        "youtube_url": "https://youtu.be/79GNyawkYaM"
+      },
+      {
+        "title": "QUEEN's Sanctuary",
+        "work": "ヒプノシスマイク",
+        "youtube_url": "https://youtu.be/hgtHRAeGDV4"
+      },
+      {
+        "title": "Rewrite the Stars",
+        "work": "The Greatest Showman",
+        "youtube_url": "https://youtu.be/SeOKs_Nybqs"
+      },
+      {
+        "title": "Alice in Musicland",
+        "work": "OSTER project",
+        "youtube_url": "https://youtu.be/wGi8cfrShQ8"
+      },
+      {
+        "title": "The World Will Remember Us",
+        "work": "Bonnie & Clyde",
+        "youtube_url": "https://youtu.be/buL4iTFzA6g"
+      },
+      {
+        "title": "Gravity",
+        "work": "Hazbin Hotel",
+        "youtube_url": "https://youtu.be/oIncJiLwdao"
+      },
+      {
+        "title": "僕にピアノが聴こえないなら",
+        "work": "四月は君の嘘",
+        "youtube_url": "https://youtu.be/A1XRwC19rYs"
+      },
+      {
+        "title": "俺は違う",
+        "work": "ゴースト＆レディ",
+        "youtube_url": "https://youtu.be/RecLRC19wM8"
+      },
+      {
+        "title": "Over Drive",
+        "work": "JUDY AND MARY",
+        "youtube_url": "https://youtu.be/U46C4lcOOUI"
+      },
+      {
+        "title": "+Addition",
+        "work": "踊ってみた",
+        "youtube_url": "https://youtu.be/SkwFIAj41OQ"
+      },
+      {
+        "title": "free free",
+        "work": "ロボット・イン・ザ・ガーデン",
+        "youtube_url": "https://youtu.be/I9oGtD3pMCs"
+      },
+      {
+        "title": "エミリーと15の約束",
+        "work": "majiko",
+        "youtube_url": "https://youtu.be/-4h6IgHofPs"
+      },
+      {
+        "title": "誰にでも夢はある",
+        "work": "塔の上のラプンツェル",
+        "youtube_url": "https://youtu.be/99sIX-GoUwQ"
+      },
+      {
+        "title": "イントゥ・ジ・アンノウン",
+        "work": "アナと雪の女王2",
+        "youtube_url": "https://youtu.be/pROypetIYec"
+      },
+      {
+        "title": "ハーモニー・イン・カラー",
+        "work": "ディズニー",
+        "youtube_url": "https://youtu.be/umAM97ughQw"
+      }
+    ],
+    "album_url": "https://photos.app.goo.gl/wSUho19BBtNQHYUz9"
+  },
+  {
     "id": "vol7",
     "title": "Otsumami Musical vol7",
     "date": "2026/3/28",

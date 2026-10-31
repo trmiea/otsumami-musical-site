@@ -127,7 +127,6 @@ NAV_HTML = """    <nav>
             
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
                 <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
             </ul>
@@ -142,14 +141,13 @@ NAV_HTML = """    <nav>
         <div id="mobile-menu" class="mobile-menu">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="vol8.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
                 <li><a href="vol9.html" style="color: #c29a5b; font-weight: bold;">🔒 Practice</a></li>
             </ul>
         </div>
     </nav>"""
 
-for file in ["index.html", "archive.html", "vol8.html"]:
+for file in ["index.html", "archive.html"]:
     with open(file, "r") as f:
         content = f.read()
     
