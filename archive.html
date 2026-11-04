@@ -407,14 +407,14 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         }
 
         // Fetch info for background video
-        fetch('./res/input/info.json')
+        fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
                 document.getElementById('hero-bg-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
             })
             .catch(err => console.error(err));
 
-        fetch('./res/input/archive.json')
+        fetch(`./res/input/archive.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('archive-container');

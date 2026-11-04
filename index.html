@@ -720,7 +720,7 @@ header {
             return lines;
         }
 
-        fetch('./res/input/info.json')
+        fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
                 // SEO & GA
