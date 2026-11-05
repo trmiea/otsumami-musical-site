@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vol.9 | Otsumami Musical Official</title>
+    
+    <meta property="og:title" content="Otsumami Musical Official">
+    <meta property="og:description" content="「おつまみのように気軽にミュージカルを楽しむ」をモットーとした、筑波大学ESSAのOB・OG中心のコミュニティ。">
+    <meta property="og:image" content="https://trmiea.github.io/otsumami-musical-site/res/input/logo.png">
+    <meta property="og:url" content="https://trmiea.github.io/otsumami-musical-site/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
+    <style>
+        .hero-bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #000;
+        }
+        .hero-bg-video::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.7) 50%, rgba(10,10,10,0.9) 100%);
+            z-index: 1;
+        }
+        .hero-bg-video iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            transform: translate(-50%, -50%);
+            opacity: 0.4;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: transparent; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
+        
+        ::selection { background: #c29a5b; color: #000; }
+        ::-moz-selection { background: #c29a5b; color: #000; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c29a5b; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        h1, h2, h3 { letter-spacing: 0.15em; text-align: center; text-transform: uppercase; font-weight: 300; }
+        a { color: #c29a5b; text-decoration: none; transition: 0.3s; }
+        a:hover { opacity: 0.7; }
+        
+        /* ==========================================
+           UNIFIED NAVIGATION (Desktop: Links, Mobile: Hamburger)
+        ========================================== */
+        nav.unified-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.25);
+            z-index: 9999;
+            box-sizing: border-box;
+        }
+
+        .unified-nav .nav-container {
+            max-width: 1200px;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .unified-nav .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: #c29a5b;
+            font-size: 1.35rem;
+            letter-spacing: 0.05em;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        .unified-nav .logo:hover {
+            opacity: 0.85;
+        }
+
+        .unified-nav .logo img {
+            height: 52px;
+            margin-right: 14px;
+            filter: drop-shadow(0 0 6px rgba(194, 154, 91, 0.4));
+        }
+
+        /* PC Desktop Navigation Links */
+        .unified-nav .desktop-links {
+            display: flex !important;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .unified-nav .desktop-links li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .unified-nav .desktop-links li a {
+            color: #ccc;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .unified-nav .desktop-links li a:hover {
+            color: #fff;
+            border-bottom-color: #c29a5b;
+        }
+
+        /* Hamburger Button */
+        .unified-nav .hamburger-btn {
+            display: none !important;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 28px;
+            height: 22px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 10001;
+        }
+
+        .unified-nav .hamburger-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #c29a5b;
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Animated Hamburger to 'X' */
+        .unified-nav .hamburger-btn.is-active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+        .unified-nav .hamburger-btn.is-active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* Mobile Dropdown Menu */
+        .unified-nav .mobile-dropdown {
+            display: none;
+            position: absolute;
+            top: 90px;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(194, 154, 91, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            z-index: 10000;
+        }
+
+        .unified-nav .mobile-dropdown.is-open {
+            display: block;
+            animation: navFadeDown 0.25s ease-out forwards;
+        }
+
+        @keyframes navFadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unified-nav .mobile-dropdown ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px 20px 20px;
+        }
+
+        .unified-nav .mobile-dropdown li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            list-style: none;
+            margin: 0;
+        }
+
+        .unified-nav .mobile-dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .unified-nav .mobile-dropdown li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 8px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .unified-nav .mobile-dropdown li a:hover,
+        .unified-nav .mobile-dropdown li a:active {
+            color: #fff;
+            padding-left: 14px;
+        }
+
+        /* Mobile Breakpoint: 768px */
+        @media (max-width: 768px) {
+            nav.unified-nav {
+                height: 70px;
+            }
+            .unified-nav .nav-container {
+                padding: 0 16px;
+            }
+            .unified-nav .logo img {
+                height: 42px;
+                margin-right: 10px;
+            }
+            .unified-nav .logo {
+                font-size: 1.15rem;
+            }
+            .unified-nav .desktop-links {
+                display: none !important;
+            }
+            .unified-nav .hamburger-btn {
+                display: flex !important;
+            }
+            .unified-nav .mobile-dropdown {
+                top: 70px;
+            }
+        }
+
+        header { padding: 120px 0 40px; text-align: center; background: transparent; }
+        .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
+        
+        .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 20px; }
+        .archive-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .archive-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(194,154,91,0.05), transparent 50%); opacity: 0; transition: 0.4s; pointer-events: none; }
+        .archive-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: #d4af37; }
+        .archive-card:hover::before { opacity: 1; }
+        .archive-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .archive-title { font-family: 'Cinzel', serif; font-size: 2rem; margin: 0; color: #c29a5b; font-weight: 700; }
+        .archive-date { font-size: 1rem; color: #888; }
+        .archive-content { display: flex; flex-direction: column; gap: 30px; }
+        @media (max-width: 768px) { .archive-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
+        
+        .song-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .song-item-content { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: inherit; text-decoration: none; transition: 0.3s; }
+        @media (max-width: 600px) { .song-item-content { flex-direction: column; align-items: flex-start; gap: 5px; } }
+        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.15); padding-left: 25px; }
+        .song-item a.song-item-content:hover .song-title { color: #c29a5b; }
+        .song-title { font-weight: 700; display: block; color: #fff; transition: 0.3s; font-size: 1rem; letter-spacing: 0.05em; }
+        .song-work { font-size: 0.8rem; color: #888; }
+        
+        .links-area { text-align: center; margin: 10px 0 30px; }
+        .btn-gold-outline { display: inline-block; border: 1px solid #c29a5b; color: #c29a5b; padding: 12px 25px; border-radius: 50px; font-size: 0.9rem; letter-spacing: 0.1em; transition: 0.3s; margin-top: 15px; width: 100%; box-sizing: border-box; position: relative; overflow: hidden; }
+        .btn-gold-outline::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(194,154,91,0.3) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); transition: 0.5s; }
+        .btn-gold-outline:hover { background: #c29a5b; color: #000; box-shadow: 0 4px 15px rgba(194,154,91,0.4); }
+        .btn-gold-outline:hover::after { left: 150%; }
+        
+        footer { padding: 60px 0; text-align: center; font-size: 0.75rem; color: #666; background: rgba(0,0,0,0.6); margin-top: 80px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        #back-to-top { position: fixed; bottom: 30px; right: 30px; background: rgba(194, 154, 91, 0.8); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; cursor: pointer; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        #back-to-top.show { opacity: 1; visibility: visible; }
+        #back-to-top:hover { background: #c29a5b; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            section { padding: 80px 0; }
+            .hero-title { font-size: 2.2rem !important; }
+            h2 { font-size: 1.8rem; }
+            
+            .next-card { padding: 40px 20px; }
+            .next-date { font-size: 1.8rem; }
+            .btn-gold { padding: 15px 30px; font-size: 0.9rem !important; width: 100%; box-sizing: border-box; text-align: center; }
+            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
+            
+            #yt-main-container h3 { font-size: 1.4rem !important; }
+            .archive-title { font-size: 1.5rem; }
+            .archive-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-bg-video" id="hero-bg-container"></div>
+    <!-- Unified Navigation Bar -->
+    <nav class="unified-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="res/input/logo.png" alt="Otsumami Logo">
+                <span>Otsumami Musical</span>
+            </a>
+            
+            <!-- Desktop Links (PC: 右上に文字リンク表示) -->
+            <ul class="desktop-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vol9.html">Next</a></li>
+                <li><a href="archive.html">Archive</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Button (スマホ: ハンバーガー表示) -->
+            <button class="hamburger-btn" id="unified-hamburger-btn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="unified-mobile-dropdown" class="mobile-dropdown">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vol9.html">Next</a></li>
+                <li><a href="archive.html">Archive</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="fade-in" style="padding-bottom: 20px;">
+        <div class="container">
+            <h1 class="hero-title" style="font-size: 2.8rem;">Otsumami Musical Vol.9</h1>
+            <p style="color: #c29a5b; font-size: 1.2rem; margin-bottom: 5px;">2027/4/24(土) <span style="font-size: 0.95rem; color: #aaa;">※予備日：4/25(日)</span></p>
+            <p style="color: #fff; font-size: 1.1rem;">バラエティ豊かな20以上のナンバーをお届けします！</p>
+        </div>
+    </header>
+
+    <section class="fade-in">
+        <div class="container">
+            <div class="archive-grid" style="margin-top: 0;">
+                
+                <!-- How to Join Section -->
+                <div class="archive-card fade-in" style="border-top: 4px solid #c29a5b; background: rgba(20, 20, 20, 0.6); margin-bottom: 20px; text-align: center; padding: 40px 20px;">
+                    <h2 class="archive-title" style="color: #c29a5b; margin-bottom: 20px;">How to Join</h2>
+                    <p style="font-size: 1rem; margin-bottom: 15px;">観覧・参加には<strong>公式Slackでの事前登録</strong>が必要です。</p>
+                    <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 30px;">
+                        参加を希望される方は、まずは公式Slackへご加入いただき、最新のアナウンスをご確認ください。
+                    </p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLScchz9AbiB1mQlBYGvO7p5RMJv8FZumpCP144HquiOjxFAJ5g/viewform?usp=sharing&ouid=107683113805178822487" target="_blank" class="btn-gold-outline" style="max-width: 400px; margin: 0 auto;">公式Slack 加入申請はこちら ↗</a>
+                    <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">※すでにSlackに参加済みの方は、そのままSlack内の案内をご確認ください。</p>
+                </div>
+
+                <!-- Event Info Section -->
+                <div class="archive-card fade-in" style="padding: 40px;">
+                    <div class="archive-header" style="border-bottom: 1px solid rgba(194,154,91,0.3); margin-bottom: 20px;">
+                        <h2 class="archive-title">Event Info</h2>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+                        <div>
+                            <h3 style="color: #c29a5b; font-size: 1.1rem; text-align: left; margin-top: 0;">🎭 開催概要</h3>
+                            <ul style="list-style: none; padding: 0; color: #ccc; font-size: 0.95rem; line-height: 2;">
+                                <li><strong>本番日程：</strong> 2027年4月24日(土)</li>
+                                <li><strong>予備日：</strong> 2027年4月25日(日)</li>
+                                <li><strong>会場・時間：</strong> 決定次第お知らせします</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Setlist Section -->
+                <div class="archive-card fade-in" style="padding: 40px;">
+                    <div class="archive-header" style="border-bottom: 1px solid rgba(194,154,91,0.3); margin-bottom: 20px;">
+                        <h2 class="archive-title">Setlist</h2>
+                        <div class="archive-date">全22曲（予定）</div>
+                    </div>
+                    <div class="archive-content">
+                        <div style="margin-top: 10px;">
+                            <h3 style="text-align: left; font-size: 1.2rem; margin-bottom: 10px; color: #c29a5b; border-bottom: 1px solid rgba(194,154,91,0.3); padding-bottom: 10px;">
+                                披露予定ナンバー <span style="font-size: 0.9rem; color: #888;">(順不同)</span>
+                            </h3>
+                            
+                            <ul class="song-list">
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=It%27s%20Only%20a%20Matter%20of%20Time%20Back%20to%20the%20Future%20Musical" target="_blank" class="song-item-content"><span class="song-title">It's Only</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Supercalifragilisticexpialidocious%20Mary%20Poppins" target="_blank" class="song-item-content"><span class="song-title">スパカリ</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%88%91%E3%82%89%E6%81%AF%E7%B5%B6%E3%81%88%E3%81%97%E8%80%85%E3%81%A9%E3%82%82%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">我ら息絶えし者ども</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E5%90%88%E5%94%B1%20%E6%96%B9%E8%88%9F" target="_blank" class="song-item-content"><span class="song-title">(合唱)方舟</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Welcome%20to%20the%20Rock%20Come%20From%20Away" target="_blank" class="song-item-content"><span class="song-title">Welcome to the rock</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Wand%20Dance%20Harry%20Potter%20and%20the%20Cursed%20Child" target="_blank" class="song-item-content"><span class="song-title">Wand Dance</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%81%A1%E3%81%84%E3%81%8B%E3%82%8F%E6%98%A0%E7%94%BB%E3%83%A1%E3%83%89%E3%83%AC%E3%83%BC" target="_blank" class="song-item-content"><span class="song-title">ちいかわ映画メドレー</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8B%E3%83%9B%E3%83%B3%E3%83%8E%E3%83%9F%E3%82%AB%E3%82%BF" target="_blank" class="song-item-content"><span class="song-title">ニホンノミカタ</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%98%E3%82%83%E3%83%80%E3%83%A1%E3%81%8B%E3%81%97%E3%82%89%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">私じゃダメかしら？</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%AF%E4%BD%95%E3%82%82%E8%AD%B2%E3%82%89%E3%81%AA%E3%81%84%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">私は何も譲らない</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%BE%E3%82%AF%E3%82%BE%E3%82%AF%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">ゾクゾク</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%81%8B%E3%81%97%E3%81%A6%E3%82%8B%20%E3%83%98%E3%83%A9%E3%82%AF%E3%83%AC%E3%82%B9" target="_blank" class="song-item-content"><span class="song-title">恋してる</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Popular%20Wicked" target="_blank" class="song-item-content"><span class="song-title">popular</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Dancing%20Queen%20Mamma%20Mia" target="_blank" class="song-item-content"><span class="song-title">ダンシング・クイーン</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Moonlight%E3%81%AE%E3%81%9B%E3%81%84%E3%81%AB%E3%81%97%E3%81%A6" target="_blank" class="song-item-content"><span class="song-title">MoonNightのせいにして</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E4%BB%8A%E3%82%92%E7%94%9F%E3%81%8D%E3%82%8B%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">今を生きる</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%95%E3%82%A7%E6%A8%82%E5%9C%92" target="_blank" class="song-item-content"><span class="song-title">カフェ樂園</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=That%27s%20Life%20Frank%20Sinatra" target="_blank" class="song-item-content"><span class="song-title">That's Life</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Bop%20to%20the%20Top%20High%20School%20Musical" target="_blank" class="song-item-content"><span class="song-title">Bop to Top</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%89%89%E9%96%8B%E3%81%91%E3%81%A6%20%E3%82%A2%E3%83%8A%E3%81%A8%E9%9B%AA%E3%81%AE%E5%A5%B3%E7%8E%8B" target="_blank" class="song-item-content"><span class="song-title">扉開けて</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Take%20a%20Hint%20Victorious" target="_blank" class="song-item-content"><span class="song-title">Take a hint</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8A%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%20%E3%82%B3%E3%83%BC%E3%83%A9%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%B3" target="_blank" class="song-item-content"><span class="song-title">ナッシング</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Otsumami Musical | University of Tsukuba ESSA Alumni Network</p>
+    </footer>
+
+    <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
+
+    <script>
+        // Fetch info for background video
+        fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('hero-bg-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
+            })
+            .catch(err => console.error(err));
+
+        const observer = new IntersectionObserver((entries) => {
+            let delay = 0;
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                    delay += 150;
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0, rootMargin: '0px 0px -50px 0px' }); 
+        
+        const elements = document.querySelectorAll('.fade-in, .archive-card');
+        elements.forEach((el, index) => {
+            el.classList.add('fade-in');
+            if (index < 3) {
+                setTimeout(() => el.classList.add('visible'), index * 150);
+            } else {
+                setTimeout(() => observer.observe(el), 100);
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('back-to-top');
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
+        });
+        
+        // Unified Navigation Toggle Logic
+        (function() {
+            function initUnifiedNav() {
+                const btn = document.getElementById('unified-hamburger-btn');
+                const menu = document.getElementById('unified-mobile-dropdown');
+                if (!btn || !menu) return;
+
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    btn.classList.toggle('is-active');
+                    menu.classList.toggle('is-open');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    }
+                });
+
+                menu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initUnifiedNav);
+            } else {
+                initUnifiedNav();
+            }
+        })();
+    </script>
+</body>
+</html>
+
