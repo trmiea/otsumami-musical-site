@@ -45,10 +45,6 @@
             min-height: 100vh;
             min-width: 177.77vh;
             transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 2.2s ease-in-out;
-        }
-        .hero-bg-video iframe.is-playing {
             opacity: 0.4;
         }
 
@@ -335,7 +331,7 @@
 </head>
 <body>
     <div class="hero-bg-video" id="hero-bg-container">
-        <iframe id="hero-bg-iframe" src="https://www.youtube.com/embed/j7GtXqrMwK0?autoplay=1&mute=1&controls=0&loop=1&playlist=j7GtXqrMwK0&playsinline=1&showinfo=0&rel=0&start=8&enablejsapi=1" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>
+        <iframe id="hero-bg-iframe" src="https://www.youtube.com/embed/j7GtXqrMwK0?autoplay=1&mute=1&controls=0&loop=1&playlist=j7GtXqrMwK0&playsinline=1&showinfo=0&rel=0&start=8" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>
     </div>
     <!-- Unified Navigation Bar -->
     <nav class="unified-nav">
@@ -461,40 +457,15 @@
     <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
     <script>
-        function setupHeroVideoFadeIn() {
-            const iframe = document.getElementById('hero-bg-iframe');
-            if (!iframe) return;
-            const showVideo = () => iframe.classList.add('is-playing');
-            iframe.addEventListener('load', () => {
-                try {
-                    iframe.contentWindow.postMessage('{"event":"listening"}', '*');
-                } catch (e) {}
-                setTimeout(showVideo, 700);
-            });
-            setTimeout(showVideo, 1800);
-        }
-        window.addEventListener('message', (e) => {
-            if (!e.origin.includes('youtube.com')) return;
-            try {
-                const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-                if (data && data.event === 'infoDelivery' && data.info && data.info.playerState === 1) {
-                    const iframe = document.getElementById('hero-bg-iframe');
-                    if (iframe) iframe.classList.add('is-playing');
-                }
-            } catch (err) {}
-        });
-        setupHeroVideoFadeIn();
-
         // Fetch info for background video
         fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
                 const startParam = data.hero.start ? `&start=${data.hero.start}` : '';
-                const expectedSrc = `https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0${startParam}&enablejsapi=1`;
+                const expectedSrc = `https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0${startParam}`;
                 const existingIframe = document.getElementById('hero-bg-iframe');
                 if (!existingIframe || existingIframe.getAttribute('src') !== expectedSrc) {
                     document.getElementById('hero-bg-container').innerHTML = `<iframe id="hero-bg-iframe" src="${expectedSrc}" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
-                    setupHeroVideoFadeIn();
                 }
             })
             .catch(err => console.error(err));
