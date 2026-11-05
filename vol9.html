@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vol.9 | Otsumami Musical Official</title>
+    <link rel="icon" type="image/png" href="./res/input/logo.png">
     
     <meta property="og:title" content="Otsumami Musical Official">
     <meta property="og:description" content="「おつまみのように気軽にミュージカルを楽しむ」をモットーとした、筑波大学ESSAのOB・OG中心のコミュニティ。">
@@ -145,6 +146,14 @@
         .unified-nav .desktop-links li a:hover {
             color: #fff;
             border-bottom-color: #c29a5b;
+            opacity: 1;
+        }
+
+        .unified-nav .desktop-links li a.is-current {
+            color: #c29a5b;
+            border-bottom-color: #c29a5b;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(194, 154, 91, 0.4);
         }
 
         /* Hamburger Button */
@@ -246,6 +255,12 @@
         .unified-nav .mobile-dropdown li a:active {
             color: #fff;
             padding-left: 14px;
+            opacity: 1;
+        }
+
+        .unified-nav .mobile-dropdown li a.is-current {
+            color: #c29a5b;
+            font-weight: 700;
         }
 
         /* Mobile Breakpoint: 768px */
@@ -276,6 +291,23 @@
 
         header { padding: 120px 0 40px; text-align: center; background: transparent; }
         .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
+
+        .countdown-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #f3d778;
+            background: linear-gradient(135deg, rgba(194, 154, 91, 0.22), rgba(194, 154, 91, 0.06));
+            border: 1px solid rgba(194, 154, 91, 0.5);
+            padding: 8px 22px;
+            border-radius: 50px;
+            margin: 10px 0 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
         
         .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 20px; }
         .archive-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
@@ -289,13 +321,37 @@
         @media (max-width: 768px) { .archive-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
         
         .song-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .song-item-content { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: inherit; text-decoration: none; transition: 0.3s; }
-        @media (max-width: 600px) { .song-item-content { flex-direction: column; align-items: flex-start; gap: 5px; } }
-        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.15); padding-left: 25px; }
-        .song-item a.song-item-content:hover .song-title { color: #c29a5b; }
+        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .song-item-content { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 15px; color: inherit; text-decoration: none; transition: all 0.3s ease; border-radius: 8px; }
+        .song-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .song-num { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: rgba(194, 154, 91, 0.65); min-width: 24px; text-align: right; letter-spacing: 0.05em; }
         .song-title { font-weight: 700; display: block; color: #fff; transition: 0.3s; font-size: 1rem; letter-spacing: 0.05em; }
-        .song-work { font-size: 0.8rem; color: #888; }
+        .play-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(194, 154, 91, 0.22), rgba(194, 154, 91, 0.06));
+            border: 1px solid rgba(194, 154, 91, 0.55);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #e8d099;
+            font-size: 0.75rem;
+            padding-left: 2px;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.12); padding-left: 24px; opacity: 1; }
+        .song-item a.song-item-content:hover .song-title { color: #f3d778; }
+        .song-item a.song-item-content:hover .play-badge {
+            background: linear-gradient(135deg, #f3d778, #c29a5b);
+            color: #000;
+            border-color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.65);
+        }
         
         .links-area { text-align: center; margin: 10px 0 30px; }
         .btn-gold-outline { display: inline-block; background: linear-gradient(135deg, #e0bb43 0%, #c29a5b 50%, #9a7018 100%); border: 1px solid rgba(255, 235, 170, 0.45); color: #0a0a0a !important; font-weight: 700; padding: 14px 28px; border-radius: 50px; font-size: 0.95rem; letter-spacing: 0.1em; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); margin-top: 15px; width: 100%; box-sizing: border-box; position: relative; overflow: hidden; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), 0 4px 15px rgba(194, 154, 91, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.5); cursor: pointer; }
@@ -317,13 +373,6 @@
             section { padding: 80px 0; }
             .hero-title { font-size: 2.2rem !important; }
             h2 { font-size: 1.8rem; }
-            
-            .next-card { padding: 40px 20px; }
-            .next-date { font-size: 1.8rem; }
-            .btn-gold { padding: 15px 30px; font-size: 0.9rem !important; width: 100%; box-sizing: border-box; text-align: center; }
-            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
-            
-            #yt-main-container h3 { font-size: 1.4rem !important; }
             .archive-title { font-size: 1.5rem; }
             .archive-card { padding: 25px; }
         }
@@ -336,15 +385,15 @@
     <!-- Unified Navigation Bar -->
     <nav class="unified-nav">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="main.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
             
             <!-- Desktop Links (PC: 右上に文字リンク表示) -->
             <ul class="desktop-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="vol9.html">Next</a></li>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="vol9.html" class="is-current">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
             </ul>
 
@@ -359,8 +408,8 @@
         <!-- Mobile Dropdown Menu -->
         <div id="unified-mobile-dropdown" class="mobile-dropdown">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="vol9.html">Next</a></li>
+                <li><a href="main.html">Home</a></li>
+                <li><a href="vol9.html" class="is-current">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
             </ul>
         </div>
@@ -369,8 +418,9 @@
     <header class="fade-in" style="padding-bottom: 20px;">
         <div class="container">
             <h1 class="hero-title" style="font-size: 2.8rem;">Otsumami Musical Vol.9</h1>
-            <p style="color: #c29a5b; font-size: 1.2rem; margin-bottom: 5px;">2027/4/24(土) <span style="font-size: 0.95rem; color: #aaa;">※予備日：4/25(日)</span></p>
-            <p style="color: #fff; font-size: 1.1rem;">バラエティ豊かな20以上のナンバーをお届けします！</p>
+            <p style="color: #c29a5b; font-size: 1.2rem; margin-bottom: 5px; font-weight: 700;">2027/4/24(土) <span style="font-size: 0.95rem; color: #aaa; font-weight: 300;">※予備日：4/25(日)</span></p>
+            <div id="vol9-countdown-wrap"></div>
+            <p style="color: #fff; font-size: 1.1rem; margin-top: 5px;">バラエティ豊かな20以上のナンバーをお届けします！</p>
         </div>
     </header>
 
@@ -419,28 +469,28 @@
                             </h3>
                             
                             <ul class="song-list">
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=It%27s%20Only%20a%20Matter%20of%20Time%20Back%20to%20the%20Future%20Musical" target="_blank" class="song-item-content"><span class="song-title">It's Only</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Supercalifragilisticexpialidocious%20Mary%20Poppins" target="_blank" class="song-item-content"><span class="song-title">スパカリ</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%88%91%E3%82%89%E6%81%AF%E7%B5%B6%E3%81%88%E3%81%97%E8%80%85%E3%81%A9%E3%82%82%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">我ら息絶えし者ども</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E5%90%88%E5%94%B1%20%E6%96%B9%E8%88%9F" target="_blank" class="song-item-content"><span class="song-title">(合唱)方舟</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Welcome%20to%20the%20Rock%20Come%20From%20Away" target="_blank" class="song-item-content"><span class="song-title">Welcome to the rock</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Wand%20Dance%20Harry%20Potter%20and%20the%20Cursed%20Child" target="_blank" class="song-item-content"><span class="song-title">Wand Dance</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%81%A1%E3%81%84%E3%81%8B%E3%82%8F%E6%98%A0%E7%94%BB%E3%83%A1%E3%83%89%E3%83%AC%E3%83%BC" target="_blank" class="song-item-content"><span class="song-title">ちいかわ映画メドレー</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8B%E3%83%9B%E3%83%B3%E3%83%8E%E3%83%9F%E3%82%AB%E3%82%BF" target="_blank" class="song-item-content"><span class="song-title">ニホンノミカタ</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%98%E3%82%83%E3%83%80%E3%83%A1%E3%81%8B%E3%81%97%E3%82%89%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">私じゃダメかしら？</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%AF%E4%BD%95%E3%82%82%E8%AD%B2%E3%82%89%E3%81%AA%E3%81%84%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">私は何も譲らない</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%BE%E3%82%AF%E3%82%BE%E3%82%AF%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">ゾクゾク</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%81%8B%E3%81%97%E3%81%A6%E3%82%8B%20%E3%83%98%E3%83%A9%E3%82%AF%E3%83%AC%E3%82%B9" target="_blank" class="song-item-content"><span class="song-title">恋してる</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Popular%20Wicked" target="_blank" class="song-item-content"><span class="song-title">popular</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Dancing%20Queen%20Mamma%20Mia" target="_blank" class="song-item-content"><span class="song-title">ダンシング・クイーン</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Moonlight%E3%81%AE%E3%81%9B%E3%81%84%E3%81%AB%E3%81%97%E3%81%A6" target="_blank" class="song-item-content"><span class="song-title">MoonNightのせいにして</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E4%BB%8A%E3%82%92%E7%94%9F%E3%81%8D%E3%82%8B%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><span class="song-title">今を生きる</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%95%E3%82%A7%E6%A8%82%E5%9C%92" target="_blank" class="song-item-content"><span class="song-title">カフェ樂園</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=That%27s%20Life%20Frank%20Sinatra" target="_blank" class="song-item-content"><span class="song-title">That's Life</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Bop%20to%20the%20Top%20High%20School%20Musical" target="_blank" class="song-item-content"><span class="song-title">Bop to Top</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%89%89%E9%96%8B%E3%81%91%E3%81%A6%20%E3%82%A2%E3%83%8A%E3%81%A8%E9%9B%AA%E3%81%AE%E5%A5%B3%E7%8E%8B" target="_blank" class="song-item-content"><span class="song-title">扉開けて</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Take%20a%20Hint%20Victorious" target="_blank" class="song-item-content"><span class="song-title">Take a hint</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
-                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8A%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%20%E3%82%B3%E3%83%BC%E3%83%A9%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%B3" target="_blank" class="song-item-content"><span class="song-title">ナッシング</span><span style="color: #c29a5b; font-size: 0.8rem;">▶︎</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=It%27s%20Only%20a%20Matter%20of%20Time%20Back%20to%20the%20Future%20Musical" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">01</span><span class="song-title">It's Only</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Supercalifragilisticexpialidocious%20Mary%20Poppins" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">02</span><span class="song-title">スパカリ</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%88%91%E3%82%89%E6%81%AF%E7%B5%B6%E3%81%88%E3%81%97%E8%80%85%E3%81%A9%E3%82%82%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">03</span><span class="song-title">我ら息絶えし者ども</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E5%90%88%E5%94%B1%20%E6%96%B9%E8%88%9F" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">04</span><span class="song-title">(合唱)方舟</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Welcome%20to%20the%20Rock%20Come%20From%20Away" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">05</span><span class="song-title">Welcome to the rock</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Wand%20Dance%20Harry%20Potter%20and%20the%20Cursed%20Child" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">06</span><span class="song-title">Wand Dance</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%81%A1%E3%81%84%E3%81%8B%E3%82%8F%E6%98%A0%E7%94%BB%E3%83%A1%E3%83%89%E3%83%AC%E3%83%BC" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">07</span><span class="song-title">ちいかわ映画メドレー</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8B%E3%83%9B%E3%83%B3%E3%83%8E%E3%83%9F%E3%82%AB%E3%82%BF" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">08</span><span class="song-title">ニホンノミカタ</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%98%E3%82%83%E3%83%80%E3%83%A1%E3%81%8B%E3%81%97%E3%82%89%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">09</span><span class="song-title">私じゃダメかしら？</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E7%A7%81%E3%81%AF%E4%BD%95%E3%82%82%E8%AD%B2%E3%82%89%E3%81%AA%E3%81%84%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">10</span><span class="song-title">私は何も譲らない</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%BE%E3%82%AF%E3%82%BE%E3%82%AF%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">11</span><span class="song-title">ゾクゾク</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%81%8B%E3%81%97%E3%81%A6%E3%82%8B%20%E3%83%98%E3%83%A9%E3%82%AF%E3%83%AC%E3%82%B9" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">12</span><span class="song-title">恋してる</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Popular%20Wicked" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">13</span><span class="song-title">popular</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Dancing%20Queen%20Mamma%20Mia" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">14</span><span class="song-title">ダンシング・クイーン</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Moonlight%E3%81%AE%E3%81%9B%E3%81%84%E3%81%AB%E3%81%97%E3%81%A6" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">15</span><span class="song-title">MoonNightのせいにして</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E4%BB%8A%E3%82%92%E7%94%9F%E3%81%8D%E3%82%8B%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">16</span><span class="song-title">今を生きる</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%95%E3%82%A7%E6%A8%82%E5%9C%92" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">17</span><span class="song-title">カフェ樂園</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=That%27s%20Life%20Frank%20Sinatra" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">18</span><span class="song-title">That's Life</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Bop%20to%20the%20Top%20High%20School%20Musical" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">19</span><span class="song-title">Bop to Top</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E6%89%89%E9%96%8B%E3%81%91%E3%81%A6%20%E3%82%A2%E3%83%8A%E3%81%A8%E9%9B%AA%E3%81%AE%E5%A5%B3%E7%8E%8B" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">20</span><span class="song-title">扉開けて</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=Take%20a%20Hint%20Victorious" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">21</span><span class="song-title">Take a hint</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
+                                <li class="song-item"><a href="https://www.youtube.com/results?search_query=%E3%83%8A%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%20%E3%82%B3%E3%83%BC%E3%83%A9%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%B3" target="_blank" class="song-item-content"><div class="song-left"><span class="song-num">22</span><span class="song-title">ナッシング</span></div><span class="play-badge" title="YouTubeで検索">▶</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -457,6 +507,21 @@
     <div id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</div>
 
     <script>
+        // カウントダウンバッジ描画
+        (function() {
+            const wrap = document.getElementById('vol9-countdown-wrap');
+            if (!wrap) return;
+            const targetDate = new Date(2027, 3, 24); // 2027/4/24
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffDays = Math.round((targetDate - today) / (1000 * 60 * 60 * 24));
+            if (diffDays > 0) {
+                wrap.innerHTML = `<div class="countdown-badge"><span>✦</span><span>SHOWTIME IN ${diffDays} DAYS</span><span>✦</span></div>`;
+            } else if (diffDays === 0) {
+                wrap.innerHTML = `<div class="countdown-badge"><span>✦</span><span>TODAY IS SHOWTIME!</span><span>✦</span></div>`;
+            }
+        })();
+
         // Fetch info for background video
         fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
@@ -535,4 +600,3 @@
     </script>
 </body>
 </html>
-

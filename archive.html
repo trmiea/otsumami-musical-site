@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archive | Otsumami Musical Official</title>
+    <link rel="icon" type="image/png" href="./res/input/logo.png">
     
     <meta property="og:title" content="Otsumami Musical Official">
     <meta property="og:description" content="「おつまみのように気軽にミュージカルを楽しむ」をモットーとした、筑波大学ESSAのOB・OG中心のコミュニティ。">
@@ -49,7 +50,7 @@
         }
 
         html { scroll-behavior: smooth; }
-        body { margin: 0; background: transparent;  font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
+        body { margin: 0; background: transparent; font-family: 'Noto Sans JP', sans-serif; background-color: #1a1a1a; color: #f5f5f5; line-height: 1.8; overflow-x: hidden; font-weight: 300; letter-spacing: 0.05em; }
         
         ::selection { background: #c29a5b; color: #000; }
         ::-moz-selection { background: #c29a5b; color: #000; }
@@ -62,8 +63,6 @@
         h1, h2, h3 { letter-spacing: 0.15em; text-align: center; text-transform: uppercase; font-weight: 300; }
         a { color: #c29a5b; text-decoration: none; transition: 0.3s; }
         a:hover { opacity: 0.7; }
-        
-        
         
         /* ==========================================
            UNIFIED NAVIGATION (Desktop: Links, Mobile: Hamburger)
@@ -147,16 +146,14 @@
         .unified-nav .desktop-links li a:hover {
             color: #fff;
             border-bottom-color: #c29a5b;
+            opacity: 1;
         }
 
-        .unified-nav .desktop-links li a.practice-link {
+        .unified-nav .desktop-links li a.is-current {
             color: #c29a5b;
+            border-bottom-color: #c29a5b;
             font-weight: 700;
-        }
-
-        .unified-nav .desktop-links li a.practice-link:hover {
-            color: #ffd88a;
-            border-bottom-color: #ffd88a;
+            text-shadow: 0 0 12px rgba(194, 154, 91, 0.4);
         }
 
         /* Hamburger Button */
@@ -258,9 +255,10 @@
         .unified-nav .mobile-dropdown li a:active {
             color: #fff;
             padding-left: 14px;
+            opacity: 1;
         }
 
-        .unified-nav .mobile-dropdown li a.practice-link {
+        .unified-nav .mobile-dropdown li a.is-current {
             color: #c29a5b;
             font-weight: 700;
         }
@@ -291,28 +289,104 @@
             }
         }
 
-header { padding: 120px 0 40px; text-align: center; background: transparent; }
-        .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 20px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
+        header { padding: 120px 0 30px; text-align: center; background: transparent; }
+        .hero-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 15px; font-weight: 700; color: #c29a5b; letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(194, 154, 91, 0.4); }
+
+        /* Quick Jump Navigation Bar */
+        .archive-jump-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px auto 40px;
+            padding: 14px 20px;
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(194, 154, 91, 0.25);
+            border-radius: 50px;
+            max-width: fit-content;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        @media (max-width: 600px) {
+            .archive-jump-nav {
+                border-radius: 18px;
+                padding: 12px;
+                gap: 8px;
+            }
+        }
+        .jump-pill {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #e8d099;
+            background: linear-gradient(135deg, rgba(194, 154, 91, 0.18), rgba(194, 154, 91, 0.05));
+            border: 1px solid rgba(194, 154, 91, 0.45);
+            padding: 7px 18px;
+            border-radius: 50px;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .jump-pill:hover {
+            background: linear-gradient(135deg, #e0bb43, #b58922);
+            color: #000;
+            border-color: #f3d778;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(194, 154, 91, 0.45);
+            opacity: 1;
+        }
         
         .archive-grid { display: flex; flex-direction: column; gap: 60px; margin-top: 20px; }
-        .archive-card { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .archive-card { scroll-margin-top: 110px; background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 50px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-top: 4px solid #c29a5b; transition: all 0.4s ease; position: relative; overflow: hidden; }
         .archive-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(194,154,91,0.05), transparent 50%); opacity: 0; transition: 0.4s; pointer-events: none; }
         .archive-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-color: #d4af37; }
         .archive-card:hover::before { opacity: 1; }
         .archive-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
         .archive-title { font-family: 'Cinzel', serif; font-size: 2rem; margin: 0; color: #c29a5b; font-weight: 700; }
-        .archive-date { font-size: 1rem; color: #888; }
+        .archive-date { font-size: 1rem; color: #888; font-family: 'Cinzel', serif; letter-spacing: 0.08em; }
         .archive-content { display: flex; flex-direction: column; gap: 30px; }
         @media (max-width: 768px) { .archive-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
         
         .song-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; border-top: 1px solid rgba(255, 255, 255, 0.1); }
-        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .song-item-content { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; color: inherit; text-decoration: none; transition: 0.3s; }
-        @media (max-width: 600px) { .song-item-content { flex-direction: column; align-items: flex-start; gap: 5px; } }
-        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.15); padding-left: 25px; }
-        .song-item a.song-item-content:hover .song-title { color: #c29a5b; }
+        .song-item { background: transparent; font-size: 0.95rem; transition: 0.3s; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .song-item-content { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 15px; color: inherit; text-decoration: none; transition: all 0.3s ease; border-radius: 8px; }
+        .song-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+        .song-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+        @media (max-width: 600px) {
+            .song-item-content { padding: 12px 10px; gap: 10px; }
+            .song-left { flex-direction: row; align-items: flex-start; gap: 10px; }
+        }
+        .song-num { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: rgba(194, 154, 91, 0.65); min-width: 24px; text-align: right; letter-spacing: 0.05em; }
+        .song-info { display: flex; flex-direction: column; min-width: 0; }
         .song-title { font-weight: 700; display: block; color: #fff; transition: 0.3s; font-size: 1rem; letter-spacing: 0.05em; }
-        .song-work { font-size: 0.8rem; color: #888; }
+        .song-work { font-size: 0.8rem; color: #999; }
+        .play-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(194, 154, 91, 0.22), rgba(194, 154, 91, 0.06));
+            border: 1px solid rgba(194, 154, 91, 0.55);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #e8d099;
+            font-size: 0.75rem;
+            padding-left: 2px;
+            box-sizing: border-box;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .song-item a.song-item-content:hover { background: rgba(194, 154, 91, 0.12); padding-left: 24px; opacity: 1; }
+        .song-item a.song-item-content:hover .song-title { color: #f3d778; }
+        .song-item a.song-item-content:hover .play-badge {
+            background: linear-gradient(135deg, #f3d778, #c29a5b);
+            color: #000;
+            border-color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.65);
+        }
         
         .links-area { text-align: center; margin: 10px 0 30px; }
         .btn-gold-outline { display: inline-block; background: linear-gradient(135deg, #e0bb43 0%, #c29a5b 50%, #9a7018 100%); border: 1px solid rgba(255, 235, 170, 0.45); color: #0a0a0a !important; font-weight: 700; padding: 14px 28px; border-radius: 50px; font-size: 0.95rem; letter-spacing: 0.1em; transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); margin-top: 15px; width: 100%; box-sizing: border-box; position: relative; overflow: hidden; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), 0 4px 15px rgba(194, 154, 91, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.5); cursor: pointer; }
@@ -331,18 +405,9 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         #back-to-top:hover { background: #c29a5b; transform: translateY(-3px); }
 
         @media (max-width: 768px) {
-            
-            
-            section { padding: 80px 0; }
+            section { padding: 40px 0 80px; }
             .hero-title { font-size: 2.2rem !important; }
             h2 { font-size: 1.8rem; }
-            
-            .next-card { padding: 40px 20px; }
-            .next-date { font-size: 1.8rem; }
-            .btn-gold { padding: 15px 30px; font-size: 0.9rem !important; width: 100%; box-sizing: border-box; text-align: center; }
-            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
-            
-            #yt-main-container h3 { font-size: 1.4rem !important; }
             .archive-title { font-size: 1.5rem; }
             .archive-card { padding: 25px; }
         }
@@ -352,19 +417,19 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
     <div class="hero-bg-video" id="hero-bg-container">
         <iframe id="hero-bg-iframe" src="https://www.youtube.com/embed/j7GtXqrMwK0?autoplay=1&mute=1&controls=0&loop=1&playlist=j7GtXqrMwK0&playsinline=1&showinfo=0&rel=0&start=8" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>
     </div>
-            <!-- Unified Navigation Bar -->
+    <!-- Unified Navigation Bar -->
     <nav class="unified-nav">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="main.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
             
             <!-- Desktop Links (PC: 右上に文字リンク表示) -->
             <ul class="desktop-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="main.html">Home</a></li>
                 <li><a href="vol9.html">Next</a></li>
-                <li><a href="archive.html">Archive</a></li>
+                <li><a href="archive.html" class="is-current">Archive</a></li>
             </ul>
 
             <!-- Mobile Hamburger Button (スマホ: ハンバーガー表示) -->
@@ -378,9 +443,9 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         <!-- Mobile Dropdown Menu -->
         <div id="unified-mobile-dropdown" class="mobile-dropdown">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="main.html">Home</a></li>
                 <li><a href="vol9.html">Next</a></li>
-                <li><a href="archive.html">Archive</a></li>
+                <li><a href="archive.html" class="is-current">Archive</a></li>
             </ul>
         </div>
     </nav>
@@ -388,7 +453,8 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
     <header class="fade-in">
         <div class="container">
             <h1 class="hero-title">Performance Archive</h1>
-            <p style="color: #888;">過去の発表会の記録・セットリスト</p>
+            <p style="color: #888; margin-bottom: 20px;">過去の発表会の記録・セットリスト</p>
+            <div class="archive-jump-nav" id="archive-jump-nav"></div>
         </div>
     </header>
 
@@ -429,6 +495,15 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         fetch(`./res/input/archive.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
+                // Quick Jump Bar
+                const jumpNav = document.getElementById('archive-jump-nav');
+                if (jumpNav) {
+                    jumpNav.innerHTML = data.map(vol => {
+                        const shortLabel = vol.id.replace(/^vol/i, 'Vol.');
+                        return `<a href="#${vol.id}" class="jump-pill">${shortLabel}</a>`;
+                    }).join('');
+                }
+
                 const container = document.getElementById('archive-container');
                 container.innerHTML = data.map(vol => {
                     const digestSong = vol.songs.find(s => s.title.includes("ダイジェスト"));
@@ -436,40 +511,50 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
                     const digestId = digestSong ? getYouTubeId(digestSong.youtube_url) : null;
                     
                     return `
-                    <div class="archive-card">
+                    <div class="archive-card" id="${vol.id}">
                         <div class="archive-header">
                             <h2 class="archive-title">${vol.title}</h2>
                             <div class="archive-date">${vol.date}</div>
                         </div>
-                                                    <div class="archive-content">
-                                ${digestId ? `
-                                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
-                                    <iframe loading="lazy" style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
-                                </div>
-                                ` : ''}
-                                
-                                <div class="links-area">
-                                    <a href="${vol.album_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; max-width: 400px; width: 100%; font-size: 1rem; padding: 15px 30px; border-radius: 50px;">
-                                        Photos & Videos ↗
-                                    </a>
-                                </div>
-
-                                <div style="margin-top: 10px;">
-                                    <h3 style="text-align: left; font-size: 1.2rem; margin-bottom: 20px; color: #c29a5b; border-bottom: 1px solid rgba(194,154,91,0.3); padding-bottom: 10px;">
-                                        Setlist <span style="font-size: 0.9rem; color: #888;">(${otherSongs.length} songs)</span>
-                                    </h3>
-                                    <ul class="song-list">
-                                        ${otherSongs.map(song => `
-                                            <li class="song-item">
-                                                ${song.youtube_url ? `<a href="${song.youtube_url}" target="_blank" class="song-item-content">` : `<div class="song-item-content">`}
-                                                    <span class="song-title">${song.youtube_url ? '<span style="color:#c29a5b; margin-right:8px; font-size: 0.8rem;">▶︎</span>' : ''}${song.title}</span>
-                                                    <span class="song-work">${song.work}</span>
-                                                ${song.youtube_url ? `</a>` : `</div>`}
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                                </div>
+                        <div class="archive-content">
+                            ${digestId ? `
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
+                                <iframe loading="lazy" style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
                             </div>
+                            ` : ''}
+                            
+                            <div class="links-area">
+                                <a href="${vol.album_url}" target="_blank" class="btn-gold-outline" style="margin-top: 0; max-width: 400px; width: 100%; font-size: 1rem; padding: 15px 30px; border-radius: 50px;">
+                                    Photos & Videos ↗
+                                </a>
+                            </div>
+
+                            <div style="margin-top: 10px;">
+                                <h3 style="text-align: left; font-size: 1.2rem; margin-bottom: 20px; color: #c29a5b; border-bottom: 1px solid rgba(194,154,91,0.3); padding-bottom: 10px;">
+                                    Setlist <span style="font-size: 0.9rem; color: #888;">(${otherSongs.length} songs)</span>
+                                </h3>
+                                <ul class="song-list">
+                                    ${otherSongs.map((song, idx) => {
+                                        const trackNum = String(idx + 1).padStart(2, '0');
+                                        return `
+                                        <li class="song-item">
+                                            ${song.youtube_url ? `<a href="${song.youtube_url}" target="_blank" class="song-item-content">` : `<div class="song-item-content">`}
+                                                <div class="song-left">
+                                                    <span class="song-num">${trackNum}</span>
+                                                    <div class="song-info">
+                                                        <span class="song-title">${song.title}</span>
+                                                        <span class="song-work">${song.work}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="song-right">
+                                                    ${song.youtube_url ? '<span class="play-badge" title="動画を見る">▶</span>' : ''}
+                                                </div>
+                                            ${song.youtube_url ? `</a>` : `</div>`}
+                                        </li>
+                                    `}).join('')}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 `}).join('');
                 // Init scroll animations with stagger
@@ -489,7 +574,6 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
                 const elements = document.querySelectorAll('.fade-in, .archive-card');
                 elements.forEach((el, index) => {
                     el.classList.add('fade-in');
-                    // Immediately show the header and the first card to avoid "empty" feel
                     if (index < 3) {
                         setTimeout(() => el.classList.add('visible'), index * 150);
                     } else {
@@ -509,41 +593,39 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
                 document.getElementById('archive-container').innerHTML = `<p style="color:red; text-align:center;">データの読み込みに失敗しました。ローカル環境の場合はローカルサーバー（Live Server等）経由で開いてください。<br>Error: ${err.message}</p>`;
             });
 
-        
-    // Unified Navigation Toggle Logic
-    (function() {
-        function initUnifiedNav() {
-            const btn = document.getElementById('unified-hamburger-btn');
-            const menu = document.getElementById('unified-mobile-dropdown');
-            if (!btn || !menu) return;
+        // Unified Navigation Toggle Logic
+        (function() {
+            function initUnifiedNav() {
+                const btn = document.getElementById('unified-hamburger-btn');
+                const menu = document.getElementById('unified-mobile-dropdown');
+                if (!btn || !menu) return;
 
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                btn.classList.toggle('is-active');
-                menu.classList.toggle('is-open');
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!menu.contains(e.target) && !btn.contains(e.target)) {
-                    btn.classList.remove('is-active');
-                    menu.classList.remove('is-open');
-                }
-            });
-
-            menu.querySelectorAll('a').forEach(function(link) {
-                link.addEventListener('click', function() {
-                    btn.classList.remove('is-active');
-                    menu.classList.remove('is-open');
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    btn.classList.toggle('is-active');
+                    menu.classList.toggle('is-open');
                 });
-            });
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initUnifiedNav);
-        } else {
-            initUnifiedNav();
-        }
-    })();
 
+                document.addEventListener('click', function(e) {
+                    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    }
+                });
+
+                menu.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        btn.classList.remove('is-active');
+                        menu.classList.remove('is-open');
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initUnifiedNav);
+            } else {
+                initUnifiedNav();
+            }
+        })();
     </script>
 </body>
 </html>

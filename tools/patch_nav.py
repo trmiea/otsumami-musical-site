@@ -120,13 +120,13 @@ NAV_CSS = """
 
 NAV_HTML = """    <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="main.html" class="logo">
                 <img src="res/input/logo.png" alt="Otsumami Logo">
                 <span>Otsumami Musical</span>
             </a>
             
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="main.html">Home</a></li>
                 <li><a href="vol9.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
             </ul>
@@ -140,14 +140,14 @@ NAV_HTML = """    <nav>
 
         <div id="mobile-menu" class="mobile-menu">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="main.html">Home</a></li>
                 <li><a href="vol9.html">Next</a></li>
                 <li><a href="archive.html">Archive</a></li>
             </ul>
         </div>
     </nav>"""
 
-for file in ["index.html", "archive.html", "vol9.html"]:
+for file in ["main.html", "archive.html", "vol9.html"]:
     with open(file, "r") as f:
         content = f.read()
     
