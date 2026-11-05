@@ -12,6 +12,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://i.ytimg.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Sans+JP:wght@100;300;700&display=swap" rel="stylesheet">
     <style>
         .hero-bg-video {
@@ -22,7 +24,7 @@
             height: 100vh;
             z-index: -2;
             overflow: hidden;
-            background: #000;
+            background: #000 url('https://i.ytimg.com/vi/j7GtXqrMwK0/hqdefault.jpg') center center / cover no-repeat;
         }
         .hero-bg-video::after {
             content: "";
@@ -346,7 +348,9 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
     </style>
 </head>
 <body>
-    <div class="hero-bg-video" id="hero-bg-container"></div>
+    <div class="hero-bg-video" id="hero-bg-container">
+        <iframe id="hero-bg-iframe" src="https://www.youtube.com/embed/j7GtXqrMwK0?autoplay=1&mute=1&controls=0&loop=1&playlist=j7GtXqrMwK0&playsinline=1&showinfo=0&rel=0&start=8" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>
+    </div>
             <!-- Unified Navigation Bar -->
     <nav class="unified-nav">
         <div class="nav-container">
@@ -412,7 +416,12 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
         fetch(`./res/input/info.json?v=${Date.now()}`, { cache: 'no-store' })
             .then(res => res.json())
             .then(data => {
-                document.getElementById('hero-bg-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
+                const startParam = data.hero.start ? `&start=${data.hero.start}` : '';
+                const expectedSrc = `https://www.youtube.com/embed/${data.hero.video_id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${data.hero.video_id}&playsinline=1&showinfo=0&rel=0${startParam}`;
+                const existingIframe = document.getElementById('hero-bg-iframe');
+                if (!existingIframe || existingIframe.getAttribute('src') !== expectedSrc) {
+                    document.getElementById('hero-bg-container').innerHTML = `<iframe id="hero-bg-iframe" src="${expectedSrc}" frameborder="0" allow="autoplay; fullscreen" style="pointer-events: none;"></iframe>`;
+                }
             })
             .catch(err => console.error(err));
 
@@ -434,7 +443,7 @@ header { padding: 120px 0 40px; text-align: center; background: transparent; }
                                                     <div class="archive-content">
                                 ${digestId ? `
                                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);">
-                                    <iframe style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
+                                    <iframe loading="lazy" style="position: absolute; top:0; left:0; width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/${digestId}" allowfullscreen></iframe>
                                 </div>
                                 ` : ''}
                                 
